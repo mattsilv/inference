@@ -7,7 +7,7 @@
 - Lint code: `npm run lint`
 
 ## Data Management
-IMPORTANT: Do NOT run Prisma Studio or other database commands directly. Ask the user first; they will often have these running in the background.
+IMPORTANT: Do NOT run Prisma Studio, npx commands, or other database commands directly. Ask the user first; they will often have these running in the background.
 
 - Validate models: `npm run validate-models`
 - Generate models.json: `npm run generate-models`
@@ -16,6 +16,20 @@ IMPORTANT: Do NOT run Prisma Studio or other database commands directly. Ask the
 - Reset database: `npm run db:reset`
 - Check database status: `npm run db:check`
 - Backup database: `npm run db:backup` (maintains the last 10 backups in /backup folder)
+
+### Database Queries
+Use the SQLite MCP server for direct database queries when needed:
+```sql
+-- Check for hidden models
+sqlite3 prisma/dev.db "SELECT id, systemName, displayName, isHidden FROM AIModel WHERE isHidden = 1;"
+
+-- List all tables
+sqlite3 prisma/dev.db ".tables"
+
+-- Other common queries
+sqlite3 prisma/dev.db "SELECT * FROM AIModel;"
+sqlite3 prisma/dev.db "SELECT * FROM Vendor;"
+```
 
 ### Pricing Data Management
 - Backup pricing data: `npm run pricing:backup` (preserves pricing history in /backups folder)
@@ -43,8 +57,17 @@ This ensures you won't lose important pricing updates when fixing database issue
 - JSON files in `/src/data` are generated from the database
 - To update data:
   1. Use Prisma Studio (`npm run prisma:studio`) to edit the database
-  2. Run `npm run export-json` to regenerate JSON files
+  2. Run `npm run export-json` to regenerate JSON files (includes data integrity validation)
   3. Run `npm run validate-models` to ensure data is valid
+
+### Export Data Integrity
+The export-to-json scripts include a built-in validation system that:
+- Ensures all required fields (including isHidden) are exported to JSON
+- Validates proper mapping between database and JSON representation
+- Fails with a detailed error if any required field is missing
+- Shows helpful stats about total models and hidden model counts
+
+This safeguard prevents issues where critical fields might be missing from exported JSON files.
 
 ## Code Style Guidelines
 - **TypeScript**: Use strict typing, avoid `any` types

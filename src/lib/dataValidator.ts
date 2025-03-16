@@ -18,7 +18,7 @@ function validateModel(model: AIModel, vendorFile: string): string[] {
   // Required fields
   const requiredFields = [
     'id', 'systemName', 'displayName', 'categoryId', 
-    'parametersB', 'vendorId', 'host'
+    'parametersB', 'vendorId', 'host', 'isHidden'
   ];
   
   for (const field of requiredFields) {

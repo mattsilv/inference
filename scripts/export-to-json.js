@@ -10,6 +10,45 @@ const path = require('path');
 
 const prisma = new PrismaClient();
 
+/**
+ * Required fields for each model export
+ * IMPORTANT: Update this list when new required fields are added to the schema
+ */
+const REQUIRED_MODEL_FIELDS = [
+  'id',
+  'systemName',
+  'displayName',
+  'categoryId',
+  'parametersB',
+  'vendorId',
+  'host',
+  'isHidden'
+];
+
+/**
+ * Validates that a database model has been properly mapped to JSON
+ * @param {Object} dbModel Original database model
+ * @param {Object} jsonModel Exported JSON model
+ * @returns {Array} Array of missing fields
+ */
+function validateModelExport(dbModel, jsonModel) {
+  const missingFields = [];
+  
+  // Check that all required fields are present
+  for (const field of REQUIRED_MODEL_FIELDS) {
+    if (jsonModel[field] === undefined) {
+      missingFields.push(field);
+    }
+  }
+  
+  // Check isHidden specifically since this has caused issues
+  if (dbModel.isHidden !== undefined && jsonModel.isHidden === undefined) {
+    missingFields.push('isHidden');
+  }
+  
+  return missingFields;
+}
+
 async function main() {
   console.log('Starting export process...');
   
@@ -62,6 +101,7 @@ async function main() {
     tokenLimit: model.tokenLimit || undefined,
     releaseDate: model.releaseDate ? model.releaseDate.toISOString().split('T')[0] : undefined,
     isOpenSource: model.isOpenSource || false,
+    isHidden: model.isHidden || false,
     pricing: model.pricing ? {
       id: model.pricing.id,
       modelId: model.pricing.modelId,
@@ -72,6 +112,34 @@ async function main() {
       trainingCost: model.pricing.trainingCost || undefined,
     } : undefined,
   }));
+
+  // VALIDATION CHECK: Verify all models have required fields
+  const validationErrors = [];
+  
+  for (let i = 0; i < allModels.length; i++) {
+    const dbModel = allModels[i];
+    const jsonModel = formattedModels[i];
+    
+    const missingFields = validateModelExport(dbModel, jsonModel);
+    if (missingFields.length > 0) {
+      validationErrors.push({
+        modelName: dbModel.systemName,
+        missingFields
+      });
+    }
+  }
+  
+  // If validation errors are found, abort the export
+  if (validationErrors.length > 0) {
+    console.error('❌ EXPORT VALIDATION FAILED!');
+    console.error('The following required fields are missing from exports:');
+    
+    validationErrors.forEach(({modelName, missingFields}) => {
+      console.error(`- Model "${modelName}" is missing: ${missingFields.join(', ')}`);
+    });
+    
+    throw new Error('Export failed: Required fields are missing from JSON exports. See errors above.');
+  }
   
   // Group models by vendor
   const modelsByVendor = new Map();
@@ -102,7 +170,9 @@ async function main() {
     JSON.stringify(formattedModels, null, 2)
   );
   
-  console.log('Export completed successfully!');
+  console.log('✅ Export completed successfully with validation!');
+  console.log(`Total models exported: ${formattedModels.length}`);
+  console.log(`Hidden models count: ${formattedModels.filter(m => m.isHidden).length}`);
 }
 
 main()

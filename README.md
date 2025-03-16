@@ -2,26 +2,46 @@
 
 A comprehensive comparison tool for AI model pricing and specifications.
 
-## Quick Start Commands
+## 🚀 Quick Setup (2 Terminal Setup)
+
+**Terminal 1: Database & Data**
+```bash
+# First time or after restart
+pnpm install              # Install dependencies
+pnpm run db:check         # Verify database is ready
+pnpm run dev              # Start development server
+
+# Data workflow
+pnpm run export-json      # Export database to JSON (with validation)
+```
+
+**Terminal 2: Database Management**
+```bash
+# Only when needed
+pnpm run db:backup        # Backup database before changes
+pnpm run db:reset         # Reset database if issues occur
+```
+
+## All Commands
 
 ```bash
 # Development
-npm run dev               # Start development server with Turbopack
-npm run build             # Build for production
-npm run start             # Start production server
+pnpm run dev              # Start development server with Turbopack
+pnpm run build            # Build for production
+pnpm run start            # Start production server
 
 # Data Management
-npm run prisma:studio     # Open Prisma Studio for database management
-npm run db:setup          # Set up database (create and seed)
-npm run db:reset          # Reset database (drop and recreate)
-npm run validate-models   # Validate model data
-npm run generate-models   # Generate combined models.json
-npm run export-json       # Export database to JSON files
+pnpm run export-json      # Export database to JSON (with validation)
+pnpm run db:backup        # Backup database
+pnpm run db:check         # Verify database is ready
+pnpm run db:setup         # Set up database (create and seed)
+pnpm run db:reset         # Reset database (drop and recreate)
 
-# Pricing Automation
-npm run pricing:info      # Generate vendor tracking info for AI agent
-npm run pricing:update    # Update pricing from AI agent JSON output
-npm run pricing:export    # Export updated pricing to JSON files
+# Pricing Automation  
+pnpm run pricing:backup   # Backup pricing data
+pnpm run pricing:info     # Generate vendor tracking info for AI agent
+pnpm run pricing:update   # Update pricing from AI agent JSON output
+pnpm run models:hide      # Hide specific models from UI
 ```
 
 ## About This Project
