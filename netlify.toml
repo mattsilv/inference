@@ -1,6 +1,6 @@
 [build]
   command = "npm run build:netlify"
-  publish = "dist"
+  publish = ".next"
 
 [dev]
   command = "npm run dev"
