@@ -12,6 +12,7 @@
     "contextWindow": 8192,
     "tokenLimit": 4096,
     "releaseDate": "2024-04-18",
+    "isOpenSource": true,
     "pricing": {
       "id": 7,
       "modelId": 7,
@@ -32,6 +33,7 @@
     "contextWindow": 32768,
     "tokenLimit": 4096,
     "releaseDate": "2023-12-15",
+    "isOpenSource": false,
     "pricing": {
       "id": 8,
       "modelId": 8,

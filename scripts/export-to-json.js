@@ -61,6 +61,7 @@ async function main() {
     contextWindow: model.contextWindow || undefined,
     tokenLimit: model.tokenLimit || undefined,
     releaseDate: model.releaseDate ? model.releaseDate.toISOString().split('T')[0] : undefined,
+    isOpenSource: model.isOpenSource || false,
     pricing: model.pricing ? {
       id: model.pricing.id,
       modelId: model.pricing.modelId,

@@ -18,8 +18,8 @@ const TableRow: React.FC<TableRowProps> = ({ model, categories, vendors }) => {
         <div className="font-medium text-gray-900">
           {model.displayName}
           {model.isOpenSource && (
-            <span className="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-              Open Source
+            <span className="ml-1 text-xs text-gray-500 font-normal">
+              (Open Source)
             </span>
           )}
         </div>

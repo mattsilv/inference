@@ -12,7 +12,7 @@ export const formatParameters = (paramB: number): string => {
 // Format cost to display with consistent decimal places
 export const formatCost = (cost: number | undefined): string => {
   if (cost === undefined) return 'N/A';
-  return `$${cost.toFixed(5)}`;
+  return `$${cost.toFixed(3)}`;
 };
 
 // Format token window (e.g., 128000 -> "128K")

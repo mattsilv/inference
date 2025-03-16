@@ -12,6 +12,7 @@
     "contextWindow": 4096,
     "tokenLimit": 1024,
     "releaseDate": "2023-12-01",
+    "isOpenSource": false,
     "pricing": {
       "id": 11,
       "modelId": 11,
@@ -32,6 +33,7 @@
     "contextWindow": 4096,
     "tokenLimit": 1024,
     "releaseDate": "2023-12-01",
+    "isOpenSource": false,
     "pricing": {
       "id": 12,
       "modelId": 12,

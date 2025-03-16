@@ -44,7 +44,7 @@ const ModelDetailCard: React.FC<ModelDetailCardProps> = ({
   // Format cost to display with consistent decimal places
   const formatCost = (cost: number | undefined): string => {
     if (cost === undefined) return 'N/A';
-    return `$${cost.toFixed(5)}`;
+    return `$${cost.toFixed(3)}`;
   };
 
   // Format token window (e.g., 128000 -> "128K")
@@ -68,8 +68,8 @@ const ModelDetailCard: React.FC<ModelDetailCardProps> = ({
         </div>
         <div className="flex space-x-2">
           {model.isOpenSource && (
-            <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-              Open Source
+            <span className="ml-1 text-xs text-gray-500 font-normal">
+              (Open Source)
             </span>
           )}
           <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
