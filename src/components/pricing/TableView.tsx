@@ -36,7 +36,8 @@ const TableView: React.FC<TableViewProps> = ({
 
   return (
     <div className="hidden md:block overflow-hidden border border-gray-200 rounded-lg shadow">
-      <div className="flex justify-end p-2 bg-gray-50 border-b border-gray-200">
+      {/* Download buttons removed - APIs not implemented yet */}
+      <div className="hidden flex justify-end p-2 bg-gray-50 border-b border-gray-200">
         <button 
           onClick={handleDownloadCSV}
           className="inline-flex items-center px-3 py-1 mr-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

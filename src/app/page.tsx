@@ -22,7 +22,8 @@ export default async function Home() {
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600 mb-4">
           <div className="mb-4 md:mb-0">
             <p>Pricing shown per 1M tokens. Last updated: {new Date().toLocaleDateString()}</p>
-            <div className="mt-2 text-xs flex space-x-4">
+            {/* Download links removed - APIs not implemented yet */}
+            <div className="mt-2 text-xs flex space-x-4 hidden">
               <a href="/api/export/csv" className="text-blue-600 hover:text-blue-800">
                 Download CSV
               </a>

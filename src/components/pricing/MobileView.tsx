@@ -46,7 +46,8 @@ const MobileView: React.FC<MobileViewProps> = ({
     <div className="block md:hidden mt-6">
       {/* Sort and download controls for mobile */}
       <div className="mb-6 flex justify-between items-center">
-        <div className="flex space-x-2">
+        {/* Download buttons removed - APIs not implemented yet */}
+        <div className="hidden flex space-x-2">
           <button 
             onClick={handleDownloadCSV}
             className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
