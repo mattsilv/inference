@@ -7,13 +7,14 @@
 - Lint code: `npm run lint`
 
 ## Data Management
+IMPORTANT: Do NOT run Prisma Studio or other database commands directly. Ask the user first; they will often have these running in the background.
+
 - Validate models: `npm run validate-models`
 - Generate models.json: `npm run generate-models`
-- Run Prisma Studio: `npm run prisma:studio` (NOTE: Do not run this directly; ask user to run it if needed)
 - Export DB to JSON: `npm run export-json`
 - Complete DB setup: `npm run db:setup`
 - Reset database: `npm run db:reset`
-- Check database status: `npm run db:check` (automatically runs before dev server starts)
+- Check database status: `npm run db:check`
 - Backup database: `npm run db:backup` (maintains the last 10 backups in /backup folder)
 
 ### Pricing Data Management
@@ -22,6 +23,12 @@
 - Generate vendor tracking info: `npm run pricing:info`
 - Update pricing from data: `npm run pricing:update [path-to-json]`
 - Export pricing data to JSON: `npm run pricing:export`
+
+### Model Visibility Management
+- List hidden models: `npm run models:hide` (with no arguments)
+- Hide models: `npm run models:hide model1 model2` (specify system names)
+- Unhide specific models: `npm run models:unhide model1 model2` (specify system names)
+- Unhide a model directly: `node scripts/hide-models.js -model-name`
 
 ### Database Reset Safety
 The system now automatically backs up and restores pricing data when resetting the database.

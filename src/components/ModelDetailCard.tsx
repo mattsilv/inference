@@ -63,15 +63,17 @@ const ModelDetailCard: React.FC<ModelDetailCardProps> = ({
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6 mb-4">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-lg font-bold text-gray-900">{model.displayName}</h3>
+          <h3 className="text-lg font-bold text-gray-900">
+            {model.displayName}
+            {model.isOpenSource && (
+              <span className="ml-2 text-xs inline-block px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">
+                Open Source
+              </span>
+            )}
+          </h3>
           <p className="text-sm text-gray-600">{getVendorName(model.vendorId)}</p>
         </div>
         <div className="flex space-x-2">
-          {model.isOpenSource && (
-            <span className="ml-1 text-xs text-gray-500 font-normal">
-              (Open Source)
-            </span>
-          )}
           <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
             {getCategoryName(model.categoryId)}
           </span>

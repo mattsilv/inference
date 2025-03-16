@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "type-check": "tsc --noEmit",
     "generate-models": "node scripts/generate-models.js",
     "validate-models": "node scripts/generate-models.js --validate-only",
     "prisma:studio": "prisma studio",
@@ -24,7 +25,15 @@
     "export-json": "node scripts/export-to-json.js",
     "pricing:update": "node scripts/pricing-tracker.js update",
     "pricing:export": "node scripts/pricing-tracker.js export",
-    "pricing:info": "node scripts/pricing-tracker.js generate-info"
+    "pricing:info": "node scripts/pricing-tracker.js generate-info",
+    "models:hide": "node scripts/hide-models.js",
+    "models:unhide": "node scripts/hide-models.js -",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ]
   },
   "prisma": {
     "seed": "node prisma/seed.js"
@@ -43,6 +52,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
     "prisma": "^6.5.0",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",

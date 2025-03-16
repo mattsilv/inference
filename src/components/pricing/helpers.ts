@@ -78,8 +78,9 @@ export const sortModels = (
       aValue = a.contextWindow ?? 0;
       bValue = b.contextWindow ?? 0;
     } else {
-      aValue = (a as Record<string, string | number>)[key] ?? '';
-      bValue = (b as Record<string, string | number>)[key] ?? '';
+      // Handle direct properties safely with proper type assertions
+      aValue = key in a ? (a as unknown as Record<string, string | number>)[key] ?? '' : '';
+      bValue = key in b ? (b as unknown as Record<string, string | number>)[key] ?? '' : '';
     }
     
     // Handle different data types

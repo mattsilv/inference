@@ -23,8 +23,8 @@ const MobileCard: React.FC<MobileCardProps> = ({ model, categories, vendors }) =
           {getCategoryName(model.categoryId, categories)}
         </span>
         {model.isOpenSource && (
-          <span className="text-xs text-gray-500 font-normal">
-            (Open Source)
+          <span className="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">
+            Open Source
           </span>
         )}
       </div>

@@ -101,12 +101,6 @@ const PricingTable: React.FC<PricingTableProps> = ({
           onSort={handleSort}
         />
       )}
-      
-      <div className="mt-6 text-sm text-gray-500">
-        <p>
-          Pricing shown per 1M tokens. Last updated: {new Date().toLocaleDateString()}
-        </p>
-      </div>
     </div>
   );
 };

@@ -12,6 +12,7 @@ export interface ExportData {
   tokenLimit: number;
   precision: string;
   isOpenSource: boolean;
+  isHidden: boolean;
 }
 
 export const prepareExportData = (
@@ -35,6 +36,7 @@ export const prepareExportData = (
       tokenLimit: model.tokenLimit || 0,
       precision: model.precision || '',
       isOpenSource: model.isOpenSource || false,
+      isHidden: model.isHidden || false,
     };
   });
 };

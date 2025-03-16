@@ -75,7 +75,7 @@
     "contextWindow": 32768,
     "tokenLimit": 4096,
     "releaseDate": "2023-12-15",
-    "isOpenSource": false,
+    "isOpenSource": true,
     "pricing": {
       "id": 8,
       "modelId": 8,
@@ -117,7 +117,7 @@
     "contextWindow": 32768,
     "tokenLimit": 2048,
     "releaseDate": "2024-05-23",
-    "isOpenSource": false,
+    "isOpenSource": true,
     "pricing": {
       "id": 10,
       "modelId": 10,
@@ -461,7 +461,7 @@
     "precision": "FP8",
     "description": "Known for its logical reasoning and problem-solving abilities, making it a good fit for agentic applications.",
     "contextWindow": 128000,
-    "isOpenSource": false,
+    "isOpenSource": true,
     "pricing": {
       "id": 32,
       "modelId": 31,

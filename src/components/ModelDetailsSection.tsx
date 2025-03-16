@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { AIModel, Category, Vendor } from '@/lib/types';
 import ModelDetailCard from './ModelDetailCard';
 
@@ -53,10 +53,10 @@ const ModelDetailsSection: React.FC<ModelDetailsSectionProps> = ({
   }, [models, activeCategory, searchQuery, vendors]);
   
   // Get category name by ID
-  const getCategoryName = (categoryId: number): string => {
+  const getCategoryName = useCallback((categoryId: number): string => {
     const category = categories.find(cat => cat.id === categoryId);
     return category ? category.name : 'Unknown';
-  };
+  }, [categories]);
 
   // Group models by category for display
   const modelsByCategory = useMemo(() => {
@@ -71,7 +71,7 @@ const ModelDetailsSection: React.FC<ModelDetailsSectionProps> = ({
     });
     
     return grouped;
-  }, [filteredModels, categories]);
+  }, [filteredModels, getCategoryName]);
   
   return (
     <div className="mt-12 space-y-8">
@@ -93,7 +93,14 @@ const ModelDetailsSection: React.FC<ModelDetailsSectionProps> = ({
                   className="flex justify-between items-center p-4 bg-white border border-gray-200 rounded-lg shadow-sm cursor-pointer hover:bg-gray-50"
                 >
                   <div className="flex items-center">
-                    <span className="font-medium text-gray-900">{model.displayName}</span>
+                    <span className="font-medium text-gray-900">
+                      {model.displayName}
+                      {model.isOpenSource && (
+                        <span className="ml-2 text-xs inline-block px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">
+                          Open Source
+                        </span>
+                      )}
+                    </span>
                     <span className="ml-3 text-sm text-gray-500">
                       {vendors.find(v => v.id === model.vendorId)?.name}
                     </span>

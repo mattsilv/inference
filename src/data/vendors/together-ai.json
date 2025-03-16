@@ -33,7 +33,7 @@
     "contextWindow": 32768,
     "tokenLimit": 2048,
     "releaseDate": "2024-05-23",
-    "isOpenSource": false,
+    "isOpenSource": true,
     "pricing": {
       "id": 10,
       "modelId": 10,

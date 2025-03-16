@@ -38,6 +38,7 @@ model AIModel {
   tokenLimit    Int?
   releaseDate   DateTime?
   isOpenSource  Boolean?         @default(false)
+  isHidden      Boolean          @default(false)
   
   // Relations
   categoryId    Int

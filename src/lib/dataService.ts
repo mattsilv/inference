@@ -26,12 +26,14 @@ export async function loadData(): Promise<{
       if (vendorCount === 0) {
         console.log('Database tables exist but no data found. Run `npm run db:reset` to initialize the database.');
       }
-    } catch (dbError) {
+    } catch (error) {
+      // Type-assert the error to access the message property
+      const dbError = error as { message?: string };
       // If the error is about missing tables, suggest running the setup
       if (dbError.message && dbError.message.includes('does not exist in the current database')) {
         console.error('Database tables do not exist. Please run `npm run db:reset` to set up the database.');
       }
-      throw dbError; // Re-throw to fall back to JSON
+      throw error; // Re-throw to fall back to JSON
     }
     
     return await loadDataFromPrisma();
@@ -74,15 +76,18 @@ export function loadDataFromJson(): {
       model.vendor = vendors.find(v => v.id === model.vendorId);
     }
     
+    // Filter out hidden models for frontend display
+    const visibleModels = models.filter(model => !model.isHidden);
+    
     for (const category of categories) {
-      category.models = models.filter(m => m.categoryId === category.id);
+      category.models = visibleModels.filter(m => m.categoryId === category.id);
     }
     
     for (const vendor of vendors) {
-      vendor.models = models.filter(m => m.vendorId === vendor.id);
+      vendor.models = visibleModels.filter(m => m.vendorId === vendor.id);
     }
     
-    return { models, categories, vendors };
+    return { models: visibleModels, categories, vendors };
   } catch (error) {
     console.error('Error loading data from JSON:', error);
     throw new Error(`Failed to load data from JSON: ${error}`);
@@ -111,6 +116,15 @@ export async function loadDataFromPrisma(): Promise<{
       },
     });
     
+    // Debug log for open source models
+    const openSourceModels = dbModels.filter(m => 
+      m.systemName.toLowerCase().includes('llama') || 
+      m.systemName.toLowerCase().includes('deepseek')
+    );
+    console.log('Open source models from database:', openSourceModels.map(m => 
+      `${m.displayName} (${m.systemName}): isOpenSource=${m.isOpenSource}`
+    ));
+    
     // Convert to our interface format
     const models: AIModel[] = dbModels.map(model => ({
       id: model.id,
@@ -125,6 +139,8 @@ export async function loadDataFromPrisma(): Promise<{
       contextWindow: model.contextWindow || undefined,
       tokenLimit: model.tokenLimit || undefined,
       releaseDate: model.releaseDate ? model.releaseDate.toISOString().split('T')[0] : undefined,
+      isOpenSource: model.isOpenSource || false,
+      isHidden: model.isHidden || false,
       pricing: model.pricing ? {
         id: model.pricing.id,
         modelId: model.pricing.modelId,
@@ -142,21 +158,26 @@ export async function loadDataFromPrisma(): Promise<{
       model.vendor = vendors.find(v => v.id === model.vendorId);
     }
     
-    // Add models to categories and vendors
-    const categoriesWithModels = categories.map(category => ({
+    // Note: We don't need to keep separate variables for this since we're using the filtered versions below
+    
+    // Filter out hidden models for frontend display
+    const visibleModels = models.filter(model => !model.isHidden);
+    
+    // Create filtered categories and vendors with only visible models
+    const categoriesWithVisibleModels = categories.map(category => ({
       ...category,
-      models: models.filter(m => m.categoryId === category.id),
+      models: visibleModels.filter(m => m.categoryId === category.id),
     }));
     
-    const vendorsWithModels = vendors.map(vendor => ({
+    const vendorsWithVisibleModels = vendors.map(vendor => ({
       ...vendor,
-      models: models.filter(m => m.vendorId === vendor.id),
+      models: visibleModels.filter(m => m.vendorId === vendor.id),
     }));
     
     return { 
-      models, 
-      categories: categoriesWithModels, 
-      vendors: vendorsWithModels 
+      models: visibleModels, 
+      categories: categoriesWithVisibleModels, 
+      vendors: vendorsWithVisibleModels 
     };
   } catch (error) {
     console.error('Error loading data from Prisma:', error);

@@ -12,14 +12,19 @@ interface TableRowProps {
 }
 
 const TableRow: React.FC<TableRowProps> = ({ model, categories, vendors }) => {
+  // Debug log for open source models
+  if (model.systemName.toLowerCase().includes('llama') || model.systemName.toLowerCase().includes('deepseek')) {
+    console.log(`Model: ${model.displayName}, System: ${model.systemName}, isOpenSource: ${model.isOpenSource}`);
+  }
+  
   return (
     <tr className="hover:bg-gray-50">
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="font-medium text-gray-900">
           {model.displayName}
           {model.isOpenSource && (
-            <span className="ml-1 text-xs text-gray-500 font-normal">
-              (Open Source)
+            <span className="ml-2 text-xs inline-block px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">
+              Open Source
             </span>
           )}
         </div>

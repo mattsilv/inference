@@ -85,7 +85,7 @@
     "precision": "FP8",
     "description": "Known for its logical reasoning and problem-solving abilities, making it a good fit for agentic applications.",
     "contextWindow": 128000,
-    "isOpenSource": false,
+    "isOpenSource": true,
     "pricing": {
       "id": 32,
       "modelId": 31,

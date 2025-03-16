@@ -12,6 +12,7 @@ export interface AIModel {
   tokenLimit?: number;
   releaseDate?: string;
   isOpenSource?: boolean;
+  isHidden?: boolean;
   pricing?: Pricing;
   category?: Category;
   vendor?: Vendor;
