@@ -11,6 +11,7 @@
     "description": "A lightweight, cost-effective option ideal for experimentation with generative AI tasks.",
     "contextWindow": 128000,
     "isOpenSource": true,
+    "isHidden": false,
     "pricing": {
       "id": 28,
       "modelId": 27,
@@ -29,6 +30,7 @@
     "description": "A smaller model that balances affordability and functionality, suitable for general-purpose AI experimentation.",
     "contextWindow": 128000,
     "isOpenSource": true,
+    "isHidden": false,
     "pricing": {
       "id": 29,
       "modelId": 28,
@@ -48,6 +50,7 @@
     "description": "Offers a mid-sized model for more advanced experimentation while remaining reasonably priced.",
     "contextWindow": 128000,
     "isOpenSource": false,
+    "isHidden": false,
     "pricing": {
       "id": 30,
       "modelId": 29,
@@ -67,6 +70,7 @@
     "description": "A powerful model with strong reasoning and instruction-following capabilities, suitable for complex autonomous agent tasks.",
     "contextWindow": 128000,
     "isOpenSource": true,
+    "isHidden": false,
     "pricing": {
       "id": 31,
       "modelId": 30,
@@ -86,6 +90,7 @@
     "description": "Known for its logical reasoning and problem-solving abilities, making it a good fit for agentic applications.",
     "contextWindow": 128000,
     "isOpenSource": true,
+    "isHidden": false,
     "pricing": {
       "id": 32,
       "modelId": 31,
@@ -105,6 +110,7 @@
     "description": "Combines efficiency with high performance, ideal for building robust autonomous agents.",
     "contextWindow": 128000,
     "isOpenSource": true,
+    "isHidden": false,
     "pricing": {
       "id": 33,
       "modelId": 32,

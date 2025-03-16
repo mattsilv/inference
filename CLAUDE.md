@@ -1,12 +1,23 @@
 # CLAUDE.md - Project Reference Guide
 
 ## Project Commands
-- Start dev server: `npm run dev` (with Turbopack)
-- Build project: `npm run build`
-- Start production server: `npm run start`
-- Lint code: `npm run lint`
+
+- Build check: `pnpm build` to test the build
+- Start dev server: `pnpm dev` for local development with Next.js
+- Lint code: `pnpm lint` to check for code issues
+- Use our MPC servers when they will make it faster to solve issues
+
+### Development and Build Process
+
+- Always use `pnpm` instead of `npm` for all commands
+- After code changes, run both `pnpm lint` and `pnpm build` to catch issues
+- If runtime errors occur with Turbopack:
+  1. Remove turbo flags completely (e.g., just `pnpm dev`)
+  2. Clean the build directory: `rm -rf .next` before rebuilding
+  3. Avoid experimental Next.js features unless explicitly required
 
 ## Data Management
+
 IMPORTANT: Do NOT run Prisma Studio, npx commands, or other database commands directly. Ask the user first; they will often have these running in the background.
 
 - Validate models: `npm run validate-models`
@@ -18,7 +29,9 @@ IMPORTANT: Do NOT run Prisma Studio, npx commands, or other database commands di
 - Backup database: `npm run db:backup` (maintains the last 10 backups in /backup folder)
 
 ### Database Queries
+
 Use the SQLite MCP server for direct database queries when needed:
+
 ```sql
 -- Check for hidden models
 sqlite3 prisma/dev.db "SELECT id, systemName, displayName, isHidden FROM AIModel WHERE isHidden = 1;"
@@ -32,6 +45,7 @@ sqlite3 prisma/dev.db "SELECT * FROM Vendor;"
 ```
 
 ### Pricing Data Management
+
 - Backup pricing data: `npm run pricing:backup` (preserves pricing history in /backups folder)
 - Restore pricing data: `npm run pricing:restore` (restores from latest backup)
 - Generate vendor tracking info: `npm run pricing:info`
@@ -39,20 +53,24 @@ sqlite3 prisma/dev.db "SELECT * FROM Vendor;"
 - Export pricing data to JSON: `npm run pricing:export`
 
 ### Model Visibility Management
+
 - List hidden models: `npm run models:hide` (with no arguments)
 - Hide models: `npm run models:hide model1 model2` (specify system names)
 - Unhide specific models: `npm run models:unhide model1 model2` (specify system names)
 - Unhide a model directly: `node scripts/hide-models.js -model-name`
 
 ### Database Reset Safety
+
 The system now automatically backs up and restores pricing data when resetting the database.
 When you run `npm run db:reset` or when the check-db.js script detects issues and resets:
+
 1. All pricing and pricing history data is backed up
 2. Database is reset with migrations and seed data
 3. Pricing data is restored from the backup
-This ensures you won't lose important pricing updates when fixing database issues.
+   This ensures you won't lose important pricing updates when fixing database issues.
 
 ### Data Source of Truth
+
 - The **Prisma database** is the primary source of truth for all data
 - JSON files in `/src/data` are generated from the database
 - To update data:
@@ -61,7 +79,9 @@ This ensures you won't lose important pricing updates when fixing database issue
   3. Run `npm run validate-models` to ensure data is valid
 
 ### Export Data Integrity
+
 The export-to-json scripts include a built-in validation system that:
+
 - Ensures all required fields (including isHidden) are exported to JSON
 - Validates proper mapping between database and JSON representation
 - Fails with a detailed error if any required field is missing
@@ -70,6 +90,7 @@ The export-to-json scripts include a built-in validation system that:
 This safeguard prevents issues where critical fields might be missing from exported JSON files.
 
 ## Code Style Guidelines
+
 - **TypeScript**: Use strict typing, avoid `any` types
 - **Naming**: PascalCase for components, camelCase for variables/functions
 - **Imports**: Group imports - React first, libraries, then project imports

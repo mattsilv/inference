@@ -41,3 +41,11 @@ export interface Vendor {
   modelsListUrl: string;
   models?: AIModel[];
 }
+
+// Extend Window interface with download functions
+declare global {
+  interface Window {
+    handleDownloadCSV?: () => void;
+    handleDownloadJSON?: () => void;
+  }
+}

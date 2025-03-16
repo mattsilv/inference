@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+// Use a minimal config to avoid compatibility issues
+const nextConfig: NextConfig = {};
 
 export default nextConfig;

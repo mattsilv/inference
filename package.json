@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "predev": "node scripts/check-db.js",
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "prebuild": "npm run generate-models",
     "build": "next build",
     "build:netlify": "prisma generate && npm run generate-models && next build",

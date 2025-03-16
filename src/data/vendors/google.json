@@ -9,6 +9,7 @@
     "host": "google",
     "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
     "isOpenSource": false,
+    "isHidden": true,
     "pricing": {
       "id": 18,
       "modelId": 18,
@@ -26,6 +27,7 @@
     "host": "google",
     "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
     "isOpenSource": false,
+    "isHidden": true,
     "pricing": {
       "id": 19,
       "modelId": 19,
@@ -43,6 +45,7 @@
     "host": "google",
     "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
     "isOpenSource": false,
+    "isHidden": false,
     "pricing": {
       "id": 20,
       "modelId": 20,
@@ -60,6 +63,7 @@
     "host": "google",
     "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
     "isOpenSource": false,
+    "isHidden": false,
     "pricing": {
       "id": 21,
       "modelId": 21,

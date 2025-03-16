@@ -25,8 +25,8 @@ const TableHeader: React.FC<TableHeaderProps> = ({ sortConfig, onSort }) => {
           onSort={onSort}
         />
         <SortableHeader
-          label="Category"
-          sortKey="categoryId"
+          label="Provider"
+          sortKey="vendorName"
           currentSortKey={sortConfig.key}
           sortDirection={sortConfig.direction}
           onSort={onSort}
@@ -41,7 +41,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({ sortConfig, onSort }) => {
         />
         <SortableHeader
           label="Input (1M)"
-          sortKey="pricing.inputText"
+          sortKey="inputPrice"
           currentSortKey={sortConfig.key}
           sortDirection={sortConfig.direction}
           onSort={onSort}
@@ -49,18 +49,11 @@ const TableHeader: React.FC<TableHeaderProps> = ({ sortConfig, onSort }) => {
         />
         <SortableHeader
           label="Output (1M)"
-          sortKey="pricing.outputText"
+          sortKey="outputPrice"
           currentSortKey={sortConfig.key}
           sortDirection={sortConfig.direction}
           onSort={onSort}
           align="right"
-        />
-        <SortableHeader
-          label="Provider"
-          sortKey="vendorId"
-          currentSortKey={sortConfig.key}
-          sortDirection={sortConfig.direction}
-          onSort={onSort}
         />
       </tr>
     </thead>

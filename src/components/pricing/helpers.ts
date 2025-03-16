@@ -27,6 +27,40 @@ export const getVendorPricingUrl = (
   return vendor ? vendor.pricingUrl : "#";
 };
 
+// Get vendor models list URL
+export const getVendorModelsListUrl = (
+  vendorId: number,
+  vendors: Vendor[]
+): string => {
+  const vendor = vendors.find((v) => v.id === vendorId);
+  return vendor ? vendor.modelsListUrl : "#";
+};
+
+// Group models by category
+export const groupModelsByCategory = (
+  models: AIModel[],
+  categories: Category[]
+): Record<string, AIModel[]> => {
+  const grouped: Record<string, AIModel[]> = {};
+  
+  // Initialize groups for all categories
+  categories.forEach(category => {
+    grouped[category.name] = [];
+  });
+  
+  // Group models by category
+  models.forEach(model => {
+    if (model.category) {
+      const categoryName = model.category.name;
+      if (grouped[categoryName]) {
+        grouped[categoryName].push(model);
+      }
+    }
+  });
+  
+  return grouped;
+};
+
 // Filter models by selected categories and vendors
 export const filterModels = (
   models: AIModel[],

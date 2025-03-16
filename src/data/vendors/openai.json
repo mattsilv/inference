@@ -13,6 +13,7 @@
     "tokenLimit": 4096,
     "releaseDate": "2024-05-13",
     "isOpenSource": false,
+    "isHidden": false,
     "pricing": {
       "id": 1,
       "modelId": 1,
@@ -30,6 +31,7 @@
     "host": "openai",
     "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
     "isOpenSource": false,
+    "isHidden": false,
     "pricing": {
       "id": 22,
       "modelId": 22,
@@ -47,6 +49,7 @@
     "host": "openai",
     "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
     "isOpenSource": false,
+    "isHidden": false,
     "pricing": {
       "id": 23,
       "modelId": 23,
@@ -68,6 +71,7 @@
     "tokenLimit": 4096,
     "releaseDate": "2024-06-15",
     "isOpenSource": false,
+    "isHidden": false,
     "pricing": {
       "id": 27,
       "modelId": 26,

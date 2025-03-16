@@ -3,7 +3,7 @@
 import React from 'react';
 import { AIModel, Category, Vendor } from '@/lib/types';
 import { formatParameters, formatCost } from './formatters';
-import { getCategoryName, getVendorName } from './helpers';
+import { getCategoryName, getVendorName, getVendorPricingUrl, getVendorModelsListUrl } from './helpers';
 
 interface MobileCardProps {
   model: AIModel;
@@ -14,10 +14,26 @@ interface MobileCardProps {
 const MobileCard: React.FC<MobileCardProps> = ({ model, categories, vendors }) => {
   return (
     <div className="rounded-lg border border-gray-200 shadow p-4 mb-4">
-      <h3 className="text-lg font-medium">{model.displayName}</h3>
+      <h3 className="text-lg font-medium">
+        <a 
+          href={getVendorModelsListUrl(model.vendorId, vendors)} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="hover:underline"
+        >
+          {model.displayName}
+        </a>
+      </h3>
       <div className="flex items-center gap-2 mt-1 mb-3">
         <span className="text-sm text-gray-600">
-          {getVendorName(model.vendorId, vendors)}
+          <a 
+            href={getVendorPricingUrl(model.vendorId, vendors)} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            {getVendorName(model.vendorId, vendors)}
+          </a>
         </span>
         <span className="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-800">
           {getCategoryName(model.categoryId, categories)}
