@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Top-tier General-purpose"
+  },
+  {
+    "id": 2,
+    "name": "High-performance"
+  },
+  {
+    "id": 3,
+    "name": "Mid-range"
+  },
+  {
+    "id": 4,
+    "name": "Cost-effective"
+  },
+  {
+    "id": 5,
+    "name": "Reasoning-focused"
+  },
+  {
+    "id": 6,
+    "name": "Inactive"
+  }
+]

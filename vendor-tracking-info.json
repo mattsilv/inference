@@ -1,0 +1,211 @@
+{
+  "task": "Get the latest pricing per million tokens for each AI model",
+  "note": "IMPORTANT: All prices should be in USD per 1 million tokens. For example, if a model costs $0.000005 per token, record it as 5.0 per million tokens. If it costs $0.01 per 1000 tokens, that would be 10.0 per million tokens.",
+  "vendors": [
+    {
+      "name": "OpenAI",
+      "pricingUrl": "https://platform.openai.com/docs/pricing",
+      "modelsListUrl": "https://platform.openai.com/docs/api-reference/models/list",
+      "apiEndpoint": "https://api.openai.com/v1/models",
+      "models": [
+        {
+          "name": "gpt-4o",
+          "current_input_price": 2.5,
+          "current_output_price": 10
+        },
+        {
+          "name": "gpt-4.5",
+          "current_input_price": 75,
+          "current_output_price": 150
+        },
+        {
+          "name": "gpt-3o-mini",
+          "current_input_price": 1.5,
+          "current_output_price": 6
+        },
+        {
+          "name": "gpt-4o-mini",
+          "current_input_price": 0.15,
+          "current_output_price": 0.6
+        }
+      ]
+    },
+    {
+      "name": "Anthropic",
+      "pricingUrl": "https://www.anthropic.com/pricing#anthropic-api",
+      "modelsListUrl": "https://docs.anthropic.com/en/api/models-list",
+      "apiEndpoint": "https://api.anthropic.com/v1/models",
+      "models": [
+        {
+          "name": "claude-3-5-sonnet",
+          "current_input_price": 8,
+          "current_output_price": 24
+        },
+        {
+          "name": "claude-3-7-sonnet",
+          "current_input_price": 8,
+          "current_output_price": 24
+        },
+        {
+          "name": "claude-3-7-sonnet-thinking",
+          "current_input_price": 8,
+          "current_output_price": 24
+        },
+        {
+          "name": "claude-3-5-haiku",
+          "current_input_price": 3,
+          "current_output_price": 15
+        }
+      ]
+    },
+    {
+      "name": "Groq",
+      "pricingUrl": "https://groq.com/pricing/",
+      "modelsListUrl": "https://console.groq.com/docs/models",
+      "models": [
+        {
+          "name": "llama-3-70b-8192",
+          "current_input_price": 0.59,
+          "current_output_price": 0.79
+        },
+        {
+          "name": "mixtral-8x7b-32768",
+          "current_input_price": 0.24,
+          "current_output_price": 0.24
+        }
+      ]
+    },
+    {
+      "name": "Together AI",
+      "pricingUrl": "https://www.together.ai/pricing#inference",
+      "modelsListUrl": "https://docs.together.ai/docs/inference-models",
+      "models": [
+        {
+          "name": "togethercomputer/llama-3-70b-8192",
+          "current_input_price": 0.9,
+          "current_output_price": 0.9
+        },
+        {
+          "name": "togethercomputer/qwen2-72b-instruct",
+          "current_input_price": 0.9,
+          "current_output_price": 0.9
+        },
+        {
+          "name": "llama-3.1-7b",
+          "current_input_price": 0.2,
+          "current_output_price": 0.2
+        },
+        {
+          "name": "deepseek-r1",
+          "current_input_price": 3,
+          "current_output_price": 7
+        }
+      ]
+    },
+    {
+      "name": "Perplexity",
+      "pricingUrl": "https://docs.perplexity.ai/guides/pricing",
+      "modelsListUrl": "https://docs.perplexity.ai/docs/models-overview",
+      "models": [
+        {
+          "name": "pplx-70b-online",
+          "current_input_price": 2,
+          "current_output_price": 10
+        },
+        {
+          "name": "pplx-7b-online",
+          "current_input_price": 1,
+          "current_output_price": 1
+        }
+      ]
+    },
+    {
+      "name": "Google",
+      "pricingUrl": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+      "modelsListUrl": "https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models",
+      "models": [
+        {
+          "name": "gemini-2.0-pro",
+          "current_input_price": 7,
+          "current_output_price": 21
+        },
+        {
+          "name": "gemini-2.0-pro-exp",
+          "current_input_price": 9,
+          "current_output_price": 27
+        },
+        {
+          "name": "gemini-2.0-flash",
+          "current_input_price": 3.5,
+          "current_output_price": 14
+        },
+        {
+          "name": "gemini-2.0-flash-thinking",
+          "current_input_price": 3.5,
+          "current_output_price": 14
+        }
+      ]
+    },
+    {
+      "name": "Inference.net",
+      "pricingUrl": "https://inference.net/pricing",
+      "modelsListUrl": "https://inference.net/models",
+      "models": [
+        {
+          "name": "infernet-llama-3.1-8b-instruct-fp8",
+          "current_input_price": 0.025,
+          "current_output_price": 0.025
+        },
+        {
+          "name": "infernet-llama-3.2-3b-instruct",
+          "current_input_price": 0.02,
+          "current_output_price": 0.02
+        },
+        {
+          "name": "infernet-mistral-nemo-12b-instruct-fp8",
+          "current_input_price": 0.1,
+          "current_output_price": 0.1
+        },
+        {
+          "name": "infernet-llama-3.3-70b-instruct-fp16",
+          "current_input_price": 0.4,
+          "current_output_price": 0.4
+        },
+        {
+          "name": "infernet-qwen-2.5-72b-instruct-fp8",
+          "current_input_price": 0.35,
+          "current_output_price": 0.35
+        },
+        {
+          "name": "infernet-deepseek-r1-distill-llama-70b-fp8",
+          "current_input_price": 0.4,
+          "current_output_price": 0.4
+        }
+      ]
+    }
+  ],
+  "expected_output_format": [
+    {
+      "vendorName": "OpenAI",
+      "modelName": "gpt-4o",
+      "inputPrice": 0.005,
+      "outputPrice": 0.015
+    },
+    {
+      "vendorName": "Anthropic",
+      "modelName": "claude-3-5-sonnet",
+      "inputPrice": 0.005,
+      "outputPrice": 0.025
+    }
+  ],
+  "instructions": [
+    "1. For each vendor, check their pricing page and get the latest pricing",
+    "2. Record both input (prompt) and output (completion) prices separately in USD per million tokens",
+    "3. Update the pricing for each model listed",
+    "4. If you find additional models not listed here, add them to your response",
+    "5. Return the data in the exact format shown in expected_output_format",
+    "6. Do not include fine-tuning prices, only input and output inference prices",
+    "7. Return all prices as floating point numbers (do not use strings or currency symbols)",
+    "8. Ensure all prices are properly converted to per-million-tokens format"
+  ]
+}

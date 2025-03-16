@@ -1,0 +1,276 @@
+import React, { useState, useMemo } from 'react';
+import { ArrowUpDown, ChevronDown, Search } from 'lucide-react';
+
+// Sample data for AI models
+const initialModels = [
+  { id: 1, name: 'GPT-4o', category: 'Advanced', parameters: '1.8T', inputCost: 0.005, outputCost: 0.015, provider: 'OpenAI' },
+  { id: 2, name: 'Claude 3.5 Sonnet', category: 'Advanced', parameters: '720B', inputCost: 0.003, outputCost: 0.015, provider: 'Anthropic' },
+  { id: 3, name: 'Claude 3 Opus', category: 'Advanced', parameters: '340B', inputCost: 0.015, outputCost: 0.075, provider: 'Anthropic' },
+  { id: 4, name: 'Claude 3.5 Haiku', category: 'Efficient', parameters: '140B', inputCost: 0.00025, outputCost: 0.00125, provider: 'Anthropic' },
+  { id: 5, name: 'GPT-3.5 Turbo', category: 'Efficient', parameters: '175B', inputCost: 0.0005, outputCost: 0.0015, provider: 'OpenAI' },
+  { id: 6, name: 'Gemini 1.5 Pro', category: 'Advanced', parameters: '1T+', inputCost: 0.0035, outputCost: 0.0135, provider: 'Google' },
+  { id: 7, name: 'Gemini 1.0 Flash', category: 'Efficient', parameters: '~100B', inputCost: 0.0003, outputCost: 0.0005, provider: 'Google' },
+  { id: 8, name: 'Llama 3 70B', category: 'Open Source', parameters: '70B', inputCost: 0.0005, outputCost: 0.0025, provider: 'Meta/AWS' },
+  { id: 9, name: 'Mistral Medium', category: 'Efficient', parameters: '22B', inputCost: 0.0003, outputCost: 0.0009, provider: 'Mistral AI' },
+  { id: 10, name: 'Mistral Large', category: 'Advanced', parameters: '132B', inputCost: 0.002, outputCost: 0.006, provider: 'Mistral AI' }
+];
+
+// Get unique categories for filtering
+const categories = ['All', ...new Set(initialModels.map(model => model.category))];
+
+const AIPricingTable = () => {
+  const [sortConfig, setSortConfig] = useState({ key: 'outputCost', direction: 'ascending' });
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Handle sorting
+  const handleSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // Filter and sort the models
+  const filteredAndSortedModels = useMemo(() => {
+    // Apply category filter
+    let result = initialModels;
+    if (activeCategory !== 'All') {
+      result = result.filter(model => model.category === activeCategory);
+    }
+
+    // Apply search filter
+    if (searchQuery.trim() !== '') {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(model => 
+        model.name.toLowerCase().includes(query) || 
+        model.provider.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply sorting
+    return [...result].sort((a, b) => {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'ascending' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'ascending' ? 1 : -1;
+      }
+      return 0;
+    });
+  }, [activeCategory, searchQuery, sortConfig]);
+
+  // Format cost to display consistently
+  const formatCost = (cost) => {
+    return `$${cost.toFixed(5)}`;
+  };
+
+  return (
+    <div className="min-h-screen bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-semibold text-gray-900 mb-2">AI Inference Pricing</h1>
+          <p className="text-gray-600">Compare text-based AI model costs across providers</p>
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
+          <div className="flex flex-wrap gap-2">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={`px-4 py-2 rounded-full text-sm font-medium ${
+                  activeCategory === category
+                    ? 'bg-blue-100 text-blue-800'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+          <div className="relative w-full md:w-64">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-4 w-4 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Search models or providers..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="overflow-hidden border border-gray-200 rounded-lg shadow">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th 
+                    scope="col" 
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    <div className="flex items-center">
+                      Model Name
+                      <button 
+                        onClick={() => handleSort('name')} 
+                        className="ml-1 text-gray-400"
+                      >
+                        <ArrowUpDown className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </th>
+                  <th 
+                    scope="col" 
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    <div className="flex items-center">
+                      Category
+                      <button 
+                        onClick={() => handleSort('category')} 
+                        className="ml-1 text-gray-400"
+                      >
+                        <ArrowUpDown className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </th>
+                  <th 
+                    scope="col" 
+                    className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    <div className="flex items-center justify-end">
+                      Parameters
+                      <button 
+                        onClick={() => handleSort('parameters')} 
+                        className="ml-1 text-gray-400"
+                      >
+                        <ArrowUpDown className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </th>
+                  <th 
+                    scope="col" 
+                    className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    <div className="flex items-center justify-end">
+                      Input Cost
+                      <button 
+                        onClick={() => handleSort('inputCost')} 
+                        className="ml-1 text-gray-400"
+                      >
+                        <ArrowUpDown className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </th>
+                  <th 
+                    scope="col" 
+                    className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    <div className="flex items-center justify-end">
+                      Output Cost
+                      <button 
+                        onClick={() => handleSort('outputCost')} 
+                        className="ml-1 text-gray-400"
+                      >
+                        <ArrowUpDown className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </th>
+                  <th 
+                    scope="col" 
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    <div className="flex items-center">
+                      Provider
+                      <button 
+                        onClick={() => handleSort('provider')} 
+                        className="ml-1 text-gray-400"
+                      >
+                        <ArrowUpDown className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredAndSortedModels.map((model) => (
+                  <tr key={model.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="font-medium text-gray-900">{model.name}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                        {model.category}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
+                      {model.parameters}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
+                      {formatCost(model.inputCost)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 font-medium">
+                      {formatCost(model.outputCost)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {model.provider}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Mobile card view (shown only on small screens) */}
+        <div className="md:hidden mt-8">
+          <div className="space-y-4">
+            {filteredAndSortedModels.map((model) => (
+              <div key={model.id} className="bg-white rounded-lg border border-gray-200 shadow p-4">
+                <div className="flex justify-between">
+                  <div className="font-medium text-lg">{model.name}</div>
+                  <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                    {model.category}
+                  </span>
+                </div>
+                <div className="text-sm text-gray-500 mt-1">{model.provider}</div>
+                <div className="grid grid-cols-3 mt-4 gap-2 text-sm">
+                  <div>
+                    <div className="text-gray-500">Parameters</div>
+                    <div className="font-medium">{model.parameters}</div>
+                  </div>
+                  <div>
+                    <div className="text-gray-500">Input</div>
+                    <div className="font-medium">{formatCost(model.inputCost)}</div>
+                  </div>
+                  <div>
+                    <div className="text-gray-500">Output</div>
+                    <div className="font-medium">{formatCost(model.outputCost)}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-12 border-t border-gray-200 pt-8 text-center text-sm text-gray-500">
+          <p>Last updated: March 15, 2025</p>
+          <p className="mt-2">
+            <a href="#" className="text-blue-600 hover:text-blue-800">
+              Contribute on GitHub
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AIPricingTable;

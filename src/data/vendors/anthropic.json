@@ -1,0 +1,70 @@
+[
+  {
+    "id": 3,
+    "systemName": "claude-3-5-sonnet",
+    "displayName": "Claude 3.5 Sonnet",
+    "categoryId": 6,
+    "parametersB": 720,
+    "vendorId": 2,
+    "host": "api.anthropic.com",
+    "precision": "BF16",
+    "description": "Claude 3.5 Sonnet is Anthropic's balanced model offering strong performance with impressive reasoning capabilities at an efficient price point. | PLACEHOLDER PRICING - Need to update with accurate rates",
+    "contextWindow": 200000,
+    "tokenLimit": 4096,
+    "releaseDate": "2024-07-23",
+    "pricing": {
+      "id": 26,
+      "modelId": 3,
+      "inputText": 8,
+      "outputText": 24
+    }
+  },
+  {
+    "id": 15,
+    "systemName": "claude-3-7-sonnet",
+    "displayName": "Claude 3.7 Sonnet",
+    "categoryId": 1,
+    "parametersB": 142,
+    "vendorId": 2,
+    "host": "anthropic",
+    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
+    "pricing": {
+      "id": 15,
+      "modelId": 15,
+      "inputText": 8,
+      "outputText": 24
+    }
+  },
+  {
+    "id": 16,
+    "systemName": "claude-3-7-sonnet-thinking",
+    "displayName": "Claude 3.7 Sonnet Thinking",
+    "categoryId": 5,
+    "parametersB": 142,
+    "vendorId": 2,
+    "host": "anthropic",
+    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
+    "pricing": {
+      "id": 16,
+      "modelId": 16,
+      "inputText": 8,
+      "outputText": 24
+    }
+  },
+  {
+    "id": 17,
+    "systemName": "claude-3-5-haiku",
+    "displayName": "Claude 3.5 Haiku",
+    "categoryId": 3,
+    "parametersB": 20,
+    "vendorId": 2,
+    "host": "anthropic",
+    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
+    "pricing": {
+      "id": 17,
+      "modelId": 17,
+      "inputText": 3,
+      "outputText": 15
+    }
+  }
+]

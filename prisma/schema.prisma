@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Model definitions based on our current data structure
+
+model Vendor {
+  id            Int       @id @default(autoincrement())
+  name          String
+  pricingUrl    String
+  modelsListUrl String
+  models        AIModel[]
+}
+
+model Category {
+  id     Int       @id @default(autoincrement())
+  name   String
+  models AIModel[]
+}
+
+model AIModel {
+  id            Int              @id @default(autoincrement())
+  systemName    String
+  displayName   String
+  parametersB   Float
+  host          String
+  precision     String?
+  description   String?
+  contextWindow Int?
+  tokenLimit    Int?
+  releaseDate   DateTime?
+  
+  // Relations
+  categoryId    Int
+  category      Category         @relation(fields: [categoryId], references: [id])
+  vendorId      Int
+  vendor        Vendor           @relation(fields: [vendorId], references: [id])
+  pricing       Pricing?
+  pricingHistory PricingHistory[]
+}
+
+model Pricing {
+  id               Int      @id @default(autoincrement())
+  inputText        Float
+  outputText       Float
+  finetuningInput  Float?
+  finetuningOutput Float?
+  trainingCost     Float?
+  updatedAt        DateTime @default(now()) @updatedAt
+  
+  // Relation to AIModel
+  modelId          Int      @unique
+  model            AIModel  @relation(fields: [modelId], references: [id])
+}
+
+model PricingHistory {
+  id               Int      @id @default(autoincrement())
+  timestamp        DateTime @default(now())
+  inputText        Float
+  outputText       Float
+  finetuningInput  Float?
+  finetuningOutput Float?
+  trainingCost     Float?
+  
+  // Relation to AIModel
+  modelId          Int
+  model            AIModel  @relation(fields: [modelId], references: [id])
+}

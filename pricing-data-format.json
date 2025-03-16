@@ -1,0 +1,14 @@
+[
+  {
+    "vendorName": "OpenAI",
+    "modelName": "gpt-4o-mini",
+    "inputPrice": 0.15,
+    "outputPrice": 0.6
+  },
+  {
+    "vendorName": "Anthropic",
+    "modelName": "claude-3-opus-20240229",
+    "inputPrice": 15,
+    "outputPrice": 75
+  }
+]

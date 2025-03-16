@@ -1,0 +1,109 @@
+[
+  {
+    "id": 27,
+    "systemName": "infernet-llama-3.1-8b-instruct-fp8",
+    "displayName": "Llama 3.1 8B Instruct (FP8)",
+    "categoryId": 4,
+    "parametersB": 8,
+    "vendorId": 7,
+    "host": "Inference.net",
+    "precision": "FP8",
+    "description": "A lightweight, cost-effective option ideal for experimentation with generative AI tasks.",
+    "contextWindow": 128000,
+    "pricing": {
+      "id": 28,
+      "modelId": 27,
+      "inputText": 0.025,
+      "outputText": 0.025
+    }
+  },
+  {
+    "id": 28,
+    "systemName": "infernet-llama-3.2-3b-instruct",
+    "displayName": "Llama 3.2 3B Instruct",
+    "categoryId": 4,
+    "parametersB": 3,
+    "vendorId": 7,
+    "host": "Inference.net",
+    "description": "A smaller model that balances affordability and functionality, suitable for general-purpose AI experimentation.",
+    "contextWindow": 128000,
+    "pricing": {
+      "id": 29,
+      "modelId": 28,
+      "inputText": 0.02,
+      "outputText": 0.02
+    }
+  },
+  {
+    "id": 29,
+    "systemName": "infernet-mistral-nemo-12b-instruct-fp8",
+    "displayName": "Mistral Nemo 12B Instruct (FP8)",
+    "categoryId": 3,
+    "parametersB": 12,
+    "vendorId": 7,
+    "host": "Inference.net",
+    "precision": "FP8",
+    "description": "Offers a mid-sized model for more advanced experimentation while remaining reasonably priced.",
+    "contextWindow": 128000,
+    "pricing": {
+      "id": 30,
+      "modelId": 29,
+      "inputText": 0.1,
+      "outputText": 0.1
+    }
+  },
+  {
+    "id": 30,
+    "systemName": "infernet-llama-3.3-70b-instruct-fp16",
+    "displayName": "Llama 3.3 70B Instruct (FP16)",
+    "categoryId": 5,
+    "parametersB": 70,
+    "vendorId": 7,
+    "host": "Inference.net",
+    "precision": "FP16",
+    "description": "A powerful model with strong reasoning and instruction-following capabilities, suitable for complex autonomous agent tasks.",
+    "contextWindow": 128000,
+    "pricing": {
+      "id": 31,
+      "modelId": 30,
+      "inputText": 0.4,
+      "outputText": 0.4
+    }
+  },
+  {
+    "id": 31,
+    "systemName": "infernet-qwen-2.5-72b-instruct-fp8",
+    "displayName": "Qwen 2.5 72B Instruct (FP8)",
+    "categoryId": 5,
+    "parametersB": 72,
+    "vendorId": 7,
+    "host": "Inference.net",
+    "precision": "FP8",
+    "description": "Known for its logical reasoning and problem-solving abilities, making it a good fit for agentic applications.",
+    "contextWindow": 128000,
+    "pricing": {
+      "id": 32,
+      "modelId": 31,
+      "inputText": 0.35,
+      "outputText": 0.35
+    }
+  },
+  {
+    "id": 32,
+    "systemName": "infernet-deepseek-r1-distill-llama-70b-fp8",
+    "displayName": "DeepSeek R1 Distill Llama 70B (FP8)",
+    "categoryId": 5,
+    "parametersB": 70,
+    "vendorId": 7,
+    "host": "Inference.net",
+    "precision": "FP8",
+    "description": "Combines efficiency with high performance, ideal for building robust autonomous agents.",
+    "contextWindow": 128000,
+    "pricing": {
+      "id": 33,
+      "modelId": 32,
+      "inputText": 0.4,
+      "outputText": 0.4
+    }
+  }
+]

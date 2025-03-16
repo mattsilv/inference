@@ -1,0 +1,42 @@
+[
+  {
+    "id": 11,
+    "systemName": "pplx-70b-online",
+    "displayName": "pplx-70B-online",
+    "categoryId": 1,
+    "parametersB": 70,
+    "vendorId": 6,
+    "host": "api.perplexity.ai",
+    "precision": "BF16",
+    "description": "Perplexity's flagship model with real-time web search capabilities.",
+    "contextWindow": 4096,
+    "tokenLimit": 1024,
+    "releaseDate": "2023-12-01",
+    "pricing": {
+      "id": 11,
+      "modelId": 11,
+      "inputText": 2,
+      "outputText": 10
+    }
+  },
+  {
+    "id": 12,
+    "systemName": "pplx-7b-online",
+    "displayName": "pplx-7B-online",
+    "categoryId": 4,
+    "parametersB": 7,
+    "vendorId": 6,
+    "host": "api.perplexity.ai",
+    "precision": "BF16",
+    "description": "Perplexity's lightweight model with real-time web search capabilities.",
+    "contextWindow": 4096,
+    "tokenLimit": 1024,
+    "releaseDate": "2023-12-01",
+    "pricing": {
+      "id": 12,
+      "modelId": 12,
+      "inputText": 1,
+      "outputText": 1
+    }
+  }
+]

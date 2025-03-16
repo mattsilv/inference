@@ -1,24 +1,174 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Inference.silv.app
+
+A comprehensive comparison tool for AI model pricing and specifications.
+
+## Quick Start Commands
+
+```bash
+# Development
+npm run dev               # Start development server with Turbopack
+npm run build             # Build for production
+npm run start             # Start production server
+
+# Data Management
+npm run prisma:studio     # Open Prisma Studio for database management
+npm run db:setup          # Set up database (create and seed)
+npm run db:reset          # Reset database (drop and recreate)
+npm run validate-models   # Validate model data
+npm run generate-models   # Generate combined models.json
+npm run export-json       # Export database to JSON files
+
+# Pricing Automation
+npm run pricing:info      # Generate vendor tracking info for AI agent
+npm run pricing:update    # Update pricing from AI agent JSON output
+npm run pricing:export    # Export updated pricing to JSON files
+```
+
+## About This Project
+
+This Next.js application provides a simple, clean interface to compare different AI models across various providers, displaying pricing information, model parameters, and key specifications in an easy-to-read format.
+
+## Features
+
+- Interactive pricing table with model filtering and sorting
+- Detailed model information cards
+- Vendor and category filtering
+- Responsive design for all devices
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js
+- npm
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/mattsilverman/inference.git
+```
+
+2. Install dependencies:
+
+```bash
+cd inference
+npm install
+```
+
+### Development
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Working with Model Data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The model data is organized in a vendor-based directory structure:
+
+- Individual vendor model files are stored in `src/data/vendors/` (e.g., `openai.json`, `anthropic.json`)
+- Vendor and category metadata are stored in `src/data/vendors.json` and `src/data/categories.json`
+- The combined model data is automatically generated into `src/data/models.json`
+
+#### Data Management
+
+##### Source of Truth
+
+The SQLite database (managed by Prisma) is the primary source of truth for all model, vendor, and category data.
+
+- The database schema is defined in `prisma/schema.prisma`
+- JSON files in `/src/data` are generated from the database
+- All data changes should be made through the database first, then exported to JSON
+
+##### Data Management Commands
+
+- `npm run prisma:studio` - Open Prisma Studio for database management
+- `npm run db:setup` - Set up database (create and seed)
+- `npm run db:reset` - Reset database (drop and recreate)
+- `npm run validate-models` - Check data for errors without generating models.json
+- `npm run generate-models` - Merge vendor files into models.json (runs automatically during build)
+- `npm run export-json` - Export database to JSON files
+
+##### Development Workflow
+
+1. Make data changes using Prisma Studio (`npm run prisma:studio`)
+2. Export changes to JSON files with `npm run export-json`
+3. Validate data with `npm run validate-models`
+4. Generate combined models.json with `npm run generate-models`
+
+##### Automated Pricing Updates
+
+The project includes an automated system for keeping model pricing up-to-date:
+
+1. Generate tracking information with `pnpm run pricing:info`
+
+   - This outputs a JSON file with all necessary vendor URLs and model information
+   - Example: `pnpm run pricing:info > vendor-tracking-info.json`
+
+2. Share this JSON file with an AI agent to fetch latest pricing:
+
+   - The agent should use the exact URLs provided in the `pricingUrl` and `modelListUrl` fields
+   - For each model, the agent should extract current input and output pricing
+   - Agent must output data in the required format (see detailed process below)
+
+3. Update the database with agent output using `npm run pricing:update <json-file-path>`
+
+   - Example: `npm run pricing:update agent-pricing-output.json`
+   - The system automatically records pricing history when changes are detected
+
+4. Export the updated data to JSON files with `npm run pricing:export`
+   - This updates all files in the `src/data` directory
+
+##### Detailed Pricing Update Process
+
+To update model pricing with the AI agent:
+
+1. **Generate vendor tracking information**:
+
+   ```bash
+   npm run pricing:info
+   ```
+   
+   This command automatically creates the vendor-tracking-info.json file in the project root.
+
+2. **Share this file with your AI agent**, with these specific instructions:
+
+   - "Use the exact URLs in pricingUrl and modelListUrl fields to visit vendor websites"
+   - "For each model listed, extract the current price per 1M tokens for input and output"
+   - "Return a JSON array with entries for each model in this exact format:"
+
+   ```json
+   [
+     {
+       "vendorName": "openai",
+       "modelName": "gpt-4o",
+       "inputPrice": 5.00,
+       "outputPrice": 15.00,
+       "finetuningInputPrice": null,
+       "finetuningOutputPrice": null,
+       "trainingCost": null
+     },
+     ...
+   ]
+   ```
+
+3. **Update the database with agent output**:
+
+   ```bash
+   npm run pricing:update agent-pricing-output.json
+   ```
+
+4. **Export to JSON files**:
+   ```bash
+   npm run pricing:export
+   ```
+
+The system will automatically detect price changes and record them in the pricing history table.
 
 ## Learn More
 

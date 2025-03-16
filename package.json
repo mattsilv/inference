@@ -3,25 +3,49 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/check-db.js",
     "dev": "next dev --turbopack",
+    "prebuild": "npm run generate-models",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-models": "node scripts/generate-models.js",
+    "validate-models": "node scripts/generate-models.js --validate-only",
+    "prisma:studio": "prisma studio",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:seed": "node prisma/seed.js",
+    "db:setup": "npm run prisma:generate && npm run prisma:migrate && npm run prisma:seed",
+    "db:reset": "prisma migrate reset --force",
+    "db:backup": "./scripts/backup-db.sh",
+    "db:check": "node scripts/check-db.js",
+    "pricing:backup": "node scripts/backup-pricing.js backup",
+    "pricing:restore": "node scripts/backup-pricing.js restore-latest",
+    "export-json": "node scripts/export-to-json.js",
+    "pricing:update": "node scripts/pricing-tracker.js update",
+    "pricing:export": "node scripts/pricing-tracker.js export",
+    "pricing:info": "node scripts/pricing-tracker.js generate-info"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "dependencies": {
+    "next": "15.2.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.2.2"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@prisma/client": "^6.5.0",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.2.2",
-    "@eslint/eslintrc": "^3"
+    "prisma": "^6.5.0",
+    "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5"
   }
 }
