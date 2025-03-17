@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { AIModel, Category, Vendor } from '@/lib/types';
 import TableView from './TableView';
 import FilterBar from './FilterBar';
+import TextInputArea from './TextInputArea';
 import { filterModels, sortModels } from './helpers';
 import { prepareExportData, exportAsCSV, exportAsJSON } from '@/lib/exportUtils';
+import { DEFAULT_SAMPLE_TEXT, DEFAULT_OUTPUT_TEXT } from '@/lib/sampleText';
 
 interface PricingTableProps {
   models: AIModel[];
@@ -24,6 +26,8 @@ const PricingTable: React.FC<PricingTableProps> = ({
     direction: 'asc',
   });
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [inputText, setInputText] = useState<string>(DEFAULT_SAMPLE_TEXT);
+  const [outputText, setOutputText] = useState<string>(DEFAULT_OUTPUT_TEXT);
 
   // Filter models by vendors only (category filtering happens via separate tables)
   const getFilteredModels = (categoryName: string | null) => {
@@ -42,7 +46,7 @@ const PricingTable: React.FC<PricingTableProps> = ({
     }
     
     // Apply sorting (default to input price asc for each category)
-    return sortModels(result, sortConfig.key, sortConfig.direction);
+    return sortModels(result, sortConfig.key, sortConfig.direction, inputText, outputText);
   };
   
   // Handle sorting
@@ -56,6 +60,12 @@ const PricingTable: React.FC<PricingTableProps> = ({
   // Handle vendor filter changes
   const handleVendorFilter = (vendors: string[]) => {
     setSelectedVendors(vendors);
+  };
+
+  // Handle text inputs update
+  const handleTextUpdate = (newInputText: string, newOutputText: string) => {
+    setInputText(newInputText);
+    setOutputText(newOutputText);
   };
 
   // Handle category navigation
@@ -77,12 +87,9 @@ const PricingTable: React.FC<PricingTableProps> = ({
     const data = prepareExportData(models, categories, vendors);
     exportAsJSON(data);
   }, [models, categories, vendors]);
-  
-  // Expose download functions to window for use in page.tsx
-  // We no longer need to expose functions to window
 
   return (
-    <div className="container mx-auto px-4 py-8" id="top">
+    <div className="container mx-auto px-4 py-8 max-w-6xl" id="top">
       <div className="flex justify-center mb-6">
         <div className="flex items-center py-2 px-4 border-2 border-gray-800 rounded-lg shadow-sm bg-white">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
@@ -92,6 +99,13 @@ const PricingTable: React.FC<PricingTableProps> = ({
           <h1 className="text-3xl font-bold font-outfit tracking-tight">Inference Pricing</h1>
         </div>
       </div>
+      
+      {/* Text Input Areas for Sample Input and Output Text */}
+      <TextInputArea 
+        defaultInputText={DEFAULT_SAMPLE_TEXT} 
+        defaultOutputText={DEFAULT_OUTPUT_TEXT}
+        onTextUpdate={handleTextUpdate} 
+      />
       
       {/* Category Navigation */}
       <div className="mb-6 bg-white shadow rounded-lg p-4">
@@ -114,7 +128,6 @@ const PricingTable: React.FC<PricingTableProps> = ({
           </div>
         </div>
       </div>
-      
       
       <FilterBar
         categories={[]}  // No category filters needed since we split by category
@@ -161,6 +174,8 @@ const PricingTable: React.FC<PricingTableProps> = ({
               vendors={vendors}
               sortConfig={sortConfig}
               onSort={handleSort}
+              inputText={inputText}
+              outputText={outputText}
             />
           </div>
         );

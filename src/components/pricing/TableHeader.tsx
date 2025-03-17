@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import SortableHeader from './SortableHeader';
+import React from "react";
+import SortableHeader from "./SortableHeader";
 
 interface SortConfig {
   key: string;
@@ -11,9 +11,14 @@ interface SortConfig {
 interface TableHeaderProps {
   sortConfig: SortConfig;
   onSort: (key: string) => void;
+  showSampleColumn?: boolean;
 }
 
-const TableHeader: React.FC<TableHeaderProps> = ({ sortConfig, onSort }) => {
+const TableHeader: React.FC<TableHeaderProps> = ({
+  sortConfig,
+  onSort,
+  showSampleColumn = false,
+}) => {
   return (
     <thead className="bg-gray-50">
       <tr>
@@ -31,30 +36,33 @@ const TableHeader: React.FC<TableHeaderProps> = ({ sortConfig, onSort }) => {
           sortDirection={sortConfig.direction}
           onSort={onSort}
         />
+        {/* Params column hidden */}
         <SortableHeader
-          label="Parameters"
-          sortKey="parametersB"
-          currentSortKey={sortConfig.key}
-          sortDirection={sortConfig.direction}
-          onSort={onSort}
-          align="right"
-        />
-        <SortableHeader
-          label="Input (1M)"
+          label={<>Input<br />(1M)</>}
           sortKey="inputPrice"
           currentSortKey={sortConfig.key}
           sortDirection={sortConfig.direction}
           onSort={onSort}
-          align="right"
+          align="center"
         />
         <SortableHeader
-          label="Output (1M)"
+          label={<>Output<br />(1M)</>}
           sortKey="outputPrice"
           currentSortKey={sortConfig.key}
           sortDirection={sortConfig.direction}
           onSort={onSort}
-          align="right"
+          align="center"
         />
+        {showSampleColumn && (
+          <SortableHeader
+            label={<>Example<br />Cost</>}
+            sortKey="samplePrice"
+            currentSortKey={sortConfig.key}
+            sortDirection={sortConfig.direction}
+            onSort={onSort}
+            align="center"
+          />
+        )}
       </tr>
     </thead>
   );

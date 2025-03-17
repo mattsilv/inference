@@ -1,4 +1,5 @@
 import { AIModel, Category, Vendor } from "@/lib/types";
+import { calculateInputCost, calculateOutputCost } from "./formatters";
 
 // Get category name by ID
 export const getCategoryName = (
@@ -84,7 +85,9 @@ export const filterModels = (
 export const sortModels = (
   models: AIModel[],
   key: string,
-  direction: string
+  direction: string,
+  inputText?: string,
+  outputText?: string
 ): AIModel[] => {
   const sortedModels = [...models];
   
@@ -99,6 +102,24 @@ export const sortModels = (
     } else if (key === 'outputPrice') {
       aValue = a.pricing?.outputText ?? Number.MAX_VALUE;
       bValue = b.pricing?.outputText ?? Number.MAX_VALUE;
+    } else if (key === 'samplePrice' && inputText && outputText) {
+      // Calculate total costs (input + output) for sorting
+      const aInputCost = a.pricing ? calculateInputCost(inputText, a.pricing.inputText) : undefined;
+      // Use calculateOutputCost instead of calculateInputCost for output text to ensure correct pricing
+      const aOutputCost = a.pricing ? calculateOutputCost(outputText, a.pricing.outputText) : undefined;
+      const aTotalCost = (aInputCost !== undefined && aOutputCost !== undefined) 
+        ? aInputCost + aOutputCost 
+        : undefined;
+      
+      const bInputCost = b.pricing ? calculateInputCost(inputText, b.pricing.inputText) : undefined;
+      // Fix the bug: Use calculateOutputCost instead of calculateInputCost for output text
+      const bOutputCost = b.pricing ? calculateOutputCost(outputText, b.pricing.outputText) : undefined;
+      const bTotalCost = (bInputCost !== undefined && bOutputCost !== undefined) 
+        ? bInputCost + bOutputCost 
+        : undefined;
+      
+      aValue = aTotalCost ?? Number.MAX_VALUE;
+      bValue = bTotalCost ?? Number.MAX_VALUE;
     } else if (key === 'categoryName') {
       aValue = a.category?.name ?? '';
       bValue = b.category?.name ?? '';

@@ -4,7 +4,7 @@ import React from 'react';
 import { AIModel, Category, Vendor } from '@/lib/types';
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
-import { formatParameters, formatCost } from './formatters';
+import { formatCost, calculateInputCost, calculateOutputCost } from './formatters';
 import { getVendorName, getVendorPricingUrl, getVendorModelsListUrl } from './helpers';
 
 interface TableViewProps {
@@ -16,6 +16,8 @@ interface TableViewProps {
     direction: string;
   };
   onSort: (key: string) => void;
+  inputText?: string;
+  outputText?: string;
 }
 
 const TableView: React.FC<TableViewProps> = ({
@@ -24,14 +26,17 @@ const TableView: React.FC<TableViewProps> = ({
   vendors,
   sortConfig,
   onSort,
+  inputText = "",
+  outputText = "",
 }) => {
   // Sort dropdown options
   const sortOptions = [
     { key: 'displayName', label: 'Model Name' },
     { key: 'vendorName', label: 'Provider' },
-    { key: 'parametersB', label: 'Parameters' },
+    // Parameters option removed
     { key: 'inputPrice', label: 'Input Price' },
     { key: 'outputPrice', label: 'Output Price' },
+    { key: 'samplePrice', label: 'Total Cost' },
   ];
 
   // For mobile screens, show card-style list
@@ -68,8 +73,8 @@ const TableView: React.FC<TableViewProps> = ({
       </div>
 
       <div className="space-y-4">
-        {models.map((model) => (
-          <div key={model.id} className="bg-white rounded-lg border border-gray-200 shadow p-4">
+        {models.map((model, index) => (
+          <div key={model.id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'} rounded-lg border border-gray-200 shadow p-4`}>
             <h3 className="text-lg font-medium">
               <a 
                 href={getVendorModelsListUrl(model.vendorId, vendors)} 
@@ -87,10 +92,7 @@ const TableView: React.FC<TableViewProps> = ({
             </h3>
             
             <div className="mt-2 space-y-2">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Parameters:</span>
-                <span className="font-medium">{formatParameters(model.parametersB)}</span>
-              </div>
+              {/* Parameters row hidden */}
               <div className="flex justify-between">
                 <span className="text-gray-500">Input (1M):</span>
                 <span className="font-medium">{model.pricing ? formatCost(model.pricing.inputText) : "N/A"}</span>
@@ -99,6 +101,42 @@ const TableView: React.FC<TableViewProps> = ({
                 <span className="text-gray-500">Output (1M):</span>
                 <span className="font-medium">{model.pricing ? formatCost(model.pricing.outputText) : "N/A"}</span>
               </div>
+              {inputText && outputText && (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Total Cost:</span>
+                  {model.pricing ? (() => {
+                    const inputCost = calculateInputCost(inputText, model.pricing.inputText);
+                    // Fix bug: Use calculateOutputCost for output text instead of calculateInputCost
+                    const outputCost = calculateOutputCost(outputText, model.pricing.outputText);
+                    const totalCost = inputCost !== undefined && outputCost !== undefined 
+                      ? inputCost + outputCost 
+                      : undefined;
+                      
+                    const colorClass = totalCost !== undefined 
+                      ? (totalCost < 0.01 
+                          ? 'text-green-600' 
+                          : totalCost < 0.05 
+                            ? 'text-blue-600' 
+                            : 'text-gray-900')
+                      : 'text-gray-500';
+                      
+                    return (
+                      <div className="text-right">
+                        <span className={`font-medium ${colorClass}`}>
+                          {formatCost(totalCost)}
+                        </span>
+                        {totalCost !== undefined && (
+                          <div className="text-xs text-gray-500">
+                            In: {formatCost(inputCost)} | Out: {formatCost(outputCost)}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })() : (
+                    <span className="font-medium text-gray-500">N/A</span>
+                  )}
+                </div>
+              )}
               <div className="flex justify-between">
                 <span className="text-gray-500">Provider:</span>
                 <a 
@@ -125,24 +163,28 @@ const TableView: React.FC<TableViewProps> = ({
   // For desktop screens, show the table
   const renderDesktopTable = () => (
     <div className="hidden md:block overflow-hidden border border-gray-200 rounded-lg shadow">
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
+      <div className="overflow-x-auto" style={{ maxWidth: '100%' }}>
+        <table className="min-w-full divide-y divide-gray-200 table-fixed w-full">
           <TableHeader 
             sortConfig={sortConfig} 
             onSort={onSort} 
+            showSampleColumn={!!(inputText && outputText)}
           />
           <tbody className="divide-y divide-gray-200">
-            {models.map((model) => (
+            {models.map((model, index) => (
               <TableRow
                 key={model.id}
                 model={model}
                 categories={categories}
                 vendors={vendors}
+                inputText={inputText}
+                outputText={outputText}
+                isEven={index % 2 === 0}
               />
             ))}
             {models.length === 0 && (
               <tr>
-                <td colSpan={6} className="text-center py-8">
+                <td colSpan={(inputText && outputText) ? 6 : 5} className="text-center py-8">
                   <p className="text-gray-500">No models match your current filters.</p>
                 </td>
               </tr>
@@ -158,7 +200,8 @@ const TableView: React.FC<TableViewProps> = ({
       {renderDesktopTable()}
       {renderMobileCards()}
       <div className="text-sm text-gray-600 mt-2 mb-8 px-1">
-        Pricing shown per 1M tokens. Last updated: {new Date().toLocaleDateString()}
+        <p>Pricing shown per 1M tokens. Sample costs are estimates only and may vary based on actual tokenization.</p>
+        <p className="mt-1">Last updated: {new Date().toLocaleDateString()}</p>
       </div>
     </>
   );
