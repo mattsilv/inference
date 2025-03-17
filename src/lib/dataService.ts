@@ -72,7 +72,15 @@ export function loadDataFromJson(): {
     
     // Establish relationships
     for (const model of models) {
-      model.category = categories.find(c => c.id === model.categoryId);
+      const category = categories.find(c => c.id === model.categoryId);
+      if (category) {
+        model.category = {
+          id: category.id,
+          name: category.name,
+          description: category.description,
+          useCase: category.useCase
+        };
+      }
       model.vendor = vendors.find(v => v.id === model.vendorId);
     }
     
