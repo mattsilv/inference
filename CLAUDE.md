@@ -52,6 +52,17 @@ sqlite3 prisma/dev.db "SELECT * FROM Vendor;"
 - Update pricing from data: `npm run pricing:update [path-to-json]`
 - Export pricing data to JSON: `npm run pricing:export`
 
+### LLM Pricing Format
+
+CRITICAL: All pricing in the database and UI is stored and displayed in dollars per MILLION tokens.
+This is the industry standard used by OpenAI, Anthropic, Google, and other LLM providers.
+
+- Example: If a model costs $0.0375 per million characters for input text, store it as `37.5` in the database
+- Example: If a model costs $0.15 per million characters for output text, store it as `150.0` in the database
+- The UI shows prices with the column labels "($/1M)" to clarify they are per million tokens
+- Always show raw values (never divide by 1000 or other values) when displaying prices
+- The price formatter includes validation to warn about unusually high or low values
+
 ### Model Visibility Management
 
 - List hidden models: `npm run models:hide` (with no arguments)
