@@ -5,6 +5,8 @@
 - Build check: `pnpm build` to test the build
 - Start dev server: `pnpm dev` for local development with Next.js
 - Lint code: `pnpm lint` to check for code issues
+- TypeScript check: `pnpm typecheck` to verify type correctness
+- Netlify build simulation: `pnpm build:netlify` runs typecheck and build
 - Run tests: `pnpm test` to run all tests (Jest)
 - Run specific tests: `pnpm test src/components/pricing/__tests__/formatters.test.js` to run specific tests
 - Use our MPC servers when they will make it faster to solve issues
@@ -12,7 +14,7 @@
 ### Development and Build Process
 
 - Always use `pnpm` instead of `npm` for all commands
-- After code changes, run both `pnpm lint` and `pnpm build` to catch issues
+- After code changes, run `pnpm lint`, `pnpm typecheck`, and `pnpm build` to catch issues
 - If runtime errors occur with Turbopack:
   1. Remove turbo flags completely (e.g., just `pnpm dev`)
   2. Clean the build directory: `rm -rf .next` before rebuilding

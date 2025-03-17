@@ -40,5 +40,14 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# Run TypeScript type checking
+echo "🔍 Running TypeScript type checking..."
+npm run typecheck
+
+if [ $? -ne 0 ]; then
+  echo "❌ TypeScript check failed. Please fix type errors before committing."
+  exit 1
+fi
+
 echo "✅ All checks passed!"
 exit 0
