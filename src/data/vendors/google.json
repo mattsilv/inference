@@ -49,8 +49,8 @@
     "pricing": {
       "id": 20,
       "modelId": 20,
-      "inputText": 37.5,
-      "outputText": 150
+      "inputText": 0.15,
+      "outputText": 0.6
     }
   },
   {
