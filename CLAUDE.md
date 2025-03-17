@@ -18,6 +18,14 @@
   2. Clean the build directory: `rm -rf .next` before rebuilding
   3. Avoid experimental Next.js features unless explicitly required
 
+### Debugging Database Issues
+
+- If you encounter Prisma database errors during build:
+  1. Run `npm run test:db` to verify database connectivity
+  2. Check that DATABASE_URL is set correctly in the environment
+  3. Verify the database file exists and has correct permissions
+  4. Reset the database if needed: `npm run db:reset`
+
 ## Data Management
 
 IMPORTANT: Do NOT run Prisma Studio, npx commands, or other database commands directly. Ask the user first; they will often have these running in the background.

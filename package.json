@@ -10,7 +10,7 @@
     "dev:quick": "NODE_OPTIONS='--no-warnings' SKIP_DB_CHECK=true next dev --turbo",
     "prebuild": "npm run export-json && npm run generate-models",
     "build": "next build",
-    "build:netlify": "prisma generate && npm run export-json && npm run generate-models && npm run pricing:validate && next build",
+    "build:netlify": "prisma generate && node -e \"if (require('fs').existsSync('./prisma/dev.db')) { process.exit(0) } else { console.error('Database file not found'); process.exit(1) }\" && npm run test:db && npm run export-json && npm run generate-models && npm run pricing:validate && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
@@ -35,6 +35,7 @@
     "pricing:validate": "node scripts/pricing-validator.js",
     "models:hide": "node scripts/hide-models.js",
     "models:unhide": "node scripts/hide-models.js -",
+    "test:db": "node scripts/test-prisma-connection.js",
     "prepare": "husky",
     "prepare-hooks": "cp .github/hooks/pre-commit .husky/pre-commit && chmod +x .husky/pre-commit"
   },

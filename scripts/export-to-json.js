@@ -175,11 +175,40 @@ async function main() {
   console.log(`Hidden models count: ${formattedModels.filter(m => m.isHidden).length}`);
 }
 
-main()
-  .catch((e) => {
-    console.error('Error during export:', e);
+// Basic connection test before running the full export
+async function testPrismaConnection() {
+  try {
+    // Test a simple query that should always work
+    const categoryCount = await prisma.category.count();
+    console.log(`Connection test passed: Found ${categoryCount} categories`);
+    return true;
+  } catch (error) {
+    console.error('❌ PRISMA CONNECTION TEST FAILED:');
+    console.error('This may be due to a missing DATABASE_URL environment variable');
+    console.error('or a database that needs migration.');
+    console.error('\nDetailed error:');
+    console.error(error);
+    return false;
+  }
+}
+
+async function runWithErrorHandling() {
+  try {
+    // First test the connection
+    const connectionValid = await testPrismaConnection();
+    if (!connectionValid) {
+      process.exit(1);
+    }
+    
+    // If connection is valid, run the main export
+    await main();
+  } catch (e) {
+    console.error('❌ Error during export:');
+    console.error(e);
     process.exit(1);
-  })
-  .finally(async () => {
+  } finally {
     await prisma.$disconnect();
-  });
+  }
+}
+
+runWithErrorHandling();
