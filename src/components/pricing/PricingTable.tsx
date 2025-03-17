@@ -236,17 +236,17 @@ const PricingTable: React.FC<PricingTableProps> = ({
 
             {/* Category description and use case */}
             <div className="mb-4 bg-white rounded-lg p-4 shadow-sm">
-              {category.description && (
+              {category.description !== undefined && (
                 <p className="text-gray-800 text-sm mb-2">
-                  {category.description}
+                  {category.description || ''}
                 </p>
               )}
-              {category.useCase && (
+              {category.useCase !== undefined && (
                 <div className="mt-2">
                   <p className="text-gray-700 font-medium text-xs mb-1">
                     Example Use Case:
                   </p>
-                  <p className="text-gray-600 text-xs">{category.useCase}</p>
+                  <p className="text-gray-600 text-xs">{category.useCase || ''}</p>
                 </div>
               )}
             </div>
@@ -265,19 +265,20 @@ const PricingTable: React.FC<PricingTableProps> = ({
             {/* Dedicated Mobile View - A cohesive version of the data, consistent with desktop */}
             <div className="block md:hidden">
               {/* Category description and use case for mobile */}
-              {(category.description || category.useCase) && (
+              {((category.description !== undefined && category.description !== null) || 
+                (category.useCase !== undefined && category.useCase !== null)) && (
                 <div className="mb-4 bg-white rounded-lg p-4 shadow-sm">
-                  {category.description && (
+                  {category.description !== undefined && (
                     <p className="text-gray-800 text-sm mb-2">
-                      {category.description}
+                      {category.description || ''}
                     </p>
                   )}
-                  {category.useCase && (
+                  {category.useCase !== undefined && (
                     <div className="mt-2">
                       <p className="text-gray-700 font-medium text-xs mb-1">
                         Example Use Case:
                       </p>
-                      <p className="text-gray-600 text-xs">{category.useCase}</p>
+                      <p className="text-gray-600 text-xs">{category.useCase || ''}</p>
                     </div>
                   )}
                 </div>

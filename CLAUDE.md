@@ -17,6 +17,13 @@
 - After code changes, run `pnpm lint`, `pnpm typecheck`, and `pnpm build` to catch issues
 - CRITICAL: Always run `pnpm typecheck` before creating PRs or pushing to main
 - TypeScript checking is mandatory for deployment success - Netlify builds will fail if types don't match
+- Special attention to Category and AIModel interfaces in types.ts:
+  - New fields like description and useCase have been added
+  - Components accessing these properties require proper optional property handling
+- For Netlify deployment:
+  - The build process bypasses database operations and uses JSON files directly
+  - When adding new model properties, update both the schema and the JSON files
+  - Type errors from one component can cause the entire build to fail
 - If runtime errors occur with Turbopack:
   1. Remove turbo flags completely (e.g., just `pnpm dev`)
   2. Clean the build directory: `rm -rf .next` before rebuilding
@@ -184,7 +191,16 @@ This safeguard prevents issues where critical fields might be missing from expor
 
 ## Code Style Guidelines
 
-- **TypeScript**: Use strict typing, avoid `any` types
+- **TypeScript**: 
+  - Use strict typing, avoid `any` types
+  - For optional properties, use `property?: type` notation in interfaces
+  - When accessing optional properties, use `property !== undefined` instead of truthy checks
+  - For rendering optional properties, use `property || ''` to handle undefined values safely
+  - Always run `pnpm typecheck` to find TypeScript errors before they cause build failures
+  - Common TypeScript issues in this project:
+    - Non-null assertions on optional properties
+    - Undefined checks on Category properties (description, useCase)
+    - Type assertions for inputText/outputText in MobileView components
 - **Naming**: PascalCase for components, camelCase for variables/functions
 - **Imports**: Group imports - React first, libraries, then project imports
 - **Components**: 'use client' directive for client components
