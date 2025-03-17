@@ -18,17 +18,30 @@ export const formatCost = (cost: number | undefined): string => {
 // Format price per million tokens
 // IMPORTANT: All prices in the database are stored as dollars per MILLION tokens
 // Never divide by 1000 or any other value when displaying - show the raw value
-export const formatPrice = (pricePerMillion: number | undefined): string => {
+export const formatPrice = (pricePerMillion: number | undefined, modelName?: string): string => {
   if (pricePerMillion === undefined) return 'N/A';
   
-  // Sanity check to detect potential errors in our pricing data
-  // This helps catch if we incorrectly enter price per token instead of per million tokens
-  // Most models should cost between $0.001 and $200 per million tokens
-  if (pricePerMillion > 0 && pricePerMillion < 0.0001) {
-    console.warn(`WARNING: Price ${pricePerMillion} seems too low per million tokens. Validate data input.`);
+  const modelInfo = modelName ? `for ${modelName}` : '';
+  
+  // CRITICAL VALIDATION: Detect likely price per token vs price per million error
+  // Industry conventions:
+  // - For input: Most models cost between $0.001 and $100 per million tokens
+  // - For output: Most models cost between $0.002 and $300 per million tokens
+  
+  // For extremely low values - likely entered as price per token instead of per million
+  if (pricePerMillion > 0 && pricePerMillion < 0.001) {
+    const errorMsg = `⚠️ PRICING ERROR ${modelInfo}: ${pricePerMillion} is suspiciously low. Prices should be per MILLION tokens, not per token.`;
+    console.error(errorMsg);
+    // Show error visibly in UI for debugging - this will make pricing errors impossible to miss
+    return `ERROR: $${pricePerMillion.toFixed(6)} ⚠️`;
   }
+  
+  // For extremely high values - likely entered incorrectly
   if (pricePerMillion > 500) {
-    console.warn(`WARNING: Price ${pricePerMillion} seems unusually high per million tokens. Validate data input.`);
+    const errorMsg = `⚠️ PRICING ERROR ${modelInfo}: ${pricePerMillion} is unusually high. Verify this is correct per MILLION tokens.`;
+    console.error(errorMsg);
+    // Show error visibly in UI for debugging
+    return `CHECK: $${pricePerMillion.toFixed(3)} ⚠️`;
   }
   
   // Display as $ per million tokens - this is the industry standard for LLM pricing

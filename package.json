@@ -6,6 +6,8 @@
     "predev": "node scripts/check-db.js",
     "dev": "next dev",
     "dev:fast": "next dev --turbo",
+    "dev:hmr": "NODE_OPTIONS='--no-warnings' next dev --turbo",
+    "dev:quick": "NODE_OPTIONS='--no-warnings' SKIP_DB_CHECK=true next dev --turbo",
     "prebuild": "npm run generate-models",
     "build": "next build",
     "build:netlify": "prisma generate && npm run generate-models && next build",
@@ -30,6 +32,7 @@
     "pricing:update": "node scripts/pricing-tracker.js update",
     "pricing:export": "node scripts/pricing-tracker.js export",
     "pricing:info": "node scripts/pricing-tracker.js generate-info",
+    "pricing:validate": "node scripts/pricing-validator.js",
     "models:hide": "node scripts/hide-models.js",
     "models:unhide": "node scripts/hide-models.js -",
     "prepare": "husky"

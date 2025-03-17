@@ -85,12 +85,12 @@ const TableRow: React.FC<TableRowProps> = ({
       {/* Params column hidden */}
       <td className="px-6 py-4 w-[12.5%] text-center text-sm text-gray-500">
         {model.pricing
-          ? formatPrice(model.pricing.inputText)
+          ? formatPrice(model.pricing.inputText, model.displayName)
           : "N/A"}
       </td>
       <td className="px-6 py-4 w-[12.5%] text-center text-sm text-gray-500">
         {model.pricing
-          ? formatPrice(model.pricing.outputText)
+          ? formatPrice(model.pricing.outputText, model.displayName)
           : "N/A"}
       </td>
       {inputText && outputText && (

@@ -53,17 +53,31 @@ sqlite3 prisma/dev.db "SELECT * FROM Vendor;"
 - Generate vendor tracking info: `npm run pricing:info`
 - Update pricing from data: `npm run pricing:update [path-to-json]`
 - Export pricing data to JSON: `npm run pricing:export`
+- Validate pricing data: `npm run pricing:validate` (detects potential pricing errors)
 
 ### LLM Pricing Format
 
 CRITICAL: All pricing in the database and UI is stored and displayed in dollars per MILLION tokens.
 This is the industry standard used by OpenAI, Anthropic, Google, and other LLM providers.
 
-- Example: If a model costs $0.0375 per million characters for input text, store it as `37.5` in the database
-- Example: If a model costs $0.15 per million characters for output text, store it as `150.0` in the database
+- Example: If a model costs $0.0375 per million characters for input text, store it as `0.0375` in the database
+- Example: If a model costs $0.15 per million characters for output text, store it as `0.15` in the database
 - The UI shows prices with the column labels "($/1M)" to clarify they are per million tokens
 - Always show raw values (never divide by 1000 or other values) when displaying prices
 - The price formatter includes validation to warn about unusually high or low values
+
+### Pricing Validation Safeguards
+
+To prevent pricing errors, we've implemented multiple validation mechanisms:
+
+1. **Development-time warnings**: The formatters.ts file contains validation that shows visual errors in the UI for suspicious prices
+2. **Build-time validation**: The dataValidator.ts file validates pricing during build and model generation
+3. **Command-line validator**: Run `npm run pricing:validate` to check all prices for potential errors
+4. **Vendor-specific checks**: Special validation for Google, OpenAI, and Anthropic typical pricing patterns
+5. **Database constraints**: Ensures pricing values remain within expected ranges
+6. **Automatic backup system**: Preserves pricing data with backups before any database operations
+
+Always run `npm run pricing:validate` after updating any pricing data to catch potential issues.
 
 ### Model Visibility Management
 
@@ -74,22 +88,35 @@ This is the industry standard used by OpenAI, Anthropic, Google, and other LLM p
 
 ### Database Reset Safety
 
-The system now automatically backs up and restores pricing data when resetting the database.
-When you run `npm run db:reset` or when the check-db.js script detects issues and resets:
+The system now automatically backs up and restores data when resetting or reseeding the database.
+When you run `npm run db:reset`, `npm run prisma:seed`, or when the check-db.js script detects issues:
 
-1. All pricing and pricing history data is backed up
-2. Database is reset with migrations and seed data
-3. Pricing data is restored from the backup
-   This ensures you won't lose important pricing updates when fixing database issues.
+1. A full database backup is created in `/backup` directory
+2. Pricing data is specifically backed up through multiple mechanisms:
+   - File-based backup in `/backups` folder
+   - In-memory backup during the seeding process
+3. User confirmation is required if backup fails before proceeding
+4. Emergency database copy is created as an additional safety measure
+5. Database is reset with migrations and seed data
+6. Pricing data is automatically restored using three fallback methods:
+   - From in-memory backup (preserves the most recent changes)
+   - From file-based backup if in-memory restoration fails
+   - From the check-db.js backup mechanism if all else fails
+7. If no database is found, the system will offer to restore from the most recent backup
+
+This comprehensive approach ensures all manual changes to pricing data are preserved even when running seed commands or resetting the database. Other non-pricing data will be overwritten during seeding.
 
 ### Data Source of Truth
 
 - The **Prisma database** is the primary source of truth for all data
 - JSON files in `/src/data` are generated from the database
+- Changes made directly to the database are preserved through multiple safety mechanisms
 - To update data:
   1. Use Prisma Studio (`npm run prisma:studio`) to edit the database
   2. Run `npm run export-json` to regenerate JSON files (includes data integrity validation)
   3. Run `npm run validate-models` to ensure data is valid
+  4. Run `npm run db:backup` to create a full database backup after important changes
+  5. Run `npm run pricing:backup` when making critical pricing changes
 
 ### Export Data Integrity
 

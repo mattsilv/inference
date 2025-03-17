@@ -55,6 +55,25 @@ function validateModel(model: AIModel, vendorFile: string): string[] {
           errors.push(`Model ${model.id} in ${vendorFile} has non-numeric ${field} price: ${value}`);
         } else if (value < 0) {
           errors.push(`Model ${model.id} in ${vendorFile} has negative ${field} price: ${value}`);
+        } else {
+          // Enhanced pricing validation
+          const modelName = model.displayName || model.systemName;
+          
+          // Detect prices that seem too low (likely entered as per-token instead of per-million)
+          if (value > 0 && value < 0.001) {
+            errors.push(`PRICING ERROR: ${modelName} (${field}) price of $${value} is suspiciously low. Prices should be per MILLION tokens.`);
+          }
+          
+          // Detect unusually high prices that may indicate incorrect unit conversion
+          if ((field === 'inputText' && value > 200) || (field === 'outputText' && value > 500)) {
+            errors.push(`PRICING ERROR: ${modelName} (${field}) price of $${value} is unusually high. Verify this is the correct price per MILLION tokens.`);
+          }
+          
+          // Detect typical pricing mismatch for well-known vendors
+          if (model.host === 'google' && field === 'inputText' && value === 37.5) {
+            // For Google models, prices are frequently entered incorrectly
+            errors.push(`PRICING VERIFICATION NEEDED: ${modelName} input price of $37.50 per 1M tokens may be incorrect. Google prices are typically $0.0375 per 1M characters.`);
+          }
         }
       }
     }
