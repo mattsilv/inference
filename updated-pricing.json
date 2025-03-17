@@ -1,0 +1,44 @@
+[
+  {
+    "vendorName": "Anthropic",
+    "modelName": "claude-3-7-sonnet",
+    "inputPrice": 3.0,
+    "outputPrice": 15.0
+  },
+  {
+    "vendorName": "Anthropic",
+    "modelName": "claude-3-5-haiku",
+    "inputPrice": 0.8,
+    "outputPrice": 4.0
+  },
+  {
+    "vendorName": "Anthropic",
+    "modelName": "claude-3-5-sonnet",
+    "inputPrice": 3.0,
+    "outputPrice": 15.0
+  },
+  {
+    "vendorName": "OpenAI",
+    "modelName": "gpt-4.5",
+    "inputPrice": 75.0,
+    "outputPrice": 150.0
+  },
+  {
+    "vendorName": "OpenAI",
+    "modelName": "gpt-4o",
+    "inputPrice": 2.5,
+    "outputPrice": 10.0
+  },
+  {
+    "vendorName": "OpenAI",
+    "modelName": "gpt-4o-mini",
+    "inputPrice": 0.15,
+    "outputPrice": 0.6
+  },
+  {
+    "vendorName": "OpenAI",
+    "modelName": "gpt-3o-mini",
+    "inputPrice": 0.15,
+    "outputPrice": 0.6
+  }
+]

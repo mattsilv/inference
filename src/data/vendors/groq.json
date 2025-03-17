@@ -3,7 +3,7 @@
     "id": 7,
     "systemName": "llama-3-70b-8192",
     "displayName": "Llama 3 70B",
-    "categoryId": 1,
+    "categoryId": 2,
     "parametersB": 70,
     "vendorId": 4,
     "host": "api.groq.com",

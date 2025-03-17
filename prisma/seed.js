@@ -13,8 +13,34 @@ function parseDate(dateString) {
 async function main() {
   console.log('Starting database seeding...');
 
+  // Check if we should backup first
+  try {
+    console.log('Creating database backup before seeding...');
+    require('child_process').execSync('npm run db:backup', { stdio: 'inherit' });
+    console.log('✅ Database backup created successfully.');
+    
+    // Also backup pricing specifically
+    console.log('Creating pricing data backup...');
+    require('child_process').execSync('npm run pricing:backup', { stdio: 'inherit' });
+    console.log('✅ Pricing backup created successfully.');
+  } catch (err) {
+    console.error('⚠️ Warning: Failed to create backup before seeding:', err);
+    const proceed = require('child_process').execSync('read -p "Backup failed. Continue with seeding? (y/N): " choice && echo $choice', { encoding: 'utf8' }).trim();
+    
+    if (proceed.toLowerCase() !== 'y') {
+      console.log('Database seeding cancelled by user.');
+      process.exit(0);
+    }
+  }
+
   // Get data directory
   const dataDir = path.join(process.cwd(), 'src', 'data');
+  
+  // Backup pricing data for restoration after seeding
+  console.log('Backing up pricing data in memory before clearing...');
+  const pricingData = await prisma.pricing.findMany({
+    include: { model: true }
+  });
   
   // Clear existing data (in reverse order to respect foreign keys)
   console.log('Clearing existing data...');
@@ -103,6 +129,57 @@ async function main() {
   }
   
   console.log('Database seeding completed successfully!');
+  
+  // Restore pricing data from memory backup if we had any
+  if (pricingData && pricingData.length > 0) {
+    console.log(`Restoring ${pricingData.length} pricing records from memory backup...`);
+    
+    for (const pricing of pricingData) {
+      try {
+        // Find the corresponding model by system name and vendor ID
+        const model = await prisma.aIModel.findFirst({
+          where: {
+            systemName: pricing.model.systemName,
+            vendorId: pricing.model.vendorId
+          }
+        });
+        
+        if (model) {
+          // Create pricing entry
+          await prisma.pricing.create({
+            data: {
+              inputText: pricing.inputText,
+              outputText: pricing.outputText,
+              finetuningInput: pricing.finetuningInput,
+              finetuningOutput: pricing.finetuningOutput,
+              trainingCost: pricing.trainingCost,
+              updatedAt: pricing.updatedAt,
+              modelId: model.id
+            }
+          });
+        } else {
+          console.warn(`⚠️ Couldn't find model for pricing: ${pricing.model.systemName}`);
+        }
+      } catch (error) {
+        console.error(`Error restoring pricing for ${pricing.model?.systemName || 'unknown model'}:`, error);
+      }
+    }
+    
+    console.log('✅ Pricing data restoration completed.');
+  } else {
+    console.log('No pricing data to restore from memory.');
+    
+    // Try to restore from disk backup if we have no in-memory data
+    try {
+      console.log('Attempting to restore pricing from disk backup...');
+      require('child_process').execSync('npm run pricing:restore', { stdio: 'inherit' });
+      console.log('✅ Pricing restored from disk backup.');
+    } catch (err) {
+      console.error('Failed to restore pricing from disk backup:', err);
+    }
+  }
+  
+  console.log('Full database seeding and restoration process completed.');
 }
 
 main()

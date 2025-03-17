@@ -1,0 +1,8 @@
+[
+  {
+    "vendorName": "Anthropic",
+    "modelName": "claude-3-opus",
+    "inputPrice": 15.0,
+    "outputPrice": 75.0
+  }
+]

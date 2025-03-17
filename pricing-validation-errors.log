@@ -1,0 +1,18 @@
+PRICING VALIDATION ISSUES (2025-03-17T03:41:37.981Z)
+
+⚠️ Gemini 2.0 Pro input price of $7 is outside the typical range for google (0.0001-0.1)
+⚠️ Gemini 2.0 Pro output price of $21 is outside the typical range for google (0.0005-0.3)
+⚠️ Gemini 2.0 Pro Exp input price of $9 is outside the typical range for google (0.0001-0.1)
+⚠️ Gemini 2.0 Pro Exp output price of $27 is outside the typical range for google (0.0005-0.3)
+⚠️ Gemini 2.0 Flash input price of $37.5 is outside the typical range for google (0.0001-0.1)
+⚠️ Gemini 2.0 Flash output price of $150 is outside the typical range for google (0.0005-0.3)
+🚨 Google pricing issue detected: Gemini 2.0 Flash input price of $37.5 is likely wrong. Google typically prices around $0.0375 per million CHARACTERS for input, not tokens.
+🚨 Google pricing issue detected: Gemini 2.0 Flash output price of $150 is likely wrong. Google typically prices around $0.15 per million CHARACTERS for output, not tokens.
+⚠️ Gemini 2.0 Flash Thinking input price of $37.5 is outside the typical range for google (0.0001-0.1)
+⚠️ Gemini 2.0 Flash Thinking output price of $150 is outside the typical range for google (0.0005-0.3)
+🚨 Google pricing issue detected: Gemini 2.0 Flash Thinking input price of $37.5 is likely wrong. Google typically prices around $0.0375 per million CHARACTERS for input, not tokens.
+🚨 Google pricing issue detected: Gemini 2.0 Flash Thinking output price of $150 is likely wrong. Google typically prices around $0.15 per million CHARACTERS for output, not tokens.
+⚠️ ChatGPT 4.5 input price of $75 is outside the typical range for openai (0.1-30)
+⚠️ ChatGPT 4.5 output price of $150 is outside the typical range for openai (0.3-120)
+
+WARNINGS:

@@ -90,14 +90,20 @@ const PricingTable: React.FC<PricingTableProps> = ({
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl" id="top">
-      <div className="flex justify-center mb-6">
-        <div className="flex items-center py-2 px-4 border-2 border-gray-800 rounded-lg shadow-sm bg-white">
+      <div className="flex justify-center mb-2">
+        <div className="flex items-center py-2 px-4 border-2 border-gray-800 rounded-lg shadow-sm bg-white relative">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
             <path d="M12 3L4 9V21H20V9L12 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M9 21V12H15V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           <h1 className="text-3xl font-bold font-outfit tracking-tight">Inference Pricing</h1>
+          <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium">BETA</span>
         </div>
+      </div>
+      <div className="flex justify-center mb-6">
+        <p className="text-sm text-gray-600 max-w-lg text-center">
+          We&apos;re still working on our pricing scraper. Please double check prices before making any decisions on this information while we&apos;re still in beta.
+        </p>
       </div>
       
       {/* Text Input Areas for Sample Input and Output Text */}

@@ -15,8 +15,8 @@
         },
         {
           "name": "gpt-4.5",
-          "current_input_price": 75,
-          "current_output_price": 150
+          "current_input_price": 15,
+          "current_output_price": 60
         },
         {
           "name": "gpt-3o-mini",
@@ -136,13 +136,13 @@
         },
         {
           "name": "gemini-2.0-flash",
-          "current_input_price": 3.5,
-          "current_output_price": 14
+          "current_input_price": 37.5,
+          "current_output_price": 150
         },
         {
           "name": "gemini-2.0-flash-thinking",
-          "current_input_price": 3.5,
-          "current_output_price": 14
+          "current_input_price": 37.5,
+          "current_output_price": 150
         }
       ]
     },
@@ -180,6 +180,36 @@
           "name": "infernet-deepseek-r1-distill-llama-70b-fp8",
           "current_input_price": 0.4,
           "current_output_price": 0.4
+        },
+        {
+          "name": "infernet-deepseek-r1-fp8",
+          "current_input_price": 3,
+          "current_output_price": 3
+        },
+        {
+          "name": "infernet-deepseek-v3-fp8",
+          "current_input_price": 1.2,
+          "current_output_price": 1.2
+        },
+        {
+          "name": "infernet-llama-3.1-70b-instruct-fp16",
+          "current_input_price": 0.4,
+          "current_output_price": 0.4
+        },
+        {
+          "name": "infernet-llama-3.1-8b-instruct-fp16",
+          "current_input_price": 0.03,
+          "current_output_price": 0.03
+        },
+        {
+          "name": "infernet-llama-3.2-11b-vision-instruct-fp16",
+          "current_input_price": 0.055,
+          "current_output_price": 0.055
+        },
+        {
+          "name": "infernet-llama-3.2-1b-instruct-fp16",
+          "current_input_price": 0.01,
+          "current_output_price": 0.01
         }
       ]
     }

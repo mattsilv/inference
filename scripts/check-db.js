@@ -3,6 +3,11 @@
 /**
  * This script checks if the Prisma database is set up properly.
  * It's designed to be run before starting the development server.
+ * 
+ * IMPORTANT: This script includes safeguards to protect database data.
+ * - Always creates a full backup before any database reset operations
+ * - Preserves pricing data through resets
+ * - Will not delete data unless absolutely necessary for schema issues
  */
 
 const { PrismaClient } = require('@prisma/client');
@@ -14,7 +19,7 @@ const path = require('path');
 const prisma = new PrismaClient();
 
 async function checkDatabase() {
-  console.log('Checking Prisma database...');
+  console.log('Checking Prisma database with safety mechanisms...');
   
   const dbPath = path.join(process.cwd(), 'prisma', 'dev.db');
   
@@ -32,13 +37,46 @@ async function checkDatabase() {
     }
   }
   
+  // Ensure backup directory exists
+  const backupDir = path.join(process.cwd(), 'backup');
+  if (!fs.existsSync(backupDir)) {
+    console.log('Creating backup directory...');
+    fs.mkdirSync(backupDir, { recursive: true });
+  }
+  
   // Check if database file exists
   const dbExists = fs.existsSync(dbPath);
   
   if (!dbExists) {
     console.log('Database file not found. Setting up database...');
-    resetDatabase();
-    return;
+    // Check if we should restore from backup
+    const backupFiles = fs.readdirSync(backupDir)
+      .filter(f => f.endsWith('.db'))
+      .sort()
+      .reverse();
+      
+    if (backupFiles.length > 0) {
+      console.log(`Found ${backupFiles.length} database backups.`);
+      console.log(`Most recent backup: ${backupFiles[0]}`);
+      
+      const proceed = execSync('read -p "Restore from the most recent backup? (Y/n): " choice && echo $choice', { encoding: 'utf8' }).trim();
+      
+      if (proceed.toLowerCase() !== 'n') {
+        const latestBackup = path.join(backupDir, backupFiles[0]);
+        console.log(`Restoring from ${latestBackup}...`);
+        fs.copyFileSync(latestBackup, dbPath);
+        console.log('Database restored from backup. Checking data integrity...');
+        // Continue with the rest of the checks
+      } else {
+        console.log('Proceeding with fresh database setup...');
+        resetDatabase();
+        return;
+      }
+    } else {
+      console.log('No backups found. Setting up fresh database...');
+      resetDatabase();
+      return;
+    }
   }
   
   // Check if database file is writable
@@ -248,9 +286,31 @@ async function restorePricingData(backupData) {
 
 function resetDatabase() {
   try {
-    console.log('Resetting database...');
+    console.log('Resetting database... Creating safety backups first.');
     
-    // First backup pricing data if possible
+    // Create a full database backup
+    try {
+      execSync('npm run db:backup', { stdio: 'inherit' });
+      console.log('✅ Full database backup created successfully.');
+    } catch (fullBackupError) {
+      console.error('⚠️ Warning: Failed to create full database backup:', fullBackupError);
+      
+      // Ask for confirmation before proceeding
+      const readline = require('readline');
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      });
+      
+      const proceed = execSync('read -p "Full backup failed. Continue with database reset? (y/N): " choice && echo $choice', { encoding: 'utf8' }).trim();
+      
+      if (proceed.toLowerCase() !== 'y') {
+        console.log('Database reset cancelled by user.');
+        process.exit(0);
+      }
+    }
+    
+    // Then backup pricing data specifically
     let pricingBackup = null;
     
     try {
@@ -258,15 +318,30 @@ function resetDatabase() {
       pricingBackup = execSync('node -e "require(\'./scripts/check-db.js\').backupPricingData().then(data => console.log(JSON.stringify(data)))"', { encoding: 'utf8' });
       if (pricingBackup) {
         pricingBackup = JSON.parse(pricingBackup);
+        console.log('✅ Pricing data backup created successfully.');
       }
     } catch (backupError) {
-      console.error('Failed to backup pricing data:', backupError);
+      console.error('⚠️ Warning: Failed to backup pricing data:', backupError);
+    }
+    
+    // Also try to backup pricing using the dedicated script
+    try {
+      execSync('npm run pricing:backup', { stdio: 'inherit' });
+      console.log('✅ Additional pricing backup created using dedicated script.');
+    } catch (pricingBackupError) {
+      console.error('⚠️ Warning: Failed to create additional pricing backup:', pricingBackupError);
     }
     
     // Ensure the database file is removed if it exists
     const dbPath = path.join(process.cwd(), 'prisma', 'dev.db');
     if (fs.existsSync(dbPath)) {
       try {
+        // Create a timestamped copy before removing
+        const timestamp = new Date().toISOString().replace(/:/g, '-').substring(0, 19);
+        const backupPath = path.join(process.cwd(), 'backup', `manual_reset_${timestamp}.db`);
+        fs.copyFileSync(dbPath, backupPath);
+        console.log(`✅ Emergency backup created at ${backupPath}`);
+        
         fs.unlinkSync(dbPath);
         console.log('Removed existing database file.');
       } catch (err) {
@@ -307,9 +382,14 @@ module.exports = {
 
 // Run the check if script is executed directly
 if (require.main === module) {
-  checkDatabase()
-    .catch((error) => {
-      console.error('Error checking database:', error);
-      process.exit(1);
-    });
+  // Skip DB check if environment variable is set
+  if (process.env.SKIP_DB_CHECK === 'true') {
+    console.log('Skipping database check (SKIP_DB_CHECK=true)');
+  } else {
+    checkDatabase()
+      .catch((error) => {
+        console.error('Error checking database:', error);
+        process.exit(1);
+      });
+  }
 }

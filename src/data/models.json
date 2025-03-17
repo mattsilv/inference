@@ -47,7 +47,7 @@
     "id": 7,
     "systemName": "llama-3-70b-8192",
     "displayName": "Llama 3 70B",
-    "categoryId": 1,
+    "categoryId": 2,
     "parametersB": 70,
     "vendorId": 4,
     "host": "api.groq.com",
@@ -90,8 +90,8 @@
   {
     "id": 9,
     "systemName": "togethercomputer/llama-3-70b-8192",
-    "displayName": "Llama-3-70B",
-    "categoryId": 1,
+    "displayName": "Llama 3 70B",
+    "categoryId": 2,
     "parametersB": 70,
     "vendorId": 5,
     "host": "api.together.xyz",
@@ -239,7 +239,7 @@
     "host": "google",
     "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
     "isOpenSource": false,
-    "isHidden": false,
+    "isHidden": true,
     "pricing": {
       "id": 18,
       "modelId": 18,
@@ -257,7 +257,7 @@
     "host": "google",
     "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
     "isOpenSource": false,
-    "isHidden": false,
+    "isHidden": true,
     "pricing": {
       "id": 19,
       "modelId": 19,
@@ -269,18 +269,18 @@
     "id": 20,
     "systemName": "gemini-2.0-flash",
     "displayName": "Gemini 2.0 Flash",
-    "categoryId": 2,
+    "categoryId": 3,
     "parametersB": 100,
     "vendorId": 3,
     "host": "google",
-    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
+    "description": "Google's fast multimodal model - updated pricing Mar 2025",
     "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 20,
       "modelId": 20,
-      "inputText": 37.5,
-      "outputText": 150
+      "inputText": 0.0375,
+      "outputText": 0.15
     }
   },
   {
@@ -291,14 +291,14 @@
     "parametersB": 100,
     "vendorId": 3,
     "host": "google",
-    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
+    "description": "Google's fast thinking-heavy multimodal model - updated pricing Mar 2025",
     "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 21,
       "modelId": 21,
-      "inputText": 37.5,
-      "outputText": 150
+      "inputText": 0.0375,
+      "outputText": 0.15
     }
   },
   {
@@ -315,8 +315,8 @@
     "pricing": {
       "id": 22,
       "modelId": 22,
-      "inputText": 75,
-      "outputText": 150
+      "inputText": 15,
+      "outputText": 60
     }
   },
   {
@@ -359,7 +359,7 @@
     "id": 25,
     "systemName": "deepseek-r1",
     "displayName": "DeepSeek R1",
-    "categoryId": 2,
+    "categoryId": 5,
     "parametersB": 172,
     "vendorId": 5,
     "host": "together",
@@ -457,8 +457,8 @@
   {
     "id": 30,
     "systemName": "infernet-llama-3.3-70b-instruct-fp16",
-    "displayName": "Llama 3.3 70B Instruct (FP16)",
-    "categoryId": 5,
+    "displayName": "Llama 3.3 70B",
+    "categoryId": 2,
     "parametersB": 70,
     "vendorId": 7,
     "host": "Inference.net",
@@ -498,7 +498,7 @@
     "id": 32,
     "systemName": "infernet-deepseek-r1-distill-llama-70b-fp8",
     "displayName": "DeepSeek R1 Distill Llama 70B (FP8)",
-    "categoryId": 5,
+    "categoryId": 2,
     "parametersB": 70,
     "vendorId": 7,
     "host": "Inference.net",
@@ -518,7 +518,7 @@
     "id": 33,
     "systemName": "infernet-deepseek-r1-fp8",
     "displayName": "DeepSeek R1 (FP8)",
-    "categoryId": 1,
+    "categoryId": 5,
     "parametersB": 236,
     "vendorId": 7,
     "host": "Inference.net",
@@ -557,8 +557,8 @@
   {
     "id": 35,
     "systemName": "infernet-llama-3.1-70b-instruct-fp16",
-    "displayName": "Llama 3.1 70B Instruct (FP16)",
-    "categoryId": 5,
+    "displayName": "Llama 3.1 70B",
+    "categoryId": 2,
     "parametersB": 70,
     "vendorId": 7,
     "host": "Inference.net",
