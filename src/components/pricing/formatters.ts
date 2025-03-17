@@ -15,6 +15,14 @@ export const formatCost = (cost: number | undefined): string => {
   return `$${cost.toFixed(3)}`;
 };
 
+// Format price per million tokens with appropriate scale
+export const formatPrice = (pricePerMillion: number | undefined): string => {
+  if (pricePerMillion === undefined) return 'N/A';
+  
+  // Always display as $ per 1000 tokens for consistency and readability
+  return `$${(pricePerMillion / 1000).toFixed(3)}`;
+};
+
 // Format token window (e.g., 128000 -> "128K")
 export const formatTokens = (tokens: number | undefined): string => {
   if (tokens === undefined) return 'N/A';

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { AIModel, Category, Vendor } from '@/lib/types';
-import { formatCost, calculateTotalCost } from './formatters';
+import { formatCost, calculateTotalCost, formatPrice } from './formatters';
 import { getVendorName, getVendorPricingUrl, getVendorModelsListUrl } from './helpers';
 
 interface TableRowProps {
@@ -85,12 +85,12 @@ const TableRow: React.FC<TableRowProps> = ({
       {/* Params column hidden */}
       <td className="px-6 py-4 w-[12.5%] text-center text-sm text-gray-500">
         {model.pricing
-          ? formatCost(model.pricing.inputText)
+          ? formatPrice(model.pricing.inputText)
           : "N/A"}
       </td>
       <td className="px-6 py-4 w-[12.5%] text-center text-sm text-gray-500">
         {model.pricing
-          ? formatCost(model.pricing.outputText)
+          ? formatPrice(model.pricing.outputText)
           : "N/A"}
       </td>
       {inputText && outputText && (

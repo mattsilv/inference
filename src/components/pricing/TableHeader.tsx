@@ -38,20 +38,22 @@ const TableHeader: React.FC<TableHeaderProps> = ({
         />
         {/* Params column hidden */}
         <SortableHeader
-          label={<>Input<br />(1M)</>}
+          label={<>Input<br />($/1K)</>}
           sortKey="inputPrice"
           currentSortKey={sortConfig.key}
           sortDirection={sortConfig.direction}
           onSort={onSort}
           align="center"
+          tooltip="Price per 1,000 tokens"
         />
         <SortableHeader
-          label={<>Output<br />(1M)</>}
+          label={<>Output<br />($/1K)</>}
           sortKey="outputPrice"
           currentSortKey={sortConfig.key}
           sortDirection={sortConfig.direction}
           onSort={onSort}
           align="center"
+          tooltip="Price per 1,000 tokens"
         />
         {showSampleColumn && (
           <SortableHeader
