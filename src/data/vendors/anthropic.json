@@ -13,7 +13,7 @@
     "tokenLimit": 4096,
     "releaseDate": "2024-07-23",
     "isOpenSource": false,
-    "isHidden": true,
+    "isHidden": false,
     "pricing": {
       "id": 26,
       "modelId": 3,

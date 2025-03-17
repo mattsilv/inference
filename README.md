@@ -9,7 +9,8 @@ A comprehensive comparison tool for AI model pricing and specifications.
 # First time or after restart
 pnpm install              # Install dependencies
 pnpm run db:check         # Verify database is ready
-pnpm run dev              # Start development server
+pnpm run dev:fast         # Start development server with improved hot-reloading
+pnpm run dev              # Start standard development server (use if dev:fast has issues)
 
 # Data workflow
 pnpm run export-json      # Export database to JSON (with validation)
@@ -26,7 +27,8 @@ pnpm run db:reset         # Reset database if issues occur
 
 ```bash
 # Development
-pnpm run dev              # Start development server with Turbopack
+pnpm run dev:fast         # Start development server with improved hot-reloading
+pnpm run dev              # Start standard development server
 pnpm run build            # Build for production
 pnpm run start            # Start production server
 
@@ -82,7 +84,13 @@ npm install
 Run the development server:
 
 ```bash
-npm run dev
+pnpm run dev:fast   # For improved hot-reloading (recommended)
+```
+
+Or use the standard server if you encounter issues:
+
+```bash
+pnpm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

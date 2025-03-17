@@ -5,6 +5,8 @@
 - Build check: `pnpm build` to test the build
 - Start dev server: `pnpm dev` for local development with Next.js
 - Lint code: `pnpm lint` to check for code issues
+- Run tests: `pnpm test` to run all tests (Jest)
+- Run specific tests: `pnpm test src/components/pricing/__tests__/formatters.test.js` to run specific tests
 - Use our MPC servers when they will make it faster to solve issues
 
 ### Development and Build Process

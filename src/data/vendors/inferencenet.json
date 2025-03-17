@@ -10,7 +10,7 @@
     "precision": "FP8",
     "description": "A lightweight, cost-effective option ideal for experimentation with generative AI tasks.",
     "contextWindow": 128000,
-    "isOpenSource": true,
+    "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 28,
@@ -29,7 +29,7 @@
     "host": "Inference.net",
     "description": "A smaller model that balances affordability and functionality, suitable for general-purpose AI experimentation.",
     "contextWindow": 128000,
-    "isOpenSource": true,
+    "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 29,
@@ -69,7 +69,7 @@
     "precision": "FP16",
     "description": "A powerful model with strong reasoning and instruction-following capabilities, suitable for complex autonomous agent tasks.",
     "contextWindow": 128000,
-    "isOpenSource": true,
+    "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 31,
@@ -89,7 +89,7 @@
     "precision": "FP8",
     "description": "Known for its logical reasoning and problem-solving abilities, making it a good fit for agentic applications.",
     "contextWindow": 128000,
-    "isOpenSource": true,
+    "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 32,
@@ -109,13 +109,133 @@
     "precision": "FP8",
     "description": "Combines efficiency with high performance, ideal for building robust autonomous agents.",
     "contextWindow": 128000,
-    "isOpenSource": true,
+    "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 33,
       "modelId": 32,
       "inputText": 0.4,
       "outputText": 0.4
+    }
+  },
+  {
+    "id": 33,
+    "systemName": "infernet-deepseek-r1-fp8",
+    "displayName": "DeepSeek R1 (FP8)",
+    "categoryId": 1,
+    "parametersB": 236,
+    "vendorId": 7,
+    "host": "Inference.net",
+    "precision": "FP8",
+    "description": "A top-tier generative model with exceptional reasoning and instruction following abilities.",
+    "contextWindow": 128000,
+    "isOpenSource": false,
+    "isHidden": false,
+    "pricing": {
+      "id": 34,
+      "modelId": 33,
+      "inputText": 3,
+      "outputText": 3
+    }
+  },
+  {
+    "id": 34,
+    "systemName": "infernet-deepseek-v3-fp8",
+    "displayName": "DeepSeek V3 (FP8)",
+    "categoryId": 2,
+    "parametersB": 127,
+    "vendorId": 7,
+    "host": "Inference.net",
+    "precision": "FP8",
+    "description": "A powerful model with strong capabilities across a variety of text generation tasks.",
+    "contextWindow": 128000,
+    "isOpenSource": false,
+    "isHidden": false,
+    "pricing": {
+      "id": 35,
+      "modelId": 34,
+      "inputText": 1.2,
+      "outputText": 1.2
+    }
+  },
+  {
+    "id": 35,
+    "systemName": "infernet-llama-3.1-70b-instruct-fp16",
+    "displayName": "Llama 3.1 70B Instruct (FP16)",
+    "categoryId": 5,
+    "parametersB": 70,
+    "vendorId": 7,
+    "host": "Inference.net",
+    "precision": "FP16",
+    "description": "A robust reasoning-focused model suited for complex tasks requiring advanced capabilities.",
+    "contextWindow": 128000,
+    "isOpenSource": false,
+    "isHidden": false,
+    "pricing": {
+      "id": 36,
+      "modelId": 35,
+      "inputText": 0.4,
+      "outputText": 0.4
+    }
+  },
+  {
+    "id": 36,
+    "systemName": "infernet-llama-3.1-8b-instruct-fp16",
+    "displayName": "Llama 3.1 8B Instruct (FP16)",
+    "categoryId": 4,
+    "parametersB": 8,
+    "vendorId": 7,
+    "host": "Inference.net",
+    "precision": "FP16",
+    "description": "A balanced model offering better precision than its FP8 counterpart for more accurate results.",
+    "contextWindow": 128000,
+    "isOpenSource": false,
+    "isHidden": false,
+    "pricing": {
+      "id": 37,
+      "modelId": 36,
+      "inputText": 0.03,
+      "outputText": 0.03
+    }
+  },
+  {
+    "id": 37,
+    "systemName": "infernet-llama-3.2-11b-vision-instruct-fp16",
+    "displayName": "Llama 3.2 11B Vision Instruct (FP16)",
+    "categoryId": 3,
+    "parametersB": 11,
+    "vendorId": 7,
+    "host": "Inference.net",
+    "precision": "FP16",
+    "description": "A multimodal model capable of processing both text and images for various vision-language tasks.",
+    "contextWindow": 128000,
+    "isOpenSource": false,
+    "isHidden": false,
+    "pricing": {
+      "id": 38,
+      "modelId": 37,
+      "inputText": 0.055,
+      "outputText": 0.055
+    }
+  },
+  {
+    "id": 38,
+    "systemName": "infernet-llama-3.2-1b-instruct-fp16",
+    "displayName": "Llama 3.2 1B Instruct (FP16)",
+    "categoryId": 4,
+    "parametersB": 1,
+    "vendorId": 7,
+    "host": "Inference.net",
+    "precision": "FP16",
+    "description": "An extremely lightweight model ideal for simple tasks and rapid prototyping at minimal cost.",
+    "contextWindow": 128000,
+    "isOpenSource": false,
+    "isHidden": false,
+    "pricing": {
+      "id": 39,
+      "modelId": 38,
+      "inputText": 0.01,
+      "outputText": 0.01
     }
   }
 ]

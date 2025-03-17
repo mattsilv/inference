@@ -12,7 +12,7 @@
     "contextWindow": 8192,
     "tokenLimit": 4096,
     "releaseDate": "2024-04-18",
-    "isOpenSource": true,
+    "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 9,
@@ -34,7 +34,7 @@
     "contextWindow": 32768,
     "tokenLimit": 2048,
     "releaseDate": "2024-05-23",
-    "isOpenSource": true,
+    "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 10,
@@ -52,7 +52,7 @@
     "vendorId": 5,
     "host": "together",
     "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
-    "isOpenSource": true,
+    "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 24,
@@ -70,7 +70,7 @@
     "vendorId": 5,
     "host": "together",
     "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
-    "isOpenSource": true,
+    "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 25,

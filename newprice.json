@@ -56,14 +56,14 @@
   {
     "vendorName": "Google",
     "modelName": "gemini-2.0-flash",
-    "inputPrice": 3.5,
-    "outputPrice": 14.0
+    "inputPrice": 37.5,
+    "outputPrice": 150.0
   },
   {
     "vendorName": "Google",
     "modelName": "gemini-2.0-flash-thinking",
-    "inputPrice": 3.5,
-    "outputPrice": 14.0
+    "inputPrice": 37.5,
+    "outputPrice": 150.0
   },
   {
     "vendorName": "Groq",
