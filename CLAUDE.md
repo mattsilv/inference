@@ -150,15 +150,22 @@ This comprehensive approach ensures all manual changes to pricing data are prese
 
 ### Data Source of Truth
 
-- The **Prisma database** is the primary source of truth for all data
-- JSON files in `/src/data` are generated from the database
-- Changes made directly to the database are preserved through multiple safety mechanisms
+- The **Prisma database** is used for local data management
+- JSON files in `/src/data` are the primary source of truth for deployment
+- These JSON files are version controlled and used directly in the build process
 - To update data:
-  1. Use Prisma Studio (`npm run prisma:studio`) to edit the database
-  2. Run `npm run export-json` to regenerate JSON files (includes data integrity validation)
-  3. Run `npm run validate-models` to ensure data is valid
-  4. Run `npm run db:backup` to create a full database backup after important changes
-  5. Run `npm run pricing:backup` when making critical pricing changes
+  1. Use Prisma Studio (`npm run prisma:studio`) to edit the database locally
+  2. Run `npm run db:export` to regenerate all JSON files (includes data integrity validation)
+  3. Review the changes to the JSON files in git before committing
+  4. Commit both the database file AND the JSON files to ensure consistency
+  5. Run `npm run db:backup` to create a full database backup after important changes
+  6. Run `npm run pricing:backup` when making critical pricing changes
+  
+This approach ensures that:
+- The deployment environment doesn't need to access the database
+- What you test locally is exactly what gets deployed
+- Data consistency is maintained across all environments
+- No database operations are needed during the build process
 
 ### Export Data Integrity
 

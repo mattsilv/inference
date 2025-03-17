@@ -33,6 +33,10 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# Database-related files
+# Keep the database file in git to ensure consistent data across environments
+# prisma/dev.db
+
 # vercel
 .vercel
 

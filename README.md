@@ -4,23 +4,26 @@ A comprehensive comparison tool for AI model pricing and specifications.
 
 ## 🚀 Quick Setup (2 Terminal Setup)
 
-**Terminal 1: Database & Data**
+**Terminal 1: Development Server**
 ```bash
 # First time or after restart
 pnpm install              # Install dependencies
-pnpm run db:check         # Verify database is ready
-pnpm run dev:fast         # Start development server with improved hot-reloading
-pnpm run dev              # Start standard development server (use if dev:fast has issues)
+pnpm dev                  # Start development server 
+pnpm dev:fast             # Start server with improved hot-reloading (alternative)
 
-# Data workflow
-pnpm run export-json      # Export database to JSON (with validation)
+# Before committing changes
+pnpm test:build           # Validate JSON files and test production build
 ```
 
-**Terminal 2: Database Management**
+**Terminal 2: Data Management**
 ```bash
+# Data workflow (after making changes in Prisma Studio)
+pnpm db:export            # Export database to JSON files (with validation)
+pnpm db:backup            # Backup database before major changes
+
 # Only when needed
-pnpm run db:backup        # Backup database before changes
-pnpm run db:reset         # Reset database if issues occur
+pnpm db:reset             # Reset database if issues occur
+pnpm db:import            # Import from JSON (rare case if JSON edited directly)
 ```
 
 ## All Commands
@@ -107,27 +110,30 @@ The model data is organized in a vendor-based directory structure:
 
 ##### Source of Truth
 
-The SQLite database (managed by Prisma) is the primary source of truth for all model, vendor, and category data.
+This project follows a JSON-first approach for production:
 
-- The database schema is defined in `prisma/schema.prisma`
-- JSON files in `/src/data` are generated from the database
-- All data changes should be made through the database first, then exported to JSON
+- The JSON files in `/src/data` are the production source of truth
+- The SQLite database (managed by Prisma) is used for local data management
+- Both the database file and JSON files are committed to git
+- Production builds only use the JSON files (not the database)
 
 ##### Data Management Commands
 
-- `npm run prisma:studio` - Open Prisma Studio for database management
-- `npm run db:setup` - Set up database (create and seed)
-- `npm run db:reset` - Reset database (drop and recreate)
-- `npm run validate-models` - Check data for errors without generating models.json
-- `npm run generate-models` - Merge vendor files into models.json (runs automatically during build)
-- `npm run export-json` - Export database to JSON files
+- `pnpm db:export` - Export database to JSON files (includes validation)
+- `pnpm db:import` - Import JSON files into database (rare case)
+- `pnpm validate-json` - Validate JSON files for correctness
+- `pnpm prisma:studio` - Open Prisma Studio for database management
+- `pnpm db:setup` - Set up database (create and seed)
+- `pnpm db:reset` - Reset database (drop and recreate)
+- `pnpm test:build` - Test the production build process locally
 
 ##### Development Workflow
 
-1. Make data changes using Prisma Studio (`npm run prisma:studio`)
-2. Export changes to JSON files with `npm run export-json`
-3. Validate data with `npm run validate-models`
-4. Generate combined models.json with `npm run generate-models`
+1. Make data changes using Prisma Studio (`pnpm prisma:studio`)
+2. Export changes to JSON files with `pnpm db:export`
+3. Review JSON file changes in git
+4. Commit both database and JSON files together
+5. Test local production build with `pnpm test:build`
 
 ##### Automated Pricing Updates
 
