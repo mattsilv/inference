@@ -236,15 +236,19 @@ const PricingTable: React.FC<PricingTableProps> = ({
 
             {/* Category description and use case */}
             <div className="mb-4 bg-white rounded-lg p-4 shadow-sm">
-              <p className="text-gray-800 text-sm mb-2">
-                {category.description}
-              </p>
-              <div className="mt-2">
-                <p className="text-gray-700 font-medium text-xs mb-1">
-                  Example Use Case:
+              {category.description && (
+                <p className="text-gray-800 text-sm mb-2">
+                  {category.description}
                 </p>
-                <p className="text-gray-600 text-xs">{category.useCase}</p>
-              </div>
+              )}
+              {category.useCase && (
+                <div className="mt-2">
+                  <p className="text-gray-700 font-medium text-xs mb-1">
+                    Example Use Case:
+                  </p>
+                  <p className="text-gray-600 text-xs">{category.useCase}</p>
+                </div>
+              )}
             </div>
 
             {/* Desktop Table View */}
@@ -261,17 +265,23 @@ const PricingTable: React.FC<PricingTableProps> = ({
             {/* Dedicated Mobile View - A cohesive version of the data, consistent with desktop */}
             <div className="block md:hidden">
               {/* Category description and use case for mobile */}
-              <div className="mb-4 bg-white rounded-lg p-4 shadow-sm">
-                <p className="text-gray-800 text-sm mb-2">
-                  {category.description}
-                </p>
-                <div className="mt-2">
-                  <p className="text-gray-700 font-medium text-xs mb-1">
-                    Example Use Case:
-                  </p>
-                  <p className="text-gray-600 text-xs">{category.useCase}</p>
+              {(category.description || category.useCase) && (
+                <div className="mb-4 bg-white rounded-lg p-4 shadow-sm">
+                  {category.description && (
+                    <p className="text-gray-800 text-sm mb-2">
+                      {category.description}
+                    </p>
+                  )}
+                  {category.useCase && (
+                    <div className="mt-2">
+                      <p className="text-gray-700 font-medium text-xs mb-1">
+                        Example Use Case:
+                      </p>
+                      <p className="text-gray-600 text-xs">{category.useCase}</p>
+                    </div>
+                  )}
                 </div>
-              </div>
+              )}
               <MobileView
                 models={categoryModels}
                 categories={categories}

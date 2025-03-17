@@ -254,8 +254,8 @@ const MobileView: React.FC<MobileViewProps> = ({
                   model={model}
                   categories={categories}
                   vendors={vendors}
-                  inputText={inputText}
-                  outputText={outputText}
+                  inputText={inputText || ""}
+                  outputText={outputText || ""}
                 />
               </div>
             </div>

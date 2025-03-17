@@ -62,13 +62,13 @@ describe('MobileView', () => {
   const mockCategories: Category[] = [
     { 
       id: 1, 
-      name: 'Top-tier', 
+      name: 'Top-tier',
       description: 'Best performance models available',
       useCase: 'Complex reasoning and generation tasks'
     },
     { 
       id: 2, 
-      name: 'Mid-range', 
+      name: 'Mid-range',
       description: 'Good balance of performance and cost',
       useCase: 'Everyday tasks and applications'
     }
