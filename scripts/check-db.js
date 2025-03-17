@@ -59,18 +59,29 @@ async function checkDatabase() {
       console.log(`Found ${backupFiles.length} database backups.`);
       console.log(`Most recent backup: ${backupFiles[0]}`);
       
-      const proceed = execSync('read -p "Restore from the most recent backup? (Y/n): " choice && echo $choice', { encoding: 'utf8' }).trim();
+      // Check if we're in CI environment
+      const isCI = process.env.CI === 'true' || process.env.NETLIFY === 'true';
       
-      if (proceed.toLowerCase() !== 'n') {
-        const latestBackup = path.join(backupDir, backupFiles[0]);
-        console.log(`Restoring from ${latestBackup}...`);
-        fs.copyFileSync(latestBackup, dbPath);
-        console.log('Database restored from backup. Checking data integrity...');
-        // Continue with the rest of the checks
-      } else {
-        console.log('Proceeding with fresh database setup...');
+      if (isCI) {
+        // In CI, always create a fresh database
+        console.log('CI environment detected. Creating fresh database...');
         resetDatabase();
         return;
+      } else {
+        // In interactive environment, ask user
+        const proceed = execSync('read -p "Restore from the most recent backup? (Y/n): " choice && echo $choice', { encoding: 'utf8' }).trim();
+        
+        if (proceed.toLowerCase() !== 'n') {
+          const latestBackup = path.join(backupDir, backupFiles[0]);
+          console.log(`Restoring from ${latestBackup}...`);
+          fs.copyFileSync(latestBackup, dbPath);
+          console.log('Database restored from backup. Checking data integrity...');
+          // Continue with the rest of the checks
+        } else {
+          console.log('Proceeding with fresh database setup...');
+          resetDatabase();
+          return;
+        }
       }
     } else {
       console.log('No backups found. Setting up fresh database...');
@@ -302,11 +313,18 @@ function resetDatabase() {
         output: process.stdout
       });
       
-      const proceed = execSync('read -p "Full backup failed. Continue with database reset? (y/N): " choice && echo $choice', { encoding: 'utf8' }).trim();
+      // Check if we're in CI environment
+      const isCI = process.env.CI === 'true' || process.env.NETLIFY === 'true';
       
-      if (proceed.toLowerCase() !== 'y') {
-        console.log('Database reset cancelled by user.');
-        process.exit(0);
+      if (isCI) {
+        console.log('CI environment detected. Continuing with database reset despite backup failure.');
+      } else {
+        const proceed = execSync('read -p "Full backup failed. Continue with database reset? (y/N): " choice && echo $choice', { encoding: 'utf8' }).trim();
+        
+        if (proceed.toLowerCase() !== 'y') {
+          console.log('Database reset cancelled by user.');
+          process.exit(0);
+        }
       }
     }
     

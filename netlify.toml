@@ -1,10 +1,14 @@
 [build]
-  command = "npm run build:netlify"
+  command = "npm run build:ci"
   publish = ".next"
 
 [build.environment]
   DATABASE_URL = "file:./prisma/dev.db"
   NODE_VERSION = "20"
+  NETLIFY = "true"
+  CI = "true"
+  # Skip unnecessary interactions
+  SKIP_DB_INTERACTIONS = "true"
 
 [dev]
   command = "npm run dev"
