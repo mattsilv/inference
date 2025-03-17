@@ -31,6 +31,8 @@ export interface Pricing {
 export interface Category {
   id: number;
   name: string;
+  description?: string;
+  useCase?: string;
   models?: AIModel[];
 }
 

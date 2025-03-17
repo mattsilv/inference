@@ -157,7 +157,16 @@ export async function loadDataFromPrisma(): Promise<{
     
     // Establish relationships
     for (const model of models) {
-      model.category = categories.find(c => c.id === model.categoryId);
+      const category = categories.find(c => c.id === model.categoryId);
+      // Map the category fields to match the Category interface
+      if (category) {
+        model.category = {
+          id: category.id,
+          name: category.name,
+          description: category.description === null ? undefined : category.description,
+          useCase: category.useCase === null ? undefined : category.useCase,
+        };
+      }
       model.vendor = vendors.find(v => v.id === model.vendorId);
     }
     
@@ -171,7 +180,10 @@ export async function loadDataFromPrisma(): Promise<{
     
     // Create filtered categories and vendors with only visible models
     const categoriesWithVisibleModels = visibleCategories.map(category => ({
-      ...category,
+      id: category.id,
+      name: category.name,
+      description: category.description === null ? undefined : category.description,
+      useCase: category.useCase === null ? undefined : category.useCase,
       models: visibleModels.filter(m => m.categoryId === category.id),
     }));
     

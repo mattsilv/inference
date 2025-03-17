@@ -1,9 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { AIModel, Category, Vendor } from '@/lib/types';
-import { formatCost, calculateTotalCost, formatPrice } from './formatters';
-import { getVendorName, getVendorPricingUrl, getVendorModelsListUrl } from './helpers';
+import React, { useState } from "react";
+import { AIModel, Category, Vendor } from "@/lib/types";
+import { formatCost, calculateTotalCost, formatPrice } from "./formatters";
+import {
+  getVendorName,
+  getVendorPricingUrl,
+  getVendorModelsListUrl,
+} from "./helpers";
 
 interface TableRowProps {
   model: AIModel;
@@ -14,26 +18,27 @@ interface TableRowProps {
   isEven?: boolean;
 }
 
-const TableRow: React.FC<TableRowProps> = ({ 
-  model, 
+const TableRow: React.FC<TableRowProps> = ({
+  model,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  categories, 
-  vendors, 
-  inputText = "", 
+  categories,
+  vendors,
+  inputText = "",
   outputText = "",
-  isEven = false
+  isEven = false,
 }) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  
+
   // Calculate costs if we have text samples and pricing information
-  const costDetails = (inputText && outputText && model.pricing) 
-    ? calculateTotalCost(
-        inputText, 
-        outputText, 
-        model.pricing.inputText, 
-        model.pricing.outputText
-      ) 
-    : { total: undefined, inputCost: undefined, outputCost: undefined };
+  const costDetails =
+    inputText && outputText && model.pricing
+      ? calculateTotalCost(
+          inputText,
+          outputText,
+          model.pricing.inputText,
+          model.pricing.outputText
+        )
+      : { total: undefined, inputCost: undefined, outputCost: undefined };
 
   const handleMouseEnter = () => {
     setTooltipVisible(true);
@@ -44,21 +49,21 @@ const TableRow: React.FC<TableRowProps> = ({
   };
 
   const getCostTextColor = (cost: number | undefined) => {
-    if (cost === undefined) return 'text-gray-500';
-    return cost < 0.01 
-      ? 'text-green-600' 
-      : cost < 0.05 
-        ? 'text-blue-600' 
-        : 'text-gray-900';
+    if (cost === undefined) return "text-gray-500";
+    return cost < 0.01
+      ? "text-green-600"
+      : cost < 0.05
+      ? "text-blue-600"
+      : "text-gray-900";
   };
 
   return (
-    <tr className={`hover:bg-gray-50 ${isEven ? 'bg-gray-50/30' : 'bg-white'}`}>
+    <tr className={`hover:bg-gray-50 ${isEven ? "bg-gray-50/30" : "bg-white"}`}>
       <td className="px-6 py-4 max-w-xs w-1/3">
-        <div className="font-medium text-gray-900 overflow-hidden text-ellipsis">
-          <a 
-            href={getVendorModelsListUrl(model.vendorId, vendors)} 
-            target="_blank" 
+        <div className="font-medium text-sm text-gray-900 overflow-hidden text-ellipsis">
+          <a
+            href={getVendorModelsListUrl(model.vendorId, vendors)}
+            target="_blank"
             rel="noopener noreferrer"
             className="hover:underline block truncate"
             title={model.displayName}
@@ -73,9 +78,9 @@ const TableRow: React.FC<TableRowProps> = ({
         </div>
       </td>
       <td className="px-6 py-4 w-1/6 text-sm text-gray-500">
-        <a 
-          href={getVendorPricingUrl(model.vendorId, vendors)} 
-          target="_blank" 
+        <a
+          href={getVendorPricingUrl(model.vendorId, vendors)}
+          target="_blank"
           rel="noopener noreferrer"
           className="hover:underline"
         >
@@ -94,15 +99,19 @@ const TableRow: React.FC<TableRowProps> = ({
           : "N/A"}
       </td>
       {inputText && outputText && (
-        <td 
+        <td
           className="px-6 py-4 w-1/6 text-center text-sm relative"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <span className={`font-medium cursor-help ${getCostTextColor(costDetails.total)}`}>
+          <span
+            className={`font-medium cursor-help ${getCostTextColor(
+              costDetails.total
+            )}`}
+          >
             {formatCost(costDetails.total)}
           </span>
-          
+
           {/* Cost breakdown tooltip */}
           {tooltipVisible && costDetails.total !== undefined && (
             <div className="absolute z-10 right-16 -top-1 bg-white border border-gray-200 rounded-md shadow-lg p-3 text-xs w-48">

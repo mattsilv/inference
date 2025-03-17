@@ -3,11 +3,11 @@ import { loadData } from "@/lib/dataService";
 import Link from "next/link";
 
 // Add a cache revalidation hint for development to improve hot reloading
-export const dynamic = 'auto';
+export const dynamic = "auto";
 
 export default async function Home() {
   // Load data with relationships established
-  // This will use Prisma in development and JSON in production  
+  // This will use Prisma in development and JSON in production
   const { models, categories, vendors } = await loadData();
 
   return (
@@ -18,23 +18,34 @@ export default async function Home() {
           categories={categories}
           vendors={vendors}
         />
-        <div className="container mx-auto px-4 pt-2 pb-6">
+        <div
+          className="px-4 pt-2 pb-6"
+          style={{ maxWidth: "var(--content-max-width)", margin: "0 auto" }}
+        >
           <p className="text-gray-600 text-center max-w-2xl mx-auto">
             Navigate the complex landscape of AI models with ease. This tool
             helps developers find the right model for their projects by
             comparing pricing across providers. We are also working on improving
             our model categorizations. If you have suggestions for how we can
-            improve our grouping or tags/categories, please create an <Link
+            improve our grouping or tags/categories, please create an{" "}
+            <Link
               href="https://github.com/mattsilv/inference/issues"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline">issue in our GitHub repo</Link>.
+              className="text-blue-600 hover:underline"
+            >
+              issue in our GitHub repo
+            </Link>
+            .
           </p>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="container mx-auto mt-8 mb-4 px-4 border-t border-gray-200 pt-6">
+      <footer
+        className="mt-8 mb-4 px-4 border-t border-gray-200 pt-6"
+        style={{ maxWidth: "var(--content-max-width)", margin: "0 auto" }}
+      >
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600 mb-4">
           <div className="flex space-x-6">
             <Link

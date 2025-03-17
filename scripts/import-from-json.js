@@ -29,17 +29,21 @@ async function main() {
     const categoriesPath = path.join(dataDir, 'categories.json');
     const categories = JSON.parse(fs.readFileSync(categoriesPath, 'utf8'));
     
-    // Clear existing categories
-    await prisma.category.deleteMany();
-    
-    // Insert new categories with their IDs preserved
+    // Update existing categories instead of deleting them
     for (const category of categories) {
-      await prisma.category.create({
-        data: {
+      await prisma.category.upsert({
+        where: { id: category.id },
+        update: {
+          name: category.name,
+          description: category.description || '',
+          // Handle the new fields
+          useCase: category.useCase || ''
+        },
+        create: {
           id: category.id,
           name: category.name,
-          displayOrder: category.displayOrder || 0,
-          description: category.description || ''
+          description: category.description || '',
+          useCase: category.useCase || ''
         }
       });
     }
@@ -51,18 +55,20 @@ async function main() {
     const vendorsPath = path.join(dataDir, 'vendors.json');
     const vendors = JSON.parse(fs.readFileSync(vendorsPath, 'utf8'));
     
-    // Clear existing vendors
-    await prisma.vendor.deleteMany();
-    
-    // Insert new vendors with their IDs preserved
+    // Update existing vendors instead of deleting them
     for (const vendor of vendors) {
-      await prisma.vendor.create({
-        data: {
+      await prisma.vendor.upsert({
+        where: { id: vendor.id },
+        update: {
+          name: vendor.name,
+          pricingUrl: vendor.pricingUrl,
+          modelsListUrl: vendor.modelsListUrl
+        },
+        create: {
           id: vendor.id,
           name: vendor.name,
-          website: vendor.website || '',
-          logoUrl: vendor.logoUrl || '',
-          description: vendor.description || ''
+          pricingUrl: vendor.pricingUrl,
+          modelsListUrl: vendor.modelsListUrl
         }
       });
     }
