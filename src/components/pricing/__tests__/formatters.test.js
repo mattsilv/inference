@@ -8,7 +8,8 @@ import {
   estimateTokenCount, 
   calculateInputCost, 
   calculateOutputCost,
-  calculateTotalCost 
+  calculateTotalCost,
+  formatPrice
 } from '../formatters';
 
 describe('formatters', () => {
@@ -155,6 +156,46 @@ describe('formatters', () => {
     
     test('should return N/A for undefined token counts', () => {
       expect(formatTokens(undefined)).toBe('N/A');
+    });
+  });
+
+  // CRITICAL TESTS FOR PRICE FORMATTING
+  // These tests ensure we maintain the correct price display format
+  // All pricing should be shown per MILLION tokens
+  describe('formatPrice', () => {
+    test('should format prices per million tokens without scaling', () => {
+      // Test regular model pricing (typically $1-$50 per million tokens)
+      expect(formatPrice(10)).toBe('$10.000');
+      expect(formatPrice(0.5)).toBe('$0.500');
+      expect(formatPrice(30)).toBe('$30.000');
+    });
+
+    test('should format Gemini 2.0 Flash prices correctly as per million tokens', () => {
+      // The error that triggered this test - Gemini pricing at 37.5 per million tokens
+      expect(formatPrice(37.5)).toBe('$37.500');
+      expect(formatPrice(150)).toBe('$150.000');
+    });
+
+    test('should handle very low and very high prices as per million tokens', () => {
+      // Small open-source models with very low pricing
+      expect(formatPrice(0.02)).toBe('$0.020');
+      // Expensive models like GPT-4 series
+      expect(formatPrice(75)).toBe('$75.000');
+    });
+    
+    test('should never divide the input price by 1000', () => {
+      // Repeat of the error test case - make sure we don't divide by 1000
+      // Gemini 2.0 Flash input: 37.5 -> should display as 37.500, not 0.038
+      const inputPrice = 37.5;
+      const formattedPrice = formatPrice(inputPrice);
+      // Should not be $0.038 (which would be if we divided by 1000)
+      expect(formattedPrice).not.toBe('$0.038');
+      // Should be $37.500
+      expect(formattedPrice).toBe('$37.500');
+    });
+
+    test('should return N/A for undefined prices', () => {
+      expect(formatPrice(undefined)).toBe('N/A');
     });
   });
 });

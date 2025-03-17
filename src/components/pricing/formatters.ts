@@ -15,12 +15,24 @@ export const formatCost = (cost: number | undefined): string => {
   return `$${cost.toFixed(3)}`;
 };
 
-// Format price per million tokens with appropriate scale
+// Format price per million tokens
+// IMPORTANT: All prices in the database are stored as dollars per MILLION tokens
+// Never divide by 1000 or any other value when displaying - show the raw value
 export const formatPrice = (pricePerMillion: number | undefined): string => {
   if (pricePerMillion === undefined) return 'N/A';
   
-  // Always display as $ per 1000 tokens for consistency and readability
-  return `$${(pricePerMillion / 1000).toFixed(3)}`;
+  // Sanity check to detect potential errors in our pricing data
+  // This helps catch if we incorrectly enter price per token instead of per million tokens
+  // Most models should cost between $0.001 and $200 per million tokens
+  if (pricePerMillion > 0 && pricePerMillion < 0.0001) {
+    console.warn(`WARNING: Price ${pricePerMillion} seems too low per million tokens. Validate data input.`);
+  }
+  if (pricePerMillion > 500) {
+    console.warn(`WARNING: Price ${pricePerMillion} seems unusually high per million tokens. Validate data input.`);
+  }
+  
+  // Display as $ per million tokens - this is the industry standard for LLM pricing
+  return `$${pricePerMillion.toFixed(3)}`;
 };
 
 // Format token window (e.g., 128000 -> "128K")
