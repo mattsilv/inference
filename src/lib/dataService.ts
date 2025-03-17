@@ -79,7 +79,10 @@ export function loadDataFromJson(): {
     // Filter out hidden models for frontend display
     const visibleModels = models.filter(model => !model.isHidden);
     
-    for (const category of categories) {
+    // Filter out the Inactive category (id: 6)
+    const visibleCategories = categories.filter(category => category.id !== 6);
+    
+    for (const category of visibleCategories) {
       category.models = visibleModels.filter(m => m.categoryId === category.id);
     }
     
@@ -87,7 +90,7 @@ export function loadDataFromJson(): {
       vendor.models = visibleModels.filter(m => m.vendorId === vendor.id);
     }
     
-    return { models: visibleModels, categories, vendors };
+    return { models: visibleModels, categories: visibleCategories, vendors };
   } catch (error) {
     console.error('Error loading data from JSON:', error);
     throw new Error(`Failed to load data from JSON: ${error}`);
@@ -163,8 +166,11 @@ export async function loadDataFromPrisma(): Promise<{
     // Filter out hidden models for frontend display
     const visibleModels = models.filter(model => !model.isHidden);
     
+    // Filter out the Inactive category (id: 6)
+    const visibleCategories = categories.filter(category => category.id !== 6);
+    
     // Create filtered categories and vendors with only visible models
-    const categoriesWithVisibleModels = categories.map(category => ({
+    const categoriesWithVisibleModels = visibleCategories.map(category => ({
       ...category,
       models: visibleModels.filter(m => m.categoryId === category.id),
     }));
