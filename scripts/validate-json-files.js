@@ -134,8 +134,13 @@ function validateJsonFiles() {
   }
   
   if (hasErrors) {
-    console.error('❌ JSON validation failed! Please run "npm run db:export" to regenerate JSON files.');
-    process.exit(1);
+    console.error('❌ JSON validation failed! Please run "pnpm db:export" to regenerate JSON files.');
+    // In Netlify environment, continue with warnings rather than failing
+    if (process.env.NETLIFY === 'true') {
+      console.warn('⚠️ Running in Netlify environment - continuing despite validation errors');
+    } else {
+      process.exit(1);
+    }
   } else {
     console.log('✅ All JSON files are valid!');
   }

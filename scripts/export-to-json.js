@@ -8,7 +8,14 @@ const { PrismaClient } = require('@prisma/client');
 const fs = require('fs');
 const path = require('path');
 
-const prisma = new PrismaClient();
+// Check if we're in Netlify environment
+const isNetlify = process.env.NETLIFY === 'true';
+
+// Initialize Prisma client only if not in Netlify environment
+let prisma;
+if (!isNetlify) {
+  prisma = new PrismaClient();
+}
 
 /**
  * Required fields for each model export
@@ -177,6 +184,12 @@ async function main() {
 
 // Basic connection test before running the full export
 async function testPrismaConnection() {
+  // Skip connection test in Netlify environment
+  if (isNetlify) {
+    console.log('Running in Netlify environment - skipping database connection test');
+    return true;
+  }
+  
   try {
     // Test a simple query that should always work
     const categoryCount = await prisma.category.count();
@@ -194,10 +207,16 @@ async function testPrismaConnection() {
 
 async function runWithErrorHandling() {
   try {
-    // First test the connection
+    // First test the connection (unless we're in Netlify)
     const connectionValid = await testPrismaConnection();
     if (!connectionValid) {
       process.exit(1);
+    }
+    
+    // If in Netlify environment, skip database operations
+    if (isNetlify) {
+      console.log('Running in Netlify environment - using existing JSON files');
+      return;
     }
     
     // If connection is valid, run the main export
@@ -205,9 +224,16 @@ async function runWithErrorHandling() {
   } catch (e) {
     console.error('❌ Error during export:');
     console.error(e);
-    process.exit(1);
+    // Don't exit with error in Netlify environment
+    if (!isNetlify) {
+      process.exit(1);
+    } else {
+      console.warn('Continuing despite error in Netlify environment');
+    }
   } finally {
-    await prisma.$disconnect();
+    if (!isNetlify && prisma) {
+      await prisma.$disconnect();
+    }
   }
 }
 

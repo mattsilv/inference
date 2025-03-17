@@ -408,9 +408,9 @@ module.exports = {
 
 // Run the check if script is executed directly
 if (require.main === module) {
-  // Skip DB check if environment variable is set
-  if (process.env.SKIP_DB_CHECK === 'true') {
-    console.log('Skipping database check (SKIP_DB_CHECK=true)');
+  // Skip DB check if environment variable is set or in Netlify environment
+  if (process.env.SKIP_DB_CHECK === 'true' || process.env.NETLIFY === 'true') {
+    console.log(`Skipping database check (SKIP_DB_CHECK=${process.env.SKIP_DB_CHECK}, NETLIFY=${process.env.NETLIFY})`);
   } else {
     checkDatabase()
       .catch((error) => {
