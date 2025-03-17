@@ -108,9 +108,12 @@ const MobileView: React.FC<MobileViewProps> = ({
   const calculateSampleCost = (model: AIModel) => {
     if (!model.pricing || !inputText || !outputText) return "N/A";
 
-    const inputCost = calculateInputCost(inputText, model.pricing.inputText);
+    const inputCost = calculateInputCost(
+      inputText as string, 
+      model.pricing.inputText
+    );
     const outputCost = calculateOutputCost(
-      outputText,
+      outputText as string,
       model.pricing.outputText
     );
 
@@ -254,8 +257,8 @@ const MobileView: React.FC<MobileViewProps> = ({
                   model={model}
                   categories={categories}
                   vendors={vendors}
-                  inputText={inputText || ""}
-                  outputText={outputText || ""}
+                  inputText={(inputText as string) || ""}
+                  outputText={(outputText as string) || ""}
                 />
               </div>
             </div>

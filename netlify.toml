@@ -1,5 +1,5 @@
 [build]
-  command = "pnpm install && NETLIFY=true SKIP_DB_CHECK=true pnpm build"
+  command = "pnpm install && NETLIFY=true SKIP_DB_CHECK=true pnpm build:netlify"
   publish = ".next"
 
 [build.environment]
