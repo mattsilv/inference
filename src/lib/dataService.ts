@@ -72,17 +72,9 @@ export function loadDataFromJson(): {
     
     // Establish relationships
     for (const model of models) {
-      const category = categories.find(c => c.id === model.categoryId);
-      if (category) {
-        model.category = {
-          id: category.id,
-          name: category.name,
-          // Handle optional properties safely
-          description: category.description || undefined,
-          useCase: category.useCase || undefined
-        };
-      }
-      model.vendor = vendors.find(v => v.id === model.vendorId);
+      // Use type assertion to avoid TypeScript issues with JSON-sourced objects
+      model.category = categories.find(c => c.id === model.categoryId) as Category;
+      model.vendor = vendors.find(v => v.id === model.vendorId) as Vendor;
     }
     
     // Filter out hidden models for frontend display
@@ -92,13 +84,7 @@ export function loadDataFromJson(): {
     const visibleCategories = categories.filter(category => category.id !== 6);
     
     for (const category of visibleCategories) {
-      // Ensure category has all required properties to satisfy TypeScript
-      if (!('description' in category)) {
-        category.description = undefined;
-      }
-      if (!('useCase' in category)) {
-        category.useCase = undefined;
-      }
+      // Using type assertion since we know the JSON structure matches our interface
       category.models = visibleModels.filter(m => m.categoryId === category.id);
     }
     
@@ -176,12 +162,8 @@ export async function loadDataFromPrisma(): Promise<{
       const category = categories.find(c => c.id === model.categoryId);
       // Map the category fields to match the Category interface
       if (category) {
-        model.category = {
-          id: category.id,
-          name: category.name,
-          description: category.description === null ? undefined : category.description,
-          useCase: category.useCase === null ? undefined : category.useCase,
-        };
+        // Use type assertion for simpler code
+        model.category = category as Category;
       }
       model.vendor = vendors.find(v => v.id === model.vendorId);
     }
@@ -196,12 +178,9 @@ export async function loadDataFromPrisma(): Promise<{
     
     // Create filtered categories and vendors with only visible models
     const categoriesWithVisibleModels = visibleCategories.map(category => ({
-      id: category.id,
-      name: category.name,
-      description: category.description === null ? undefined : category.description,
-      useCase: category.useCase === null ? undefined : category.useCase,
+      ...category, // Use spread to copy all properties
       models: visibleModels.filter(m => m.categoryId === category.id),
-    }));
+    }) as Category);
     
     const vendorsWithVisibleModels = vendors.map(vendor => ({
       ...vendor,
