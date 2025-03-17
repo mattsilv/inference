@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# Pre-commit hook to ensure database changes are exported to JSON files
+
+echo "🔍 Checking for database changes..."
+
+# Export database to JSON
+echo "📦 Exporting database to JSON files..."
+npm run export-json
+
+# If export was successful, stage the JSON files
+if [ $? -eq 0 ]; then
+  echo "✅ Database exported successfully."
+  
+  # Add generated JSON files to the commit
+  git add src/data/*.json
+  git add src/data/vendors/*.json
+  
+  echo "✅ Added generated JSON files to the commit."
+else
+  echo "❌ Error exporting database. Please fix the issues before committing."
+  exit 1
+fi
+
+# Validate models
+echo "🔍 Validating models..."
+npm run validate-models
+
+if [ $? -ne 0 ]; then
+  echo "❌ Model validation failed. Please fix the issues before committing."
+  exit 1
+fi
+
+# Validate pricing data
+echo "💰 Validating pricing data..."
+npm run pricing:validate
+
+if [ $? -ne 0 ]; then
+  echo "❌ Pricing validation failed. Please fix the issues before committing."
+  exit 1
+fi
+
+echo "✅ All checks passed!"
+exit 0

@@ -43,14 +43,14 @@
     "parametersB": 100,
     "vendorId": 3,
     "host": "google",
-    "description": "Google's fast multimodal model - updated pricing Mar 2025",
+    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
     "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 20,
       "modelId": 20,
-      "inputText": 0.0375,
-      "outputText": 0.15
+      "inputText": 37.5,
+      "outputText": 150
     }
   },
   {
@@ -61,14 +61,14 @@
     "parametersB": 100,
     "vendorId": 3,
     "host": "google",
-    "description": "Google's fast thinking-heavy multimodal model - updated pricing Mar 2025",
+    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
     "isOpenSource": false,
-    "isHidden": false,
+    "isHidden": true,
     "pricing": {
       "id": 21,
       "modelId": 21,
-      "inputText": 0.0375,
-      "outputText": 0.15
+      "inputText": 37.5,
+      "outputText": 150
     }
   }
 ]

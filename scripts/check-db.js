@@ -366,6 +366,14 @@ function resetDatabase() {
       }
     }
     
+    // Export JSON data after database reset and restoration
+    try {
+      execSync('npm run export-json', { stdio: 'inherit' });
+      console.log('✅ Database exported to JSON files successfully');
+    } catch (exportError) {
+      console.error('⚠️ Failed to export database to JSON:', exportError);
+    }
+    
     console.log('Database setup completed successfully.');
   } catch (error) {
     console.error('Failed to reset database:', error);

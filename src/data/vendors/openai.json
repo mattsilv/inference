@@ -35,8 +35,8 @@
     "pricing": {
       "id": 22,
       "modelId": 22,
-      "inputText": 15,
-      "outputText": 60
+      "inputText": 75,
+      "outputText": 150
     }
   },
   {
@@ -53,8 +53,8 @@
     "pricing": {
       "id": 23,
       "modelId": 23,
-      "inputText": 1.5,
-      "outputText": 6
+      "inputText": 0.15,
+      "outputText": 0.6
     }
   },
   {

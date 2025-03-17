@@ -1,0 +1,44 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Generate Prisma client
+      run: npx prisma generate
+      
+    - name: Export database to JSON
+      run: npm run export-json
+      
+    - name: Generate models.json
+      run: npm run generate-models
+      
+    - name: Validate models
+      run: npm run validate-models
+      
+    - name: Validate pricing data
+      run: npm run pricing:validate
+      
+    - name: Build
+      run: npm run build
+      
+    - name: Run tests
+      run: npm test

@@ -180,6 +180,15 @@ async function main() {
   }
   
   console.log('Full database seeding and restoration process completed.');
+  
+  // Export database to JSON
+  try {
+    console.log('Exporting database to JSON files...');
+    require('child_process').execSync('npm run export-json', { stdio: 'inherit' });
+    console.log('✅ Database exported to JSON files after seeding');
+  } catch (exportError) {
+    console.error('⚠️ Failed to export database to JSON:', exportError);
+  }
 }
 
 main()

@@ -22,6 +22,26 @@
 
 IMPORTANT: Do NOT run Prisma Studio, npx commands, or other database commands directly. Ask the user first; they will often have these running in the background.
 
+### Data Synchronization Guidelines
+
+CRITICAL: Always ensure the database and JSON files are kept in sync.
+
+1. **Export after DB changes**: Any time you modify the database, run `npm run export-json` to update the JSON files.
+2. **Pre-commit hook**: Use `npm run prepare-hooks` to install the pre-commit hook that automatically exports database changes.
+3. **Netlify build process**: The Netlify build process has been updated to validate and ensure data consistency.
+4. **GitHub Actions**: CI/CD workflows validate database exports match expected formats.
+5. **Deployment checks**: Before deployments, run `npm run pricing:validate` to catch pricing errors.
+
+These are the critical points where database changes are exported to JSON:
+- During `npm run build` (prebuild hook)
+- After database seeding (`prisma/seed.js`)
+- After database restoration (`scripts/check-db.js`)
+- During the Netlify build process
+- When the pre-commit hook runs
+- After running `npm run db:reset`
+
+Always verify the JSON files reflect the latest database state before deploying to production.
+
 - Validate models: `npm run validate-models`
 - Generate models.json: `npm run generate-models`
 - Export DB to JSON: `npm run export-json`

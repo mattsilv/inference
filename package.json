@@ -8,9 +8,9 @@
     "dev:fast": "next dev --turbo",
     "dev:hmr": "NODE_OPTIONS='--no-warnings' next dev --turbo",
     "dev:quick": "NODE_OPTIONS='--no-warnings' SKIP_DB_CHECK=true next dev --turbo",
-    "prebuild": "npm run generate-models",
+    "prebuild": "npm run export-json && npm run generate-models",
     "build": "next build",
-    "build:netlify": "prisma generate && npm run generate-models && next build",
+    "build:netlify": "prisma generate && npm run export-json && npm run generate-models && npm run pricing:validate && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
@@ -35,7 +35,8 @@
     "pricing:validate": "node scripts/pricing-validator.js",
     "models:hide": "node scripts/hide-models.js",
     "models:unhide": "node scripts/hide-models.js -",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prepare-hooks": "cp .github/hooks/pre-commit .husky/pre-commit && chmod +x .husky/pre-commit"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [

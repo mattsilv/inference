@@ -35,7 +35,7 @@
     "tokenLimit": 4096,
     "releaseDate": "2023-12-15",
     "isOpenSource": false,
-    "isHidden": false,
+    "isHidden": true,
     "pricing": {
       "id": 8,
       "modelId": 8,
