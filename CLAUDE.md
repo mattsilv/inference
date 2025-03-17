@@ -64,7 +64,21 @@ sqlite3 prisma/dev.db ".tables"
 -- Other common queries
 sqlite3 prisma/dev.db "SELECT * FROM AIModel;"
 sqlite3 prisma/dev.db "SELECT * FROM Vendor;"
+sqlite3 prisma/dev.db "SELECT * FROM Pricing;"
 ```
+
+## Schema Enhancement Roadmap
+
+The following enhancements are planned for the database schema:
+
+1. **Caching Pricing Fields**: Add fields to support prompt caching pricing for models like Claude 3.5 Haiku:
+   ```sql
+   -- Future fields to add to Pricing table
+   cachingWriteText REAL,  -- Price per million tokens for caching writes
+   cachingReadText REAL,   -- Price per million tokens for caching reads
+   ```
+
+2. **Until schema migration is performed**: Store caching pricing information in the model description field.
 
 ### Pricing Data Management
 

@@ -219,7 +219,7 @@
     "parametersB": 20,
     "vendorId": 2,
     "host": "anthropic",
-    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
+    "description": "Claude 3.5 Haiku - Fastest, most cost-effective model. 200K context window. 50% discount with batch processing. Prompt caching write:  / MTok. Prompt caching read: /bin/zsh.08 / MTok.",
     "isOpenSource": false,
     "isHidden": false,
     "pricing": {
