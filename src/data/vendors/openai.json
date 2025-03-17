@@ -3,7 +3,7 @@
     "id": 1,
     "systemName": "gpt-4o",
     "displayName": "GPT-4o",
-    "categoryId": 1,
+    "categoryId": 2,
     "parametersB": 1500,
     "vendorId": 1,
     "host": "api.openai.com",
@@ -24,12 +24,12 @@
   {
     "id": 22,
     "systemName": "gpt-4.5",
-    "displayName": "ChatGPT 4.5",
+    "displayName": "GPT 4.5",
     "categoryId": 1,
     "parametersB": 200,
     "vendorId": 1,
     "host": "openai",
-    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
+    "description": "PLACEHOLDER PRICING - Pricing is high and this is not a directly comparable model to GPT-4o",
     "isOpenSource": false,
     "isHidden": false,
     "pricing": {
