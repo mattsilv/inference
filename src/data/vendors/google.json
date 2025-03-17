@@ -9,7 +9,7 @@
     "host": "google",
     "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
     "isOpenSource": false,
-    "isHidden": true,
+    "isHidden": false,
     "pricing": {
       "id": 18,
       "modelId": 18,
@@ -27,7 +27,7 @@
     "host": "google",
     "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
     "isOpenSource": false,
-    "isHidden": true,
+    "isHidden": false,
     "pricing": {
       "id": 19,
       "modelId": 19,
@@ -43,14 +43,14 @@
     "parametersB": 100,
     "vendorId": 3,
     "host": "google",
-    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
+    "description": "Gemini 2.0 Flash - Input text: $0.0375/M chars, Output text: $0.15/M chars",
     "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 20,
       "modelId": 20,
-      "inputText": 3.5,
-      "outputText": 14
+      "inputText": 37.5,
+      "outputText": 150
     }
   },
   {
@@ -61,14 +61,14 @@
     "parametersB": 100,
     "vendorId": 3,
     "host": "google",
-    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
+    "description": "Gemini 2.0 Flash Thinking - Input text: $0.0375/M chars, Output text: $0.15/M chars",
     "isOpenSource": false,
     "isHidden": false,
     "pricing": {
       "id": 21,
       "modelId": 21,
-      "inputText": 3.5,
-      "outputText": 14
+      "inputText": 37.5,
+      "outputText": 150
     }
   }
 ]
