@@ -77,8 +77,9 @@ export function loadDataFromJson(): {
         model.category = {
           id: category.id,
           name: category.name,
-          description: category.description,
-          useCase: category.useCase
+          // Handle optional properties safely
+          description: category.description || undefined,
+          useCase: category.useCase || undefined
         };
       }
       model.vendor = vendors.find(v => v.id === model.vendorId);
@@ -91,6 +92,13 @@ export function loadDataFromJson(): {
     const visibleCategories = categories.filter(category => category.id !== 6);
     
     for (const category of visibleCategories) {
+      // Ensure category has all required properties to satisfy TypeScript
+      if (!('description' in category)) {
+        category.description = undefined;
+      }
+      if (!('useCase' in category)) {
+        category.useCase = undefined;
+      }
       category.models = visibleModels.filter(m => m.categoryId === category.id);
     }
     
