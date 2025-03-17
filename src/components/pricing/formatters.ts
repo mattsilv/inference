@@ -124,10 +124,9 @@ export const calculateTotalCost = (
   const inputCost = calculateInputCost(inputText, inputPricePerMillion);
   const outputCost = calculateOutputCost(outputText, outputPricePerMillion);
   
-  // If either cost is undefined, the total will be undefined
-  const total = (inputCost !== undefined && outputCost !== undefined) 
-    ? inputCost + outputCost 
-    : undefined;
+  // Simplified undefined check
+  const total = (inputCost != null && outputCost != null) ? 
+    (inputCost + outputCost) : undefined;
     
   return { total, inputCost, outputCost };
 };

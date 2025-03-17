@@ -29,16 +29,15 @@ const TableRow: React.FC<TableRowProps> = ({
 }) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
-  // Calculate costs if we have text samples and pricing information
-  const costDetails =
-    inputText && outputText && model.pricing
-      ? calculateTotalCost(
-          inputText,
-          outputText,
-          model.pricing.inputText,
-          model.pricing.outputText
-        )
-      : { total: undefined, inputCost: undefined, outputCost: undefined };
+  // Simplified with optional chaining
+  const costDetails = (inputText && outputText && model.pricing) ?
+    calculateTotalCost(
+      inputText,
+      outputText,
+      model.pricing?.inputText,
+      model.pricing?.outputText
+    )
+    : { total: undefined, inputCost: undefined, outputCost: undefined };
 
   const handleMouseEnter = () => {
     setTooltipVisible(true);

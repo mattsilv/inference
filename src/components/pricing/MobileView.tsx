@@ -109,11 +109,11 @@ const MobileView: React.FC<MobileViewProps> = ({
     if (!model.pricing || !inputText || !outputText) return "N/A";
 
     const inputCost = calculateInputCost(
-      inputText as string, 
+      inputText!, // Use non-null assertion since we check above
       model.pricing.inputText
     );
     const outputCost = calculateOutputCost(
-      outputText as string,
+      outputText!,
       model.pricing.outputText
     );
 
@@ -257,8 +257,8 @@ const MobileView: React.FC<MobileViewProps> = ({
                   model={model}
                   categories={categories}
                   vendors={vendors}
-                  inputText={(inputText as string) || ""}
-                  outputText={(outputText as string) || ""}
+                  inputText={inputText ?? ""}
+                  outputText={outputText ?? ""}
                 />
               </div>
             </div>

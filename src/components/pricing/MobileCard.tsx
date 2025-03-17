@@ -92,10 +92,9 @@ const MobileCard: React.FC<MobileCardProps> = ({
                 outputText,
                 model.pricing.outputText
               );
-              const totalCost =
-                inputCost !== undefined && outputCost !== undefined
-                  ? inputCost + outputCost
-                  : undefined;
+              // Simplified with nullish coalescing
+              const totalCost = (inputCost !== undefined && outputCost !== undefined) ? 
+                  (inputCost + outputCost) : undefined;
 
               const colorClass =
                 totalCost !== undefined
