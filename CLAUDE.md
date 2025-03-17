@@ -15,6 +15,8 @@
 
 - Always use `pnpm` instead of `npm` for all commands
 - After code changes, run `pnpm lint`, `pnpm typecheck`, and `pnpm build` to catch issues
+- CRITICAL: Always run `pnpm typecheck` before creating PRs or pushing to main
+- TypeScript checking is mandatory for deployment success - Netlify builds will fail if types don't match
 - If runtime errors occur with Turbopack:
   1. Remove turbo flags completely (e.g., just `pnpm dev`)
   2. Clean the build directory: `rm -rf .next` before rebuilding
