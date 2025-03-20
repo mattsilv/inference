@@ -78,5 +78,26 @@
       "inputText": 0.15,
       "outputText": 0.6
     }
+  },
+  {
+    "id": 40,
+    "systemName": "o1-pro",
+    "displayName": "O1-Pro",
+    "categoryId": 5,
+    "parametersB": 0,
+    "vendorId": 1,
+    "host": "api.openai.com",
+    "description": "The o1 series of models are trained with reinforcement learning to think before they answer and perform complex reasoning. The o1-pro model uses more compute to think harder and provide consistently better answers.",
+    "contextWindow": 200000,
+    "tokenLimit": 100000,
+    "releaseDate": "2023-09-30",
+    "isOpenSource": false,
+    "isHidden": false,
+    "pricing": {
+      "id": 41,
+      "modelId": 40,
+      "inputText": 150,
+      "outputText": 600
+    }
   }
 ]

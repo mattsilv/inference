@@ -66,28 +66,6 @@
     }
   },
   {
-    "id": 8,
-    "systemName": "mixtral-8x7b-32768",
-    "displayName": "Mixtral 8x7B",
-    "categoryId": 2,
-    "parametersB": 56,
-    "vendorId": 4,
-    "host": "api.groq.com",
-    "precision": "BF16",
-    "description": "Mistral AI's Mixtral 8x7B model running on Groq's LPU Inference Engine.",
-    "contextWindow": 32768,
-    "tokenLimit": 4096,
-    "releaseDate": "2023-12-15",
-    "isOpenSource": false,
-    "isHidden": true,
-    "pricing": {
-      "id": 8,
-      "modelId": 8,
-      "inputText": 0.24,
-      "outputText": 0.24
-    }
-  },
-  {
     "id": 9,
     "systemName": "togethercomputer/llama-3-70b-8192",
     "displayName": "Llama 3 70B",
@@ -129,50 +107,6 @@
       "modelId": 10,
       "inputText": 0.9,
       "outputText": 0.9
-    }
-  },
-  {
-    "id": 11,
-    "systemName": "pplx-70b-online",
-    "displayName": "pplx-70B-online",
-    "categoryId": 1,
-    "parametersB": 70,
-    "vendorId": 6,
-    "host": "api.perplexity.ai",
-    "precision": "BF16",
-    "description": "Perplexity's flagship model with real-time web search capabilities.",
-    "contextWindow": 4096,
-    "tokenLimit": 1024,
-    "releaseDate": "2023-12-01",
-    "isOpenSource": false,
-    "isHidden": true,
-    "pricing": {
-      "id": 11,
-      "modelId": 11,
-      "inputText": 2,
-      "outputText": 10
-    }
-  },
-  {
-    "id": 12,
-    "systemName": "pplx-7b-online",
-    "displayName": "pplx-7B-online",
-    "categoryId": 4,
-    "parametersB": 7,
-    "vendorId": 6,
-    "host": "api.perplexity.ai",
-    "precision": "BF16",
-    "description": "Perplexity's lightweight model with real-time web search capabilities.",
-    "contextWindow": 4096,
-    "tokenLimit": 1024,
-    "releaseDate": "2023-12-01",
-    "isOpenSource": false,
-    "isHidden": true,
-    "pricing": {
-      "id": 12,
-      "modelId": 12,
-      "inputText": 1,
-      "outputText": 1
     }
   },
   {
@@ -230,42 +164,6 @@
     }
   },
   {
-    "id": 18,
-    "systemName": "gemini-2.0-pro",
-    "displayName": "Gemini 2.0 Pro",
-    "categoryId": 1,
-    "parametersB": 170,
-    "vendorId": 3,
-    "host": "google",
-    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
-    "isOpenSource": false,
-    "isHidden": true,
-    "pricing": {
-      "id": 18,
-      "modelId": 18,
-      "inputText": 7,
-      "outputText": 21
-    }
-  },
-  {
-    "id": 19,
-    "systemName": "gemini-2.0-pro-exp",
-    "displayName": "Gemini 2.0 Pro Exp",
-    "categoryId": 1,
-    "parametersB": 180,
-    "vendorId": 3,
-    "host": "google",
-    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
-    "isOpenSource": false,
-    "isHidden": true,
-    "pricing": {
-      "id": 19,
-      "modelId": 19,
-      "inputText": 9,
-      "outputText": 27
-    }
-  },
-  {
     "id": 20,
     "systemName": "gemini-2.0-flash",
     "displayName": "Gemini 2.0 Flash",
@@ -281,24 +179,6 @@
       "modelId": 20,
       "inputText": 0.15,
       "outputText": 0.6
-    }
-  },
-  {
-    "id": 21,
-    "systemName": "gemini-2.0-flash-thinking",
-    "displayName": "Gemini 2.0 Flash Thinking",
-    "categoryId": 5,
-    "parametersB": 100,
-    "vendorId": 3,
-    "host": "google",
-    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
-    "isOpenSource": false,
-    "isHidden": true,
-    "pricing": {
-      "id": 21,
-      "modelId": 21,
-      "inputText": 37.5,
-      "outputText": 150
     }
   },
   {
@@ -632,6 +512,27 @@
       "modelId": 38,
       "inputText": 0.01,
       "outputText": 0.01
+    }
+  },
+  {
+    "id": 40,
+    "systemName": "o1-pro",
+    "displayName": "O1-Pro",
+    "categoryId": 5,
+    "parametersB": 0,
+    "vendorId": 1,
+    "host": "api.openai.com",
+    "description": "The o1 series of models are trained with reinforcement learning to think before they answer and perform complex reasoning. The o1-pro model uses more compute to think harder and provide consistently better answers.",
+    "contextWindow": 200000,
+    "tokenLimit": 100000,
+    "releaseDate": "2023-09-30",
+    "isOpenSource": false,
+    "isHidden": false,
+    "pricing": {
+      "id": 41,
+      "modelId": 40,
+      "inputText": 150,
+      "outputText": 600
     }
   }
 ]

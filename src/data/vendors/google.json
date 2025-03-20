@@ -1,41 +1,5 @@
 [
   {
-    "id": 18,
-    "systemName": "gemini-2.0-pro",
-    "displayName": "Gemini 2.0 Pro",
-    "categoryId": 1,
-    "parametersB": 170,
-    "vendorId": 3,
-    "host": "google",
-    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
-    "isOpenSource": false,
-    "isHidden": true,
-    "pricing": {
-      "id": 18,
-      "modelId": 18,
-      "inputText": 7,
-      "outputText": 21
-    }
-  },
-  {
-    "id": 19,
-    "systemName": "gemini-2.0-pro-exp",
-    "displayName": "Gemini 2.0 Pro Exp",
-    "categoryId": 1,
-    "parametersB": 180,
-    "vendorId": 3,
-    "host": "google",
-    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
-    "isOpenSource": false,
-    "isHidden": true,
-    "pricing": {
-      "id": 19,
-      "modelId": 19,
-      "inputText": 9,
-      "outputText": 27
-    }
-  },
-  {
     "id": 20,
     "systemName": "gemini-2.0-flash",
     "displayName": "Gemini 2.0 Flash",
@@ -51,24 +15,6 @@
       "modelId": 20,
       "inputText": 0.15,
       "outputText": 0.6
-    }
-  },
-  {
-    "id": 21,
-    "systemName": "gemini-2.0-flash-thinking",
-    "displayName": "Gemini 2.0 Flash Thinking",
-    "categoryId": 5,
-    "parametersB": 100,
-    "vendorId": 3,
-    "host": "google",
-    "description": "PLACEHOLDER PRICING - Need to update with accurate rates",
-    "isOpenSource": false,
-    "isHidden": true,
-    "pricing": {
-      "id": 21,
-      "modelId": 21,
-      "inputText": 37.5,
-      "outputText": 150
     }
   }
 ]
