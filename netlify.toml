@@ -1,5 +1,5 @@
 [build]
-  command = "pnpm install && NETLIFY=true SKIP_DB_CHECK=true pnpm build:netlify"
+  command = "pnpm install && NETLIFY=true SKIP_DB_CHECK=true NEXT_PUBLIC_SKIP_PRISMA_BUILD=true next build"
   publish = ".next"
 
 [build.environment]
@@ -7,6 +7,7 @@
   SKIP_DB_CHECK = "true"
   NETLIFY = "true"
   NEXT_RUNTIME = "experimental-serverless-trace"
+  NEXT_PUBLIC_SKIP_PRISMA_BUILD = "true"
 
 [dev]
   command = "pnpm dev"

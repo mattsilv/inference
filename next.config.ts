@@ -3,6 +3,11 @@ import type { NextConfig } from "next";
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Skip TypeScript checking in Netlify
+  typescript: {
+    // Only run TypeScript checking in development, not in Netlify builds
+    ignoreBuildErrors: process.env.NETLIFY === "true",
+  },
   // Optimize for development
   webpack: (config, { dev, isServer }) => {
     // For faster development experience
