@@ -1,21 +1,10 @@
 [build]
-  command = "npm ci --legacy-peer-deps && NETLIFY=true SKIP_DB_CHECK=true NEXT_PUBLIC_SKIP_PRISMA_BUILD=true npm run build"
+  command = "npm ci --legacy-peer-deps && npm run build"
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
-  SKIP_DB_CHECK = "true"
   NETLIFY = "true"
-  NEXT_RUNTIME = "experimental-serverless-trace"
-  NEXT_PUBLIC_SKIP_PRISMA_BUILD = "true"
 
-[dev]
-  command = "pnpm dev"
-  port = 3000
-
-# Use a single catch-all redirect for the Next.js app
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/___netlify-handler"
-  status = 200
-  force = false
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
