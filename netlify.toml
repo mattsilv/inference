@@ -1,5 +1,5 @@
 [build]
-  command = "pnpm install && NETLIFY=true SKIP_DB_CHECK=true NEXT_PUBLIC_SKIP_PRISMA_BUILD=true next build"
+  command = "npm ci --legacy-peer-deps && NETLIFY=true SKIP_DB_CHECK=true NEXT_PUBLIC_SKIP_PRISMA_BUILD=true npm run build"
   publish = ".next"
 
 [build.environment]
