@@ -56,7 +56,7 @@ const TableView: React.FC<TableViewProps> = ({
             {models.length === 0 && (
               <tr>
                 <td
-                  colSpan={inputText && outputText ? 6 : 5}
+                  colSpan={inputText && outputText ? 7 : 6}
                   className="text-center py-8"
                 >
                   <p className="text-gray-500">

@@ -3,56 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/check-db.js && pnpm validate-json",
     "dev": "next dev",
     "dev:fast": "next dev --turbo",
     "dev:hmr": "NODE_OPTIONS='--no-warnings' next dev --turbo",
-    "dev:quick": "NODE_OPTIONS='--no-warnings' SKIP_DB_CHECK=true next dev --turbo",
-    "prebuild": "node -e \"process.env.NETLIFY ? console.log('Skipping validation for Netlify') : require('./scripts/validate-json-files')\"",
     "build": "next build",
     "typecheck": "tsc --noEmit",
-    "typecheck:netlify": "tsc --noEmit --project tsconfig.netlify.json",
-    "build:netlify": "SKIP_DB_CHECK=true pnpm typecheck:netlify && SKIP_DB_CHECK=true next build",
-    "db:export": "pnpm export-json && pnpm generate-models && pnpm pricing:validate",
-    "db:import": "node scripts/import-from-json.js",
-    "validate-json": "node scripts/validate-json-files.js",
+    "build:netlify": "pnpm typecheck && next build",
     "start": "next start",
     "lint": "next lint",
-    "test:build": "npm run validate-json && npm run build:netlify",
     "test": "jest",
     "test:watch": "jest --watch",
-    "type-check": "tsc --noEmit",
-    "generate-models": "node scripts/generate-models.js",
-    "validate-models": "node scripts/generate-models.js --validate-only",
-    "prisma:studio": "prisma studio",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "node prisma/seed.js",
-    "db:setup": "npm run prisma:generate && npm run prisma:migrate && npm run prisma:seed",
-    "db:reset": "prisma migrate reset --force",
-    "db:backup": "./scripts/backup-db.sh",
-    "db:check": "node scripts/check-db.js",
-    "pricing:backup": "node scripts/backup-pricing.js backup",
-    "pricing:restore": "node scripts/backup-pricing.js restore-latest",
-    "export-json": "node scripts/export-to-json.js",
-    "pricing:update": "node scripts/pricing-tracker.js update",
-    "pricing:export": "node scripts/pricing-tracker.js export",
-    "pricing:info": "node scripts/pricing-tracker.js generate-info",
-    "pricing:validate": "node scripts/pricing-validator.js",
-    "models:hide": "node scripts/hide-models.js",
-    "models:unhide": "node scripts/hide-models.js -",
-    "test:db": "node scripts/test-prisma-connection.js",
-    "prepare": "husky",
-    "prepare-hooks": "cp .github/hooks/pre-commit .husky/pre-commit && chmod +x .husky/pre-commit"
+    "prepare": "husky"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "bash -c 'pnpm typecheck'"
     ]
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
   },
   "dependencies": {
     "next": "15.2.2",

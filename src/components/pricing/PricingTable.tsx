@@ -6,7 +6,7 @@ import TableView from "./TableView";
 import MobileView from "./MobileView";
 import FilterBar from "./FilterBar";
 import TextInputArea from "./TextInputArea";
-import { filterModels, sortModels } from "./helpers";
+import { filterModels, filterModelsByContextWindow, sortModels } from "./helpers";
 import {
   prepareExportData,
   exportAsCSV,
@@ -25,7 +25,9 @@ const PricingTable: React.FC<PricingTableProps> = ({
   categories,
   vendors,
 }) => {
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedVendors, setSelectedVendors] = useState<string[]>([]);
+  const [selectedContextRange, setSelectedContextRange] = useState<string>('all');
   const [sortConfig, setSortConfig] = useState<{
     key: string;
     direction: string;
@@ -33,27 +35,28 @@ const PricingTable: React.FC<PricingTableProps> = ({
     key: "inputPrice",
     direction: "asc",
   });
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  // const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [inputText, setInputText] = useState<string>(DEFAULT_SAMPLE_TEXT);
   const [outputText, setOutputText] = useState<string>(DEFAULT_OUTPUT_TEXT);
 
-  // Filter models by vendors only (category filtering happens via separate tables)
-  const getFilteredModels = (categoryName: string | null) => {
+  // Filter models by categories, vendors and context window
+  const getFilteredModels = () => {
     let result = models;
 
-    // Filter by vendor
+    // Filter by categories
+    if (selectedCategories.length > 0) {
+      result = filterModels(result, selectedCategories, []);
+    }
+
+    // Filter by vendors
     if (selectedVendors.length > 0) {
       result = filterModels(result, [], selectedVendors);
     }
 
-    // Filter by category if specified
-    if (categoryName) {
-      result = result.filter(
-        (model) => model.category && model.category.name === categoryName
-      );
-    }
+    // Filter by context window range
+    result = filterModelsByContextWindow(result, selectedContextRange);
 
-    // Apply sorting (default to input price asc for each category)
+    // Apply sorting
     return sortModels(
       result,
       sortConfig.key,
@@ -74,9 +77,19 @@ const PricingTable: React.FC<PricingTableProps> = ({
     });
   };
 
+  // Handle category filter changes
+  const handleCategoryFilter = (categories: string[]) => {
+    setSelectedCategories(categories);
+  };
+
   // Handle vendor filter changes
   const handleVendorFilter = (vendors: string[]) => {
     setSelectedVendors(vendors);
+  };
+
+  // Handle context range filter changes
+  const handleContextRangeFilter = (range: string) => {
+    setSelectedContextRange(range);
   };
 
   // Handle text inputs update
@@ -86,15 +99,15 @@ const PricingTable: React.FC<PricingTableProps> = ({
   };
 
   // Handle category navigation
-  const scrollToCategory = (categoryName: string) => {
-    const element = document.getElementById(
-      `category-${categoryName.replace(/\s+/g, "-").toLowerCase()}`
-    );
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setActiveCategory(categoryName);
-    }
-  };
+  // const scrollToCategory = (categoryName: string) => {
+  //   const element = document.getElementById(
+  //     `category-${categoryName.replace(/\s+/g, "-").toLowerCase()}`
+  //   );
+  //   if (element) {
+  //     element.scrollIntoView({ behavior: "smooth" });
+  //     setActiveCategory(categoryName);
+  //   }
+  // };
 
   // Handle downloads - wrapped in useCallback to avoid dependency issues
   const handleDownloadCSV = React.useCallback(() => {
@@ -161,7 +174,8 @@ const PricingTable: React.FC<PricingTableProps> = ({
         onTextUpdate={handleTextUpdate}
       />
 
-      {/* Category Navigation */}
+      {/* Category Navigation - Hidden per user request */}
+      {/* 
       <div className="mb-6 bg-white shadow rounded-lg p-4">
         <div className="flex items-center flex-wrap">
           <h2 className="text-lg font-medium mr-4">Jump to Category:</h2>
@@ -182,78 +196,37 @@ const PricingTable: React.FC<PricingTableProps> = ({
           </div>
         </div>
       </div>
+      */}
 
       <FilterBar
-        categories={[]} // No category filters needed since we split by category
+        categories={categories}
         vendors={vendors}
-        selectedCategories={[]}
+        selectedCategories={selectedCategories}
         selectedVendors={selectedVendors}
-        onCategoryChange={() => {}}
+        selectedContextRange={selectedContextRange}
+        onCategoryChange={handleCategoryFilter}
         onVendorChange={handleVendorFilter}
+        onContextRangeChange={handleContextRangeFilter}
       />
 
-      {/* Render a table for each category */}
-      {categories.map((category) => {
-        const categoryModels = getFilteredModels(category.name);
-
-        if (categoryModels.length === 0) return null;
+      {/* Single table showing all models */}
+      {(() => {
+        const allModels = getFilteredModels();
+        
+        if (allModels.length === 0) return <div className="text-center text-gray-500 py-8">No models match the current filters.</div>;
 
         return (
-          <div
-            key={category.id}
-            id={`category-${category.name.replace(/\s+/g, "-").toLowerCase()}`}
-            className="mb-12"
-          >
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-2xl font-bold">{category.name}</h2>
-              <button
-                onClick={() => {
-                  const topElement = document.getElementById("top");
-                  if (topElement) {
-                    topElement.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-                className="flex items-center space-x-1 text-sm text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                aria-label="Back to top"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 10l7-7m0 0l7 7m-7-7v18"
-                  />
-                </svg>
-                <span>Top</span>
-              </button>
-            </div>
-
-            {/* Category description and use case */}
-            <div className="mb-4 bg-white rounded-lg p-4 shadow-sm">
-              {category.description !== undefined && (
-                <p className="text-gray-800 text-sm mb-2">
-                  {category.description || ''}
-                </p>
-              )}
-              {category.useCase !== undefined && (
-                <div className="mt-2">
-                  <p className="text-gray-700 font-medium text-xs mb-1">
-                    Example Use Case:
-                  </p>
-                  <p className="text-gray-600 text-xs">{category.useCase || ''}</p>
-                </div>
-              )}
+          <div className="mb-12">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">All Models</h2>
+              <div className="text-sm text-gray-600">
+                Showing {allModels.length} models
+              </div>
             </div>
 
             {/* Desktop Table View */}
             <TableView
-              models={categoryModels}
+              models={allModels}
               categories={categories}
               vendors={vendors}
               sortConfig={sortConfig}
@@ -262,29 +235,10 @@ const PricingTable: React.FC<PricingTableProps> = ({
               outputText={outputText}
             />
 
-            {/* Dedicated Mobile View - A cohesive version of the data, consistent with desktop */}
+            {/* Mobile View */}
             <div className="block md:hidden">
-              {/* Category description and use case for mobile */}
-              {((category.description !== undefined && category.description !== null) || 
-                (category.useCase !== undefined && category.useCase !== null)) && (
-                <div className="mb-4 bg-white rounded-lg p-4 shadow-sm">
-                  {category.description !== undefined && (
-                    <p className="text-gray-800 text-sm mb-2">
-                      {category.description || ''}
-                    </p>
-                  )}
-                  {category.useCase !== undefined && (
-                    <div className="mt-2">
-                      <p className="text-gray-700 font-medium text-xs mb-1">
-                        Example Use Case:
-                      </p>
-                      <p className="text-gray-600 text-xs">{category.useCase || ''}</p>
-                    </div>
-                  )}
-                </div>
-              )}
               <MobileView
-                models={categoryModels}
+                models={allModels}
                 categories={categories}
                 vendors={vendors}
                 inputText={inputText}
@@ -293,7 +247,7 @@ const PricingTable: React.FC<PricingTableProps> = ({
             </div>
           </div>
         );
-      })}
+      })()}
 
       {/* Download buttons at the bottom of all tables */}
       <div className="flex flex-wrap items-center mt-8 mb-4 gap-3 border-t border-gray-200 pt-6">

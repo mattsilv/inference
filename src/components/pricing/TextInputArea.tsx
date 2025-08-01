@@ -144,52 +144,153 @@ const TextInputArea: React.FC<TextInputAreaProps> = ({ onTextUpdate }) => {
   const [totalTokens, setTotalTokens] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userMultiplier, setUserMultiplier] = useState(10);
+  const [demoMode, setDemoMode] = useState<'chat' | 'categorization'>('chat');
+
+  // Categorization example data
+  const rawDataExample = `Product reviews:
+- "Amazing laptop, super fast and lightweight!"
+- "Coffee maker broke after 2 weeks, terrible quality"
+- "Love this book, couldn't put it down!"
+- "Phone screen cracked easily, not durable"
+- "Best headphones I've ever owned, great sound"
+- "Hotel room was dirty and smelled bad"
+- "Restaurant service was excellent, food was delicious"
+- "Car rental company was unprofessional and rude"`;
+
+  const categorizedOutput = `{
+  "categories": [
+    {
+      "name": "Electronics",
+      "sentiment": "mixed",
+      "items": [
+        {"text": "Amazing laptop, super fast and lightweight!", "sentiment": "positive", "confidence": 0.95},
+        {"text": "Phone screen cracked easily, not durable", "sentiment": "negative", "confidence": 0.88},
+        {"text": "Best headphones I've ever owned, great sound", "sentiment": "positive", "confidence": 0.92}
+      ]
+    },
+    {
+      "name": "Home & Kitchen",
+      "sentiment": "negative",
+      "items": [
+        {"text": "Coffee maker broke after 2 weeks, terrible quality", "sentiment": "negative", "confidence": 0.91}
+      ]
+    },
+    {
+      "name": "Books & Media",
+      "sentiment": "positive", 
+      "items": [
+        {"text": "Love this book, couldn't put it down!", "sentiment": "positive", "confidence": 0.94}
+      ]
+    },
+    {
+      "name": "Travel & Hospitality",
+      "sentiment": "mixed",
+      "items": [
+        {"text": "Hotel room was dirty and smelled bad", "sentiment": "negative", "confidence": 0.89},
+        {"text": "Restaurant service was excellent, food was delicious", "sentiment": "positive", "confidence": 0.93},
+        {"text": "Car rental company was unprofessional and rude", "sentiment": "negative", "confidence": 0.87}
+      ]
+    }
+  ],
+  "summary": {
+    "total_items": 8,
+    "categories_found": 4,
+    "overall_sentiment": "mixed",
+    "positive_count": 4,
+    "negative_count": 4
+  }
+}`;
 
   // This effect runs once on mount to set up initial token counts
   useEffect(() => {
-    // Calculate token counts for all messages (not just the displayed ones)
-    const userTokens = USER_MESSAGES.reduce(
-      (sum, msg) => sum + estimateTokenCount(msg),
-      0
-    );
-    const aiTokens = AI_RESPONSES.reduce(
-      (sum, msg) => sum + estimateTokenCount(msg),
-      0
-    );
+    if (demoMode === 'chat') {
+      // Calculate token counts for all messages (not just the displayed ones)
+      const userTokens = USER_MESSAGES.reduce(
+        (sum, msg) => sum + estimateTokenCount(msg),
+        0
+      );
+      const aiTokens = AI_RESPONSES.reduce(
+        (sum, msg) => sum + estimateTokenCount(msg),
+        0
+      );
 
-    setInputTokenCount(userTokens);
-    setOutputTokenCount(aiTokens);
-    setTotalTokens(userTokens + aiTokens);
-  }, []);
+      setInputTokenCount(userTokens);
+      setOutputTokenCount(aiTokens);
+      setTotalTokens(userTokens + aiTokens);
+    } else {
+      // Calculate token counts for categorization example
+      const inputTokens = estimateTokenCount(rawDataExample);
+      const outputTokens = estimateTokenCount(categorizedOutput);
 
-  // This effect runs whenever the multiplier changes to update the pricing table
+      setInputTokenCount(inputTokens);
+      setOutputTokenCount(outputTokens);
+      setTotalTokens(inputTokens + outputTokens);
+    }
+  }, [demoMode, rawDataExample, categorizedOutput]);
+
+  // This effect runs whenever the multiplier or mode changes to update the pricing table
   useEffect(() => {
-    // For pricing calculation, we use the entire conversation with a multiplier for token counts
-    // Instead of repeating the full text, we'll pass the original text and handle the multiplication in the formatters
-    // This avoids performance issues with very large strings when userMultiplier is high
     try {
       const maxSafeMultiplier = 1000; // Cap the multiplier to prevent browser crashes
       const safeMultiplier = Math.min(userMultiplier, maxSafeMultiplier);
 
-      // Add a special metadata prefix that our formatters will detect
-      const userMessagesWithMultiplier = `[TOKEN_MULTIPLIER:${safeMultiplier}]${totalUserMessages}`;
-      const aiResponsesWithMultiplier = `[TOKEN_MULTIPLIER:${safeMultiplier}]${totalAIResponses}`;
+      let inputText, outputText;
+      
+      if (demoMode === 'chat') {
+        // Add a special metadata prefix that our formatters will detect
+        inputText = `[TOKEN_MULTIPLIER:${safeMultiplier}]${totalUserMessages}`;
+        outputText = `[TOKEN_MULTIPLIER:${safeMultiplier}]${totalAIResponses}`;
+      } else {
+        // For categorization, use the raw data and structured output
+        inputText = `[TOKEN_MULTIPLIER:${safeMultiplier}]${rawDataExample}`;
+        outputText = `[TOKEN_MULTIPLIER:${safeMultiplier}]${categorizedOutput}`;
+      }
 
-      onTextUpdate(userMessagesWithMultiplier, aiResponsesWithMultiplier);
+      onTextUpdate(inputText, outputText);
     } catch (err) {
       console.error("Error updating text with multiplier:", err);
       // Fallback to single instance if there's an error
-      onTextUpdate(totalUserMessages, totalAIResponses);
+      if (demoMode === 'chat') {
+        onTextUpdate(totalUserMessages, totalAIResponses);
+      } else {
+        onTextUpdate(rawDataExample, categorizedOutput);
+      }
     }
-  }, [onTextUpdate, totalUserMessages, totalAIResponses, userMultiplier]);
+  }, [onTextUpdate, totalUserMessages, totalAIResponses, userMultiplier, demoMode, rawDataExample, categorizedOutput]);
 
   return (
     <>
       <div className="bg-white rounded-lg border border-gray-200 shadow p-4 mb-6">
         <div className="flex flex-col gap-3">
+          {/* Radio buttons for demo mode selection */}
+          <div className="flex items-center gap-6 pb-3 border-b border-gray-200">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="demoMode"
+                value="chat"
+                checked={demoMode === 'chat'}
+                onChange={(e) => setDemoMode(e.target.value as 'chat' | 'categorization')}
+                className="text-blue-600"
+              />
+              <span className="text-sm font-medium">Chat Assistant</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="demoMode"
+                value="categorization"
+                checked={demoMode === 'categorization'}
+                onChange={(e) => setDemoMode(e.target.value as 'chat' | 'categorization')}
+                className="text-blue-600"
+              />
+              <span className="text-sm font-medium">Data Categorization</span>
+            </label>
+          </div>
+
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-medium flex items-center gap-2">
-              Example: AI Assistant Chat (10 msg thread)
+              {demoMode === 'chat' ? 'Example: AI Assistant Chat (10 msg thread)' : 'Example: Product Review Categorization'}
               <span className="text-sm text-gray-600">×</span>
               <input
                 type="number"
@@ -201,9 +302,11 @@ const TextInputArea: React.FC<TextInputAreaProps> = ({ onTextUpdate }) => {
                 min="1"
                 max="10000"
                 className="w-16 h-6 text-sm border border-gray-300 rounded text-center"
-                aria-label="Number of users"
+                aria-label={demoMode === 'chat' ? 'Number of users' : 'Number of batches'}
               />
-              <span className="text-xs text-gray-500">(users)</span>
+              <span className="text-xs text-gray-500">
+                {demoMode === 'chat' ? '(users)' : '(batches)'}
+              </span>
             </h3>
             <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
               Total tokens:{" "}
@@ -212,7 +315,7 @@ const TextInputArea: React.FC<TextInputAreaProps> = ({ onTextUpdate }) => {
               </span>
               {userMultiplier > 1000 && (
                 <span className="text-yellow-600 ml-1">
-                  (capped at 1000 users for calculation)
+                  (capped at 1000 {demoMode === 'chat' ? 'users' : 'batches'} for calculation)
                 </span>
               )}
             </div>
@@ -222,7 +325,7 @@ const TextInputArea: React.FC<TextInputAreaProps> = ({ onTextUpdate }) => {
             <div className="bg-gray-50 p-3 rounded-md border border-gray-200">
               <div className="flex justify-between items-center mb-1">
                 <div className="font-medium text-sm text-gray-700">
-                  Sample Conversation
+                  {demoMode === 'chat' ? 'Sample Conversation' : 'Raw Data Input'}
                 </div>
                 <div className="flex gap-3">
                   <div className="text-xs text-blue-600">
@@ -241,33 +344,64 @@ const TextInputArea: React.FC<TextInputAreaProps> = ({ onTextUpdate }) => {
                 className="text-xs text-gray-600 overflow-auto max-h-20 font-mono"
                 style={{ fontSize: "0.75rem" }}
               >
-                {DEFAULT_SAMPLE_TEXT.substring(0, 150)}...
+                {demoMode === 'chat' 
+                  ? `${DEFAULT_SAMPLE_TEXT.substring(0, 150)}...` 
+                  : `${rawDataExample.substring(0, 150)}...`}
               </div>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="mt-2 text-blue-600 hover:text-blue-800 text-xs font-medium flex items-center"
-              >
-                Read full conversation
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 ml-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+              {demoMode === 'chat' && (
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="mt-2 text-blue-600 hover:text-blue-800 text-xs font-medium flex items-center"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
+                  Read full conversation
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 ml-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              )}
+              {demoMode === 'categorization' && (
+                <div className="mt-2 text-xs text-gray-500">
+                  Raw product reviews that need to be categorized and analyzed for sentiment
+                </div>
+              )}
             </div>
+
+            {demoMode === 'categorization' && (
+              <div className="bg-green-50 p-3 rounded-md border border-green-200">
+                <div className="flex justify-between items-center mb-1">
+                  <div className="font-medium text-sm text-gray-700">Structured Output</div>
+                  <div className="text-xs text-green-600">JSON taxonomy with sentiment analysis</div>
+                </div>
+                <div
+                  className="text-xs text-gray-600 overflow-auto max-h-20 font-mono"
+                  style={{ fontSize: "0.75rem" }}
+                >
+                  {categorizedOutput.substring(0, 200)}...
+                </div>
+                <div className="mt-2 text-xs text-gray-500">
+                  AI creates structured taxonomy with categories, sentiment scores, and summary statistics
+                </div>
+              </div>
+            )}
 
             <div className="flex items-center gap-2 justify-center text-gray-400 text-xs">
               <span className="border-t border-gray-200 w-16"></span>
-              <span>5 user messages + 5 AI responses</span>
+              <span>
+                {demoMode === 'chat' 
+                  ? '5 user messages + 5 AI responses' 
+                  : '8 review items → structured JSON output'}
+              </span>
               <span className="border-t border-gray-200 w-16"></span>
             </div>
 
@@ -278,7 +412,9 @@ const TextInputArea: React.FC<TextInputAreaProps> = ({ onTextUpdate }) => {
                   {inputTokenCount * userMultiplier}
                 </div>
                 <div className="text-gray-600">
-                  User messages are typically charged at a lower rate
+                  {demoMode === 'chat' 
+                    ? 'User messages are typically charged at a lower rate'
+                    : 'Raw data input is typically charged at a lower rate'}
                 </div>
               </div>
               <div className="bg-gray-100 p-2 rounded text-xs">
@@ -287,7 +423,9 @@ const TextInputArea: React.FC<TextInputAreaProps> = ({ onTextUpdate }) => {
                   {outputTokenCount * userMultiplier}
                 </div>
                 <div className="text-gray-600">
-                  AI responses are typically charged at a higher rate
+                  {demoMode === 'chat' 
+                    ? 'AI responses are typically charged at a higher rate'
+                    : 'Structured JSON output is typically charged at a higher rate'}
                 </div>
               </div>
             </div>

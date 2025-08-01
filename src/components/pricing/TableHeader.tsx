@@ -20,7 +20,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   showSampleColumn = false,
 }) => {
   return (
-    <thead className="bg-gray-50">
+    <thead className="bg-gray-50 text-xs font-medium text-gray-700">
       <tr>
         <SortableHeader
           label="Model Name"
@@ -35,6 +35,15 @@ const TableHeader: React.FC<TableHeaderProps> = ({
           currentSortKey={sortConfig.key}
           sortDirection={sortConfig.direction}
           onSort={onSort}
+        />
+        <SortableHeader
+          label={<>Context<br />Window</>}
+          sortKey="contextWindow"
+          currentSortKey={sortConfig.key}
+          sortDirection={sortConfig.direction}
+          onSort={onSort}
+          align="center"
+          tooltip="Maximum context length in tokens"
         />
         {/* Params column hidden */}
         <SortableHeader

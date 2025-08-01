@@ -15,6 +15,8 @@ import {
   calculateOutputCost,
 } from "./formatters";
 import { getCategoryName, getVendorName } from "./helpers";
+import ModalityBadge from "./ModalityBadge";
+import CapabilityTierBadge from "./CapabilityTierBadge";
 
 interface MobileViewProps {
   models: AIModel[];
@@ -77,6 +79,10 @@ const MobileView: React.FC<MobileViewProps> = ({
       case "contextWindow":
         return model.contextWindow
           ? `${model.contextWindow.toLocaleString()} tokens`
+          : "N/A";
+      case "tokenLimit":
+        return model.tokenLimit
+          ? `${model.tokenLimit.toLocaleString()} tokens`
           : "N/A";
       case "category":
         return getCategoryName(model.categoryId, categories);
@@ -363,22 +369,10 @@ const MobileView: React.FC<MobileViewProps> = ({
                         </>
                       )}
 
-                      {/* 
-                        TODO: Add these fields once they're consistently available in the data model
-                        and shown on both desktop and mobile views:
-                        
-                        <div className="text-gray-600">Parameters:</div>
-                        <div className="text-right font-medium">
-                          {formatParameters(model.parametersB)}
-                        </div>
-
-                        <div className="text-gray-600">Context Window:</div>
-                        <div className="text-right font-medium">
-                          {model.contextWindow
-                            ? `${model.contextWindow.toLocaleString()} tokens`
-                            : "N/A"}
-                        </div>
-                      */}
+                      <div className="text-gray-600">Context Window:</div>
+                      <div className="text-right font-medium">
+                        {getAttributeValue(model, "contextWindow")}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -416,6 +410,12 @@ const MobileView: React.FC<MobileViewProps> = ({
                     <div>
                       <h2 className="text-base font-medium text-gray-900">
                         {model.displayName}
+                        {(model.systemName?.includes(':free') || 
+                          (model.pricing?.inputText === 0 && model.pricing?.outputText === 0)) && (
+                          <span className="ml-1 text-blue-600" title="Free model with usage restrictions (20 req/min, 50-1000 req/day via OpenRouter)">
+                            *
+                          </span>
+                        )}
                       </h2>
                       <p className="text-xs text-gray-500">
                         {getVendorName(model.vendorId, vendors)}
@@ -464,10 +464,16 @@ const MobileView: React.FC<MobileViewProps> = ({
                   </div>
 
                   <div className="p-4 space-y-3">
-                    <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center gap-2 mb-3 flex-wrap">
                       <span className="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-800">
                         {getCategoryName(model.categoryId, categories)}
                       </span>
+                      {model.capabilityTier && (
+                        <CapabilityTierBadge tier={model.capabilityTier} size="sm" />
+                      )}
+                      {model.modality && (
+                        <ModalityBadge modality={model.modality} size="sm" />
+                      )}
                       {model.isOpenSource && (
                         <span className="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">
                           Open Source
@@ -486,8 +492,29 @@ const MobileView: React.FC<MobileViewProps> = ({
                       </div>
                     )}
 
-                    {/* TODO: Add Parameters and Context Window fields here once they're 
-                      consistently available in the data model and shown on both desktop and mobile views */}
+                    <div className="border-b pb-3">
+                      <h3 className="text-sm font-medium text-gray-700 mb-2">
+                        Model Specifications
+                      </h3>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <h4 className="text-xs text-gray-500 mb-1">
+                            Context Window
+                          </h4>
+                          <p className="text-sm font-medium">
+                            {getAttributeValue(model, "contextWindow")}
+                          </p>
+                        </div>
+                        <div>
+                          <h4 className="text-xs text-gray-500 mb-1">
+                            Max Output Tokens
+                          </h4>
+                          <p className="text-sm font-medium">
+                            {getAttributeValue(model, "tokenLimit")}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
 
                     <div className="border-t border-b py-3">
                       <h3 className="text-sm font-medium text-gray-700 mb-2">

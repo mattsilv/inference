@@ -13,6 +13,8 @@ export interface AIModel {
   releaseDate?: string;
   isOpenSource?: boolean;
   isHidden?: boolean;
+  modality?: string;
+  capabilityTier?: string;
   pricing?: Pricing;
   category?: Category;
   vendor?: Vendor;

@@ -37,6 +37,17 @@ export const getVendorModelsListUrl = (
   return vendor ? vendor.modelsListUrl : "#";
 };
 
+// Get OpenRouter URL for a specific model
+export const getOpenRouterModelUrl = (systemName: string): string => {
+  if (!systemName) return "#";
+  
+  // OpenRouter URLs format: https://openrouter.ai/models/{systemName}
+  // Some models already have the full path (e.g., "togethercomputer/llama-3-70b-8192")
+  // Others just have the model name (e.g., "gpt-4o", "claude-3-5-sonnet")
+  
+  return `https://openrouter.ai/models/${encodeURIComponent(systemName)}`;
+};
+
 // Group models by category
 export const groupModelsByCategory = (
   models: AIModel[],
@@ -62,6 +73,13 @@ export const groupModelsByCategory = (
   return grouped;
 };
 
+// Check if a model is self-moderated
+export const isSelfModeratedModel = (model: AIModel): boolean => {
+  return model.systemName?.includes(':self-moderated') || 
+         model.systemName?.includes('self-moderated') ||
+         model.displayName?.toLowerCase().includes('self-moderated');
+};
+
 // Filter models by selected categories and vendors
 export const filterModels = (
   models: AIModel[],
@@ -69,6 +87,11 @@ export const filterModels = (
   selectedVendors: string[]
 ): AIModel[] => {
   return models.filter((model) => {
+    // Exclude self-moderated models
+    if (isSelfModeratedModel(model)) {
+      return false;
+    }
+    
     // If no categories are selected, include all
     const categoryMatch = selectedCategories.length === 0 || 
       (model.category && selectedCategories.includes(model.category.name));
@@ -78,6 +101,41 @@ export const filterModels = (
       (model.vendor && selectedVendors.includes(model.vendor.name));
     
     return categoryMatch && vendorMatch;
+  });
+};
+
+// Filter models by context window range
+export const filterModelsByContextWindow = (
+  models: AIModel[],
+  contextRange: string
+): AIModel[] => {
+  const filteredModels = models.filter((model) => {
+    // Exclude self-moderated models
+    if (isSelfModeratedModel(model)) {
+      return false;
+    }
+    return true;
+  });
+  
+  if (contextRange === 'all') {
+    return filteredModels;
+  }
+  
+  return filteredModels.filter((model) => {
+    const contextWindow = model.contextWindow || 0;
+    
+    switch (contextRange) {
+      case 'small': // < 32K
+        return contextWindow < 32000;
+      case 'medium': // 32K - 128K
+        return contextWindow >= 32000 && contextWindow < 128000;
+      case 'large': // 128K - 1M
+        return contextWindow >= 128000 && contextWindow < 1000000;
+      case 'xlarge': // 1M+
+        return contextWindow >= 1000000;
+      default:
+        return true;
+    }
   });
 };
 
@@ -132,6 +190,9 @@ export const sortModels = (
     } else if (key === 'contextWindow') {
       aValue = a.contextWindow ?? 0;
       bValue = b.contextWindow ?? 0;
+    } else if (key === 'tokenLimit') {
+      aValue = a.tokenLimit ?? 0;
+      bValue = b.tokenLimit ?? 0;
     } else {
       // Handle direct properties safely with proper type assertions
       aValue = key in a ? (a as unknown as Record<string, string | number>)[key] ?? '' : '';
