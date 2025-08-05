@@ -1,52 +1,40 @@
 # Data Structure for Inference App
 
-This directory contains the data used by the Inference App to display AI model pricing and specifications.
+**IMPORTANT**: This directory previously contained local JSON data files, but the application now uses **https://data.silv.app/ai/models.json** as the single source of truth.
 
-## Directory Structure
+## Data Source
 
-- `/src/data/vendors/` - Individual JSON files for each vendor's models
-  - `openai.json` - OpenAI models
-  - `anthropic.json` - Anthropic models
-  - `google.json` - Google AI (Gemini) models
-  - `meta-aws.json` - Meta/AWS (Llama) models
-  - `mistral.json` - Mistral AI models
-  - `deepseek.json` - DeepSeek models
-- `/src/data/vendors.json` - List of all AI vendors
-- `/src/data/categories.json` - Model categories (e.g., Vision, Fast, Premium)
-- `/src/data/models.json` - Combined model data (generated from vendor files)
+All model data is fetched from: **https://data.silv.app/ai/models.json**
 
-## Data Flow
+The application:
+- Fetches data from the external API at build time and runtime
+- Applies data transformation and filtering in `src/lib/dataService.ts`
+- Caches API responses for 1 hour to balance freshness and performance
+- Automatically handles model categorization, vendor extraction, and pricing normalization
 
-1. Edit individual vendor files in `/src/data/vendors/`
-2. Run validation with `npm run validate-models` to check for errors
-3. Run `npm run generate-models` to merge vendor files into `models.json`
-4. The app uses the combined `models.json` file at runtime
+## Data Management
 
-## Data Validation
+Model data is now managed externally through the data.silv.app system. The local application:
 
-The data validator (`/src/lib/dataValidator.ts`) checks for:
+1. **Fetches** data from the API endpoint
+2. **Transforms** the data using `silvDataMapping()` in `dataService.ts`
+3. **Filters** models to show only approved vendors and visible models
+4. **Categorizes** models automatically based on their capabilities
+5. **Normalizes** pricing data to the standard format ($/1M tokens)
 
-- Required fields presence
-- Numeric field validity
-- ID uniqueness across models and pricing
-- Foreign key validity (categoryId, vendorId)
-- Schema consistency
+## Adding Models
 
-## Adding a New Model
+To add new models:
+1. Update the source data at data.silv.app
+2. The application will automatically fetch and display new models
+3. No local file changes are needed
 
-1. Identify the vendor for the model
-2. Add the model to the appropriate vendor file in `/src/data/vendors/`
-3. Give the model a unique `id` (incremental from the last highest ID)
-4. Include all required fields (see `types.ts` for the schema)
-5. Validate your changes with `npm run validate-models`
-6. Generate the combined models.json with `npm run generate-models`
+## Vendor and Category Management
 
-## Adding a New Vendor
-
-1. Add the vendor to `vendors.json` with a unique `id`
-2. Create a new vendor file in `/src/data/vendors/{vendor-name}.json`
-3. Add models for this vendor in the new file
-4. Validate and generate as described above
+- **Approved Vendors**: Anthropic, Google, Meta, DeepSeek, Inference.net
+- **Model Filtering**: Only models from approved vendors are shown
+- **Automatic Categorization**: Models are classified based on their capabilities
+- **Version Management**: Only the latest versions of each model family are displayed
 
 ## Required Fields
 
