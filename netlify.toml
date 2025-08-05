@@ -1,10 +1,13 @@
 [build]
-  command = "npm ci --legacy-peer-deps && npm run build"
+  command = "corepack enable && pnpm install --frozen-lockfile && pnpm build"
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
   NETLIFY = "true"
+  PNPM_VERSION = "8"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+  [plugins.inputs]
+    publish = ".next"
